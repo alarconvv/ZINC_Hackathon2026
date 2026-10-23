@@ -1,0 +1,56 @@
+{
+  "time": "2026-10-23T18:46:49.710163+00:00",
+  "gate": "live_gemini",
+  "status": "PASS",
+  "tools": [
+    {
+      "time": "2026-10-23T18:46:51.101781+00:00",
+      "event": "tool",
+      "tool": "get_plan",
+      "valid": true
+    },
+    {
+      "time": "2026-10-23T18:46:51.101932+00:00",
+      "event": "tool",
+      "tool": "get_last_session",
+      "valid": true
+    },
+    {
+      "time": "2026-10-23T18:46:52.885108+00:00",
+      "event": "tool",
+      "tool": "propose_change",
+      "valid": true
+    }
+  ],
+  "diagnostics": [
+    {
+      "time": "2026-10-23T18:46:51.101569+00:00",
+      "event": "model_response",
+      "finish": "STOP"
+    },
+    {
+      "time": "2026-10-23T18:46:52.885002+00:00",
+      "event": "model_response",
+      "finish": "STOP"
+    },
+    {
+      "time": "2026-10-23T18:47:05.109934+00:00",
+      "event": "model_response",
+      "finish": "STOP"
+    },
+    {
+      "time": "2026-10-23T18:47:05.112247+00:00",
+      "event": "coach_success",
+      "elapsed_s": 15.4
+    }
+  ],
+  "elapsed_s": 15.4,
+  "stage": "complete",
+  "prescriptions": {
+    "active_before": 10,
+    "active_after_accept": 10,
+    "staged_next_week": 11,
+    "active_after_rollover": 11
+  },
+  "reason": "Real provider read both contexts and proposed a validated adjustment. Decline preserved plans; the actual Streamlit Accept button staged the adjustment without rewriting the current week. Rollover activated it and retained history."
+}

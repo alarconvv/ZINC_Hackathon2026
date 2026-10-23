@@ -1,0 +1,8 @@
+id,name,pattern,easier,standard,harder,cue,badge,source
+sit_to_stand,Sit to stand,Legs,Chair with arm support,Chair sit to stand,Bodyweight squat,Use a stable chair against a wall. Stand within a comfortable range and sit with control.,Strong,ICFSR sarcopenia guidelines; ACSM resistance training position stand
+hip_hinge,Hip hinge,Hips,Seated hip hinge,Standing hip hinge,Band hip hinge,Keep your back comfortable and move from your hips. Use a small range.,Strong,ICFSR sarcopenia guidelines; ACSM resistance training position stand
+step_up,Supported step up,Legs,Seated knee extension,Low step with chair support,Supported split squat,Use a stable low step and support. Keep the movement comfortable.,Strong,ICFSR sarcopenia guidelines; ACSM resistance training position stand
+row,Band row,Back,Seated light band row,Seated band row,Standing band row,Secure the band safely. Draw elbows back without shrugging.,Strong,ICFSR sarcopenia guidelines; ACSM resistance training position stand
+carry,Supported carry,Whole body,Seated alternating arm lift,Light carry beside support,Light suitcase carry,Keep a comfortable upright position and a clear path. Count controlled steps.,Moderate,ACSM resistance training position stand; prototype exercise selection
+core,Wall plank,Core,Seated abdominal brace,Wall plank,Counter plank,Breathe normally. Hold gently for the displayed seconds without straining.,Moderate,ACSM resistance training position stand; prototype exercise selection
+supported_balance,Supported balance,Balance,Seated alternating heel raise,Two hand supported heel raise,Supported tandem stand,Stay beside a stable chair. Use support throughout; never practice with eyes closed.,Strong,Otago Exercise Programme meta-analysis; Age and Ageing 2010

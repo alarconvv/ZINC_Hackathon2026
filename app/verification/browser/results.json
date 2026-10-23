@@ -1,0 +1,58 @@
+{
+  "time": "2026-10-23T18:36:35.027Z",
+  "url": "http://127.0.0.1:8506",
+  "results": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "kind": "desktop",
+      "pass": true,
+      "checks": [
+        "onboarding",
+        "all sections",
+        "keyboard navigation",
+        "set log",
+        "brain answer",
+        "yoga feedback",
+        "reduced motion",
+        "normal breathing keyframe phases",
+        "alert and option contrast",
+        "relaxation completion",
+        "progress",
+        "export JSON",
+        "week rollover",
+        "historical progress",
+        "no page errors",
+        "no horizontal page overflow"
+      ]
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "kind": "phone",
+      "pass": true,
+      "checks": [
+        "onboarding",
+        "all sections",
+        "keyboard navigation",
+        "set log",
+        "brain answer",
+        "yoga feedback",
+        "reduced motion",
+        "normal breathing keyframe phases",
+        "alert and option contrast",
+        "relaxation completion",
+        "progress",
+        "export JSON",
+        "week rollover",
+        "historical progress",
+        "no page errors",
+        "no horizontal page overflow"
+      ]
+    }
+  ]
+}

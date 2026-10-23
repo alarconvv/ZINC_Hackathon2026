@@ -1,0 +1,398 @@
+{
+  "profile": {
+    "name": "Maria",
+    "age": 52,
+    "level": "beginner",
+    "limits": [
+      "knees"
+    ],
+    "mci": false,
+    "clinician_clearance": false,
+    "toggles": {
+      "yoga": false,
+      "brain": false
+    }
+  },
+  "plan": {
+    "version": 1,
+    "week": 1,
+    "tier": "Protect",
+    "fall_risk": false,
+    "exercises": [
+      {
+        "id": "sit_to_stand",
+        "name": "Sit to stand",
+        "pattern": "Legs",
+        "easier": "Chair with arm support",
+        "standard": "Chair sit to stand",
+        "harder": "Bodyweight squat",
+        "cue": "Use a stable chair against a wall. Stand within a comfortable range and sit with control.",
+        "badge": "Strong",
+        "source": "ICFSR sarcopenia guidelines; ACSM resistance training position stand",
+        "version": "Chair with arm support",
+        "reps": 10,
+        "base_reps": 10,
+        "sets": 2,
+        "unit": "reps",
+        "power": true
+      },
+      {
+        "id": "hip_hinge",
+        "name": "Hip hinge",
+        "pattern": "Hips",
+        "easier": "Seated hip hinge",
+        "standard": "Standing hip hinge",
+        "harder": "Band hip hinge",
+        "cue": "Keep your back comfortable and move from your hips. Use a small range.",
+        "badge": "Strong",
+        "source": "ICFSR sarcopenia guidelines; ACSM resistance training position stand",
+        "version": "Standing hip hinge",
+        "reps": 10,
+        "base_reps": 10,
+        "sets": 2,
+        "unit": "reps",
+        "power": false
+      },
+      {
+        "id": "step_up",
+        "name": "Supported step up",
+        "pattern": "Legs",
+        "easier": "Seated knee extension",
+        "standard": "Low step with chair support",
+        "harder": "Supported split squat",
+        "cue": "Use a stable low step and support. Keep the movement comfortable.",
+        "badge": "Strong",
+        "source": "ICFSR sarcopenia guidelines; ACSM resistance training position stand",
+        "version": "Seated knee extension",
+        "reps": 10,
+        "base_reps": 10,
+        "sets": 2,
+        "unit": "reps",
+        "power": true
+      },
+      {
+        "id": "row",
+        "name": "Band row",
+        "pattern": "Back",
+        "easier": "Seated light band row",
+        "standard": "Seated band row",
+        "harder": "Standing band row",
+        "cue": "Secure the band safely. Draw elbows back without shrugging.",
+        "badge": "Strong",
+        "source": "ICFSR sarcopenia guidelines; ACSM resistance training position stand",
+        "version": "Seated band row",
+        "reps": 10,
+        "base_reps": 10,
+        "sets": 2,
+        "unit": "reps",
+        "power": true
+      },
+      {
+        "id": "carry",
+        "name": "Supported carry",
+        "pattern": "Whole body",
+        "easier": "Seated alternating arm lift",
+        "standard": "Light carry beside support",
+        "harder": "Light suitcase carry",
+        "cue": "Keep a comfortable upright position and a clear path. Count controlled steps.",
+        "badge": "Moderate",
+        "source": "ACSM resistance training position stand; prototype exercise selection",
+        "version": "Light carry beside support",
+        "reps": 10,
+        "base_reps": 10,
+        "sets": 2,
+        "unit": "reps",
+        "power": false
+      },
+      {
+        "id": "core",
+        "name": "Wall plank",
+        "pattern": "Core",
+        "easier": "Seated abdominal brace",
+        "standard": "Wall plank",
+        "harder": "Counter plank",
+        "cue": "Breathe normally. Hold gently for the displayed seconds without straining.",
+        "badge": "Moderate",
+        "source": "ACSM resistance training position stand; prototype exercise selection",
+        "version": "Wall plank",
+        "reps": 10,
+        "base_reps": 10,
+        "sets": 1,
+        "unit": "seconds",
+        "power": false
+      },
+      {
+        "id": "supported_balance",
+        "name": "Supported balance",
+        "pattern": "Balance",
+        "easier": "Seated alternating heel raise",
+        "standard": "Two hand supported heel raise",
+        "harder": "Supported tandem stand",
+        "cue": "Stay beside a stable chair. Use support throughout; never practice with eyes closed.",
+        "badge": "Strong",
+        "source": "Otago Exercise Programme meta-analysis; Age and Ageing 2010",
+        "version": "Two hand supported heel raise",
+        "reps": 10,
+        "base_reps": 10,
+        "sets": 1,
+        "unit": "reps",
+        "power": false
+      }
+    ],
+    "days": [
+      "Mon",
+      "Thu"
+    ],
+    "applied_ids": [],
+    "adjusted_exercises": [],
+    "start_date": "2026-10-19",
+    "yoga": [
+      {
+        "id": "0",
+        "name": "Chair pose",
+        "version": "Seated gentle leg press into the floor",
+        "cue": "Use a comfortable range, breathe normally, and stop if painful. Use a stable chair; do not force a stretch.",
+        "badge": "Moderate",
+        "source": "Yoga in older adults, IJBNPA 2019; yoga and frailty, Annals of Internal Medicine 2023"
+      },
+      {
+        "id": "1",
+        "name": "Warrior II",
+        "version": "Seated warrior arm reach",
+        "cue": "Use a comfortable range, breathe normally, and stop if painful. Use a stable chair; do not force a stretch.",
+        "badge": "Moderate",
+        "source": "Yoga in older adults, IJBNPA 2019; yoga and frailty, Annals of Internal Medicine 2023"
+      },
+      {
+        "id": "2",
+        "name": "Low lunge",
+        "version": "Seated alternating leg extension",
+        "cue": "Use a comfortable range, breathe normally, and stop if painful. Use a stable chair; do not force a stretch.",
+        "badge": "Moderate",
+        "source": "Yoga in older adults, IJBNPA 2019; yoga and frailty, Annals of Internal Medicine 2023"
+      },
+      {
+        "id": "3",
+        "name": "Bridge",
+        "version": "Seated gentle glute squeeze",
+        "cue": "Use a comfortable range, breathe normally, and stop if painful. Use a stable chair; do not force a stretch.",
+        "badge": "Moderate",
+        "source": "Yoga in older adults, IJBNPA 2019; yoga and frailty, Annals of Internal Medicine 2023"
+      },
+      {
+        "id": "4",
+        "name": "Cat-cow",
+        "version": "Seated gentle cat-cow",
+        "cue": "Use a comfortable range, breathe normally, and stop if painful. Use a stable chair; do not force a stretch.",
+        "badge": "Moderate",
+        "source": "Yoga in older adults, IJBNPA 2019; yoga and frailty, Annals of Internal Medicine 2023"
+      }
+    ],
+    "toggles": {
+      "yoga": false,
+      "brain": false
+    },
+    "activities": [
+      {
+        "id": "w1-strength-0",
+        "section": "strength",
+        "date": "2026-10-19",
+        "week": 1,
+        "minutes": 25
+      },
+      {
+        "id": "w1-brain-1",
+        "section": "brain",
+        "date": "2026-10-20",
+        "week": 1,
+        "minutes": 5
+      },
+      {
+        "id": "w1-relaxation-1",
+        "section": "relaxation",
+        "date": "2026-10-20",
+        "week": 1,
+        "minutes": 3
+      },
+      {
+        "id": "w1-yoga-1",
+        "section": "yoga",
+        "date": "2026-10-20",
+        "week": 1,
+        "minutes": 5
+      },
+      {
+        "id": "w1-strength-3",
+        "section": "strength",
+        "date": "2026-10-22",
+        "week": 1,
+        "minutes": 25
+      },
+      {
+        "id": "w1-brain-5",
+        "section": "brain",
+        "date": "2026-10-24",
+        "week": 1,
+        "minutes": 5
+      },
+      {
+        "id": "w1-relaxation-5",
+        "section": "relaxation",
+        "date": "2026-10-24",
+        "week": 1,
+        "minutes": 3
+      },
+      {
+        "id": "w1-yoga-5",
+        "section": "yoga",
+        "date": "2026-10-24",
+        "week": 1,
+        "minutes": 5
+      }
+    ]
+  },
+  "next_plan": null,
+  "history": [],
+  "activity_sessions": {
+    "w1-strength-0": {
+      "id": "w1-strength-0",
+      "section": "strength",
+      "date": "2026-10-19",
+      "week": 1,
+      "minutes": 25,
+      "session_id": "069e0093-cbf8-45ee-9191-555769a9f1f2",
+      "activity_id": "w1-strength-0",
+      "status": "partial",
+      "finished": true,
+      "cursor": 0,
+      "set_index": 1,
+      "feedback": [],
+      "answers": [],
+      "pose_index": 0,
+      "pain_limited": false
+    },
+    "w1-brain-1": {
+      "id": "w1-brain-1",
+      "section": "brain",
+      "date": "2026-10-20",
+      "week": 1,
+      "minutes": 5,
+      "session_id": "2402b064-8354-4d50-b5ba-30a74c112295",
+      "activity_id": "w1-brain-1",
+      "status": "partial",
+      "finished": true,
+      "cursor": 0,
+      "set_index": 0,
+      "feedback": [],
+      "answers": [
+        {
+          "puzzle_id": "1-0",
+          "level": 1,
+          "answer": 9,
+          "correct": true,
+          "level_after": 1
+        }
+      ],
+      "pose_index": 0,
+      "puzzle_feedback": "Correct. Add 2 each time."
+    },
+    "w1-relaxation-1": {
+      "id": "w1-relaxation-1",
+      "section": "relaxation",
+      "date": "2026-10-20",
+      "week": 1,
+      "minutes": 3,
+      "session_id": "d7ee29c5-c65b-4fa4-ab29-adf5cc123653",
+      "activity_id": "w1-relaxation-1",
+      "status": "completed",
+      "finished": true,
+      "cursor": 0,
+      "set_index": 0,
+      "feedback": [],
+      "answers": [],
+      "pose_index": 0,
+      "completed_minutes": 5
+    },
+    "w1-yoga-1": {
+      "id": "w1-yoga-1",
+      "section": "yoga",
+      "date": "2026-10-20",
+      "week": 1,
+      "minutes": 5,
+      "session_id": "4e61bd6a-6d47-47e1-953a-887a48442104",
+      "activity_id": "w1-yoga-1",
+      "status": "partial",
+      "finished": true,
+      "cursor": 0,
+      "set_index": 0,
+      "feedback": [
+        {
+          "pose": 0,
+          "effort": 3,
+          "pain": 0
+        }
+      ],
+      "answers": [],
+      "pose_index": 1
+    }
+  },
+  "logs": {
+    "version": 7,
+    "sessions": [
+      {
+        "id": "87fa8bc9-90c7-4f36-bd27-3207af6f9d08",
+        "exercise_id": "sit_to_stand",
+        "week": 1,
+        "activity_id": "w1-strength-0",
+        "session_id": "069e0093-cbf8-45ee-9191-555769a9f1f2",
+        "reps": 10,
+        "effort": 6,
+        "pain": 0,
+        "plan_version": 1,
+        "set": 1
+      }
+    ]
+  },
+  "events": [
+    {
+      "time": "2026-10-23T18:36:30.440816+00:00",
+      "event": "screening",
+      "result": "cleared"
+    },
+    {
+      "time": "2026-10-23T18:36:30.589720+00:00",
+      "event": "plan_created"
+    },
+    {
+      "time": "2026-10-23T18:36:31.334612+00:00",
+      "event": "set_logged",
+      "exercise_id": "sit_to_stand",
+      "pain": 0,
+      "effort": 6
+    },
+    {
+      "time": "2026-10-23T18:36:31.654037+00:00",
+      "event": "activity_finished",
+      "activity_id": "w1-strength-0",
+      "status": "partial"
+    },
+    {
+      "time": "2026-10-23T18:36:32.404270+00:00",
+      "event": "activity_finished",
+      "activity_id": "w1-brain-1",
+      "status": "partial"
+    },
+    {
+      "time": "2026-10-23T18:36:33.019247+00:00",
+      "event": "activity_finished",
+      "activity_id": "w1-relaxation-1",
+      "status": "completed"
+    },
+    {
+      "time": "2026-10-23T18:36:33.770130+00:00",
+      "event": "activity_finished",
+      "activity_id": "w1-yoga-1",
+      "status": "partial"
+    }
+  ]
+}

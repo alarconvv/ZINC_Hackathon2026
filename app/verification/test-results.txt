@@ -1,0 +1,88 @@
+test_coach_reads_mixed_activity_history_without_mutating_plan (test_acceptance.AcceptanceTests.test_coach_reads_mixed_activity_history_without_mutating_plan) ... ok
+test_focus_back_navigation_preserves_all_answers_and_date (test_acceptance.AcceptanceTests.test_focus_back_navigation_preserves_all_answers_and_date) ... 2026-10-23 14:19:03.169 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_focus_combinations_add_only_documented_sunday_sections (test_acceptance.AcceptanceTests.test_focus_combinations_add_only_documented_sunday_sections) ... ok
+test_missing_configuration_is_local_labelled_fallback (test_acceptance.AcceptanceTests.test_missing_configuration_is_local_labelled_fallback) ... /Users/vivianaromeroalarcon/My Drive/ZINC_Hackathon2026/.venv/lib/python3.11/site-packages/google/genai/types.py:9906: PydanticDeprecatedSince212: Using `@model_validator` with mode='after' on a classmethod is deprecated. Instead, use an instance method. See the documentation at https://pydantic.dev/docs/validation/2.14/concepts/validators/#model-after-validator. Deprecated in Pydantic V2.12 to be removed in V3.0.
+  @model_validator(mode='after')  # type: ignore[arg-type]
+ok
+test_mixed_status_board_across_two_weeks (test_acceptance.AcceptanceTests.test_mixed_status_board_across_two_weeks) ... 2026-10-23 14:19:04.304 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_relaxation_lengths_skip_and_accessible_instructions (test_acceptance.AcceptanceTests.test_relaxation_lengths_skip_and_accessible_instructions) ... 2026-10-23 14:19:05.648 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-23 14:19:06.274 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_reruns_do_not_repeat_submitted_work (test_acceptance.AcceptanceTests.test_reruns_do_not_repeat_submitted_work) ... 2026-10-23 14:19:06.872 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_symptom_form_locks_every_activity_and_coach_without_network (test_acceptance.AcceptanceTests.test_symptom_form_locks_every_activity_and_coach_without_network) ... 2026-10-23 14:19:08.247 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-23 14:19:08.823 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-23 14:19:09.359 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-10-23 14:19:09.937 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_ui_reset_clears_history_and_requires_new_screen (test_acceptance.AcceptanceTests.test_ui_reset_clears_history_and_requires_new_screen) ... 2026-10-23 14:19:10.468 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_back_preserves_answers (test_app.AppTests.test_back_preserves_answers) ... 2026-10-23 14:19:11.212 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_brain_feedback_belongs_to_its_activity (test_app.AppTests.test_brain_feedback_belongs_to_its_activity) ... 2026-10-23 14:19:11.610 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_complete_journey_and_history (test_app.AppTests.test_complete_journey_and_history) ... 2026-10-23 14:19:12.288 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_historical_reasoning_level_stays_in_selected_week (test_app.AppTests.test_historical_reasoning_level_stays_in_selected_week) ... 2026-10-23 14:19:15.025 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_missing_key (test_app.AppTests.test_missing_key) ... 2026-10-23 14:19:15.539 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_screen_blocks (test_app.AppTests.test_screen_blocks) ... 2026-10-23 14:19:16.002 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_stop_blocks_all (test_app.AppTests.test_stop_blocks_all) ... 2026-10-23 14:19:16.338 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_accept_once_and_input_immutability (test_engine.EngineTests.test_accept_once_and_input_immutability) ... ok
+test_cannot_accept_while_training (test_engine.EngineTests.test_cannot_accept_while_training) ... ok
+test_chest_screen_blocks_generation_and_model (test_engine.EngineTests.test_chest_screen_blocks_generation_and_model) ... ok
+test_decline_leaves_plan (test_engine.EngineTests.test_decline_leaves_plan) ... ok
+test_disease_question_no_model (test_engine.EngineTests.test_disease_question_no_model) ... ok
+test_dizzy_stops_without_model (test_engine.EngineTests.test_dizzy_stops_without_model) ... ok
+test_failed_turn_discards_staged_proposal (test_engine.EngineTests.test_failed_turn_discards_staged_proposal) ... ok
+test_falls_supported (test_engine.EngineTests.test_falls_supported) ... ok
+test_filtered_reply_discards_proposal (test_engine.EngineTests.test_filtered_reply_discards_proposal) ... ok
+test_full_session_acceptance (test_engine.EngineTests.test_full_session_acceptance) ... ok
+test_high_pain_rejects_harder_and_ends_exercise (test_engine.EngineTests.test_high_pain_rejects_harder_and_ends_exercise) ... ok
+test_incomplete_screen (test_engine.EngineTests.test_incomplete_screen) ... ok
+test_maria_plan (test_engine.EngineTests.test_maria_plan) ... ok
+test_missing_key_fallback (test_engine.EngineTests.test_missing_key_fallback) ... ok
+test_reset_clears_everything (test_engine.EngineTests.test_reset_clears_everything) ... ok
+test_response_filter (test_engine.EngineTests.test_response_filter) ... ok
+test_stale_and_tampered_proposals (test_engine.EngineTests.test_stale_and_tampered_proposals) ... ok
+test_step_up_pain_five_blocks_harder (test_engine.EngineTests.test_step_up_pain_five_blocks_harder) ... ok
+test_successful_tool_turn_stages_without_mutation (test_engine.EngineTests.test_successful_tool_turn_stages_without_mutation) ... ok
+test_supported_clinician_signoff (test_engine.EngineTests.test_supported_clinician_signoff) ... ok
+test_tom_and_rosa (test_engine.EngineTests.test_tom_and_rosa) ... ok
+test_tool_boundary (test_engine.EngineTests.test_tool_boundary) ... ok
+test_weekly_cap (test_engine.EngineTests.test_weekly_cap) ... ok
+test_apply_change_dates_follow_new_week (test_engine_regressions.EngineRegressions.test_apply_change_dates_follow_new_week) ... ok
+test_clearance_and_boolean_boundaries (test_engine_regressions.EngineRegressions.test_clearance_and_boolean_boundaries) ... ok
+test_historical_puzzle_level_survives_future_adaptation (test_engine_regressions.EngineRegressions.test_historical_puzzle_level_survives_future_adaptation) ... ok
+test_legacy_unfinished_strength_blocks_rollover (test_engine_regressions.EngineRegressions.test_legacy_unfinished_strength_blocks_rollover) ... ok
+test_plan_does_not_alias_profile_or_prior_week (test_engine_regressions.EngineRegressions.test_plan_does_not_alias_profile_or_prior_week) ... ok
+test_rollover_preserves_three_weeks_of_independent_logs (test_engine_regressions.EngineRegressions.test_rollover_preserves_three_weeks_of_independent_logs) ... ok
+test_strength_callback_cannot_mutate_other_activity (test_engine_regressions.EngineRegressions.test_strength_callback_cannot_mutate_other_activity) ... ok
+test_strength_sessions_have_distinct_identity_and_resume (test_engine_regressions.EngineRegressions.test_strength_sessions_have_distinct_identity_and_resume) ... ok
+test_version_boolean_does_not_pass_proposal_validation (test_engine_regressions.EngineRegressions.test_version_boolean_does_not_pass_proposal_validation) ... ok
+test_week_dates_use_monday_and_eastern_clock (test_engine_regressions.EngineRegressions.test_week_dates_use_monday_and_eastern_clock) ... ok
+test_real_adapter_tool_loop (test_model_adapter.AdapterTests.test_real_adapter_tool_loop) ... ok
+test_actual_adapter_stops_after_four_requests (test_security.SecurityTests.test_actual_adapter_stops_after_four_requests) ... ok
+test_invalid_sdk_call_clears_staged_proposal (test_security.SecurityTests.test_invalid_sdk_call_clears_staged_proposal) ... ok
+test_model_markdown_is_displayed_as_inert_text (test_security.SecurityTests.test_model_markdown_is_displayed_as_inert_text) ... 2026-10-23 14:19:16.763 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+ok
+test_provider_error_canary_never_leaks (test_security.SecurityTests.test_provider_error_canary_never_leaks) ... ok
+test_read_before_proposal_and_mutating_tool_denied (test_security.SecurityTests.test_read_before_proposal_and_mutating_tool_denied) ... ok
+test_reads_are_copies_and_tool_budget_fails_closed (test_security.SecurityTests.test_reads_are_copies_and_tool_budget_fails_closed) ... ok
+test_rejected_calls_record_sanitized_names_without_arguments (test_security.SecurityTests.test_rejected_calls_record_sanitized_names_without_arguments) ... ok
+test_reasoning_bank_rules (test_weekly.WeeklyTests.test_reasoning_bank_rules) ... ok
+test_relaxation_and_stop (test_weekly.WeeklyTests.test_relaxation_and_stop) ... ok
+test_resume_and_duplicate_completion (test_weekly.WeeklyTests.test_resume_and_duplicate_completion) ... ok
+test_schedule_focus (test_weekly.WeeklyTests.test_schedule_focus) ... ok
+test_staging_and_rollover (test_weekly.WeeklyTests.test_staging_and_rollover) ... ok
+test_yoga_pain_partial (test_weekly.WeeklyTests.test_yoga_pain_partial) ... ok
+
+----------------------------------------------------------------------
+Ran 63 tests in 14.055s
+
+OK
