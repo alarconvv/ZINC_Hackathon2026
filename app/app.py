@@ -6,7 +6,7 @@ import coach
 from timers import countdown
 from ui_helpers import nice_date, nice_range, friendly_rows, inert_chunks, week_ics
 
-st.set_page_config(page_title='ZINC · Strength for the years ahead', page_icon='✳', layout='wide', initial_sidebar_state='collapsed')
+st.set_page_config(page_title='ZINC — Strength for the years ahead', page_icon='✳', layout='wide', initial_sidebar_state='collapsed')
 st.markdown('''<style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 :root{--ink:#12365b;--blue:#126bc5;--muted:#526b84}
@@ -82,7 +82,27 @@ def reset(profile=None):
     st.rerun()
 
 
+@st.dialog('About ZINC', width='large')
+def about_zinc():
+    st.subheader('Strength for the years ahead')
+    st.write('ZINC is a general wellness activity planner with strength and balance, yoga, reasoning practice and relaxation.')
+    st.subheader('How your plan adapts')
+    st.write('Strength changes stay within an approximately 10% weekly cap. Pain of 4 or higher ends the painful exercise. Your current plan never changes just because the coach suggests something: you must accept a next-week proposal. Accept is unavailable while an activity is unfinished.')
+    st.subheader('The evidence')
+    rows = [{'Activity': item['name'], 'Evidence': item['badge'], 'Source': item['source']} for item in engine.catalog()]
+    rows += [{'Activity': 'Yoga', 'Evidence': 'Moderate', 'Source': 'Yoga in older adults, IJBNPA 2019; yoga and frailty, Annals of Internal Medicine 2023'},
+             {'Activity': 'Reasoning practice', 'Evidence': 'Moderate', 'Source': 'ACTIVE 10-year results, J Am Geriatr Soc 2014 — trained reasoning abilities.'},
+             {'Activity': 'Relaxation', 'Evidence': 'Emerging', 'Source': 'Breathwork meta-analysis, Scientific Reports 2023 — self-reported stress.'}]
+    st.dataframe(rows, hide_index=True, width='stretch')
+    st.write('Evidence badges refer to the outcomes studied, not a health score or disease prediction. Exercise selection and power cues require professional content review. See the exercise source details for each movement.')
+    st.subheader('Limits')
+    st.write('This version uses fictional information only. The shortened PAR-Q+-style screen is not the full validated questionnaire or medical clearance. Activity durations are estimates; breathing minutes and feedback are self-reported. Optional timers record nothing. Exercise pictures are schematic placeholders: follow the written version, including supported alternatives. Session data may reset on refresh or reconnect; there are no accounts or durable storage.')
+    st.subheader('Not medical advice')
+    st.write('Follow clinician guidance where needed. Stop if you feel unwell. For chest pain, dizziness or faintness, use Stop and follow the urgent safety instructions.')
+
 def demo_controls():
+    if st.button('About ZINC', key='demo_about'):
+        about_zinc()
     st.caption('Fictional profiles only. Loading a profile resets this session and requires a new safety screen.')
     if st.button('Load Maria', width='stretch'):
         reset(engine.MARIA)
@@ -404,8 +424,9 @@ elif page == 'Train':
         st.subheader(f"{LABELS[section]} · {nice_date(session['date'])}")
         if session['finished']:
             summary = 'Activity completed.' if session['status'] == 'completed' else f"Activity ended: {session['status']}."
-            count = len(session['feedback']) if section in ('strength', 'yoga') else len(session['answers']) if section == 'brain' else session.get('completed_minutes', 0)
-            unit = {'strength': 'sets recorded', 'yoga': 'poses recorded', 'brain': 'puzzles answered', 'relaxation': 'minutes self-reported'}[section]
+            count = sum(log.get('activity_id') == session['id'] for log in s['logs']['sessions']) if section == 'strength' else len(session['feedback']) if section == 'yoga' else len(session['answers']) if section == 'brain' else session.get('completed_minutes', 0)
+            noun, verb = {'strength': ('set', 'recorded'), 'yoga': ('pose', 'recorded'), 'brain': ('puzzle', 'answered'), 'relaxation': ('minute', 'self-reported')}[section]
+            unit = f'{noun}{"s" if count != 1 else ""} {verb}'
             upcoming = next((a for a in plan['activities'] if not s['activity_sessions'].get(a['id'], {}).get('finished')), None)
             next_up = f'{LABELS[upcoming["section"]]} · {nice_date(upcoming["date"])}' if upcoming else 'All activities finished or ended'
             st.markdown(f'<section class="session-summary"><span class="kicker">Your activity</span><h2>{esc(summary)}</h2><strong>{count} {esc(unit)}</strong><p>Next up: {esc(next_up)}</p></section>', unsafe_allow_html=True)
@@ -430,7 +451,7 @@ elif page == 'Train':
                 effort = st.slider('Effort · 1 easy, 10 maximal', 1, 10, 6, key=keys[1])
                 pain = st.slider('Pain · 0 none, 10 severe', 0, 10, 0, key=keys[2])
                 st.form_submit_button('Done set', type='primary', on_click=submit_strength, args=(item['id'], keys))
-            if session['feedback']:
+            if any(log.get('activity_id') == session['id'] for log in s['logs']['sessions']):
                 countdown(60, 'Take a comfortable rest')
         elif section == 'yoga':
             pose = plan['yoga'][session['pose_index']]
@@ -598,5 +619,5 @@ elif page == 'Progress':
 
 st.divider()
 st.caption('General wellness, not medical advice')
-with st.popover('About ZINC'):
-    st.write('Fictional demo data only. Session history may reset on refresh or reconnect. Prototype content requires professional review before real use.')
+if st.button('About ZINC', key='footer_about'):
+    about_zinc()

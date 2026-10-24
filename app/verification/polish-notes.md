@@ -41,3 +41,15 @@ Phase 2: 76 Python tests passed. Browser gate PASS at 1280×900, 390×844 and 36
 - 3.4: download the week as an all day calendar. Full local suite passed (see task commit).
 
 - 3.5: text size and high contrast preferences. Full local suite passed (see task commit).
+
+- 3.6: about science dialog and final product documentation. Full local suite passed (see task commit).
+
+## Final verification
+- All 18 tasks completed in order, with one commit per task and a full passing Python suite after each task.
+- Final suite: 82 tests passed in Python 3.11 using the isolated environment at /private/tmp/zinc-planner-venv (the project's .venv was absent).
+- Final browser gate: PASS at 1280×900, 390×844 and 360×800. Covers all activity flows, optional planning, historical records, native arrow navigation, five visible tabs, Stop during scrolled training, timer start/pause/reset, breathing timer, calendar event count, large text/high contrast, untruncated header labels and the evidence dialog. No page errors or horizontal page overflow.
+- Final visual review fixed the large-text phone header and rounded embedded timers. Strength timer triggering and summary counts use actual activity-linked set logs; yoga continues to use pose feedback. A regression test covers this distinction.
+- engine.py, coach.py, security tests and engine tests are unchanged from the pre-polish checkpoint. The acceptance helper changes only the welcome button label; its safety and correctness assertions are intact.
+- Exception retained for task 3.3: model Markdown stays inert to preserve external-request protection. Only the filtered returned response is escaped for the typing effect.
+- Live Gemini was not retested in this polish pass; local provider configuration was absent. Existing live-integration evidence is retained separately and is not represented as a new result.
+- Scope remains the plan's fictional, session-only wellness application. Accounts, durable storage and clinical validation were explicitly out of scope; exercise illustrations remain the requested placeholders.

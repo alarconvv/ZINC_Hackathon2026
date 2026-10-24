@@ -5,6 +5,7 @@
 From the project folder:
 
 ```sh
+python3 -m venv .venv
 .venv/bin/python -m pip install -r app/requirements.txt
 .venv/bin/python -m streamlit run app/app.py
 ```
@@ -75,3 +76,15 @@ In Your week, expand **Add an optional activity** to choose an activity type and
 Prototype scheduling limits: at most one activity of each type per day; no adjacent strength days (including Sunday/Monday); at most three strength days, with supported mode retaining its prescribed frequency. Previous-week strength dates are also checked before editing a current week. These are conservative product policies, not validated clinical scheduling rules.
 
 Progress computes baseline completion separately from optional extras. The daily activity curve includes all completed activities by scheduled date. Overview offers the next activity, prioritizing unfinished work, today's activities, then upcoming work. This change does not add accounts, durable storage, notifications, shortened prescriptions or exercise videos.
+
+## Professional polish
+
+The interface now has a welcome screen, consistent activity and training panels, friendly dates, evidence/status chips, and a five-tab native keyboard-accessible dock. The header offers **Aa** text size and high contrast preferences; **About ZINC** explains the evidence, adaptation rules and limits. Demo controls are in a header popover (sidebar only with `?demo=1`).
+
+Your week can be downloaded as an all-day RFC 5545 calendar. Optional rest and breathing timers run only in the browser, record nothing, and never mark an activity complete. Breathing minutes remain self-reported. Exercise SVGs are schematic placeholders, not final instructional art.
+
+Coach history stays inert plain text to preserve the Markdown/external-request regression protection. Only the already-filtered response is escaped for the typing effect. Proposal acceptance and all engine/coach guardrails are unchanged.
+
+Task commits and verification notes are in `verification/polish-notes.md`; browser captures cover desktop and narrow phones. Presentation polish does not add accounts, durable storage or clinical validation. Live Gemini availability depends on local credentials and is not established by the offline regression suite.
+
+Final polish verification: 82 local automated tests passed, plus browser checks at 1280×900, 390×844 and 360×800. The gate also exercises optional timer controls, calendar download, large text/high contrast and the About dialog. Decision and security modules remain unchanged.

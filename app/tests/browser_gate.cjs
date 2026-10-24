@@ -75,6 +75,12 @@ async function main() {
       await waitHeading('Strength & balance');
       await button('Done set').click();
       await page.getByText(/Set 2 of 2/).waitFor();
+      const rest=page.frameLocator('iframe').first();
+      await rest.getByRole('button',{name:'Start',exact:true}).click();
+      await rest.getByText('0:59',{exact:true}).waitFor();
+      await rest.getByRole('button',{name:'Pause',exact:true}).click();
+      await rest.getByRole('button',{name:'Reset',exact:true}).click();
+      await rest.getByText('1:00',{exact:true}).waitFor();
       await capture('strength');
       await page.getByRole('button',{name:'Done set',exact:true}).scrollIntoViewIfNeeded();
       const stopBox=await page.getByRole('button',{name:'Stop — chest pain, dizziness or faintness',exact:true}).last().boundingBox();
@@ -111,9 +117,13 @@ async function main() {
         assert(phase.includes(word));
       }
       await page.emulateMedia({reducedMotion:'reduce'});
+      await page.getByText('Show breathing timer',{exact:true}).click();
+      await page.frameLocator('iframe').first().getByText('5:00',{exact:true}).waitFor();
       await capture('relaxation');
       await button('I completed my breathing practice').click();
       await page.getByText('Activity completed.',{exact:true}).waitFor();
+      await page.getByText('5 minutes self-reported',{exact:true}).waitFor();
+      await capture('activity-complete');
       await navigate('Your week');
       await button('Start activity').first().click();
       await button('Done pose').waitFor();
@@ -173,10 +183,29 @@ async function main() {
       await page.getByText('Reschedule or remove',{exact:true}).click();
       await button('Remove optional activity').click();
       await page.getByText('Optional extra',{exact:true}).waitFor({state:'hidden'});
+      const calendarPromise=page.waitForEvent('download');
+      await button('Add week to calendar').click();
+      const calendar=await calendarPromise;
+      const calendarPath=path.join(out,kind+'-week.ics');
+      await calendar.saveAs(calendarPath);
+      assert.equal((await fs.readFile(calendarPath,'utf8')).match(/BEGIN:VEVENT/g).length,8);
+      await button('Aa').click();
+      await page.getByRole('radio',{name:'Large',exact:true}).click();
+      await page.waitForFunction(()=>getComputedStyle(document.documentElement).fontSize==='18px');
+      await page.getByText('High contrast',{exact:true}).click();
+      await page.waitForFunction(()=>getComputedStyle(document.querySelector('[data-testid="stApp"]')).backgroundColor==='rgb(6, 55, 116)');
+      await page.getByRole('heading',{name:'Your week',exact:true}).click();
+      await capture('large-contrast');
+      for(const label of ['Aa','Demo']) assert(await button(label).locator('p').evaluate(el=>el.scrollWidth<=el.clientWidth),'Large text header label visible: '+label);
+      await button('About ZINC').click();
+      await page.getByRole('dialog',{name:'About ZINC',exact:true}).waitFor();
+      await page.getByRole('heading',{name:'The evidence',exact:true}).waitFor();
+      await page.screenshot({path:path.join(out,kind+'-about.png')});
+      await page.keyboard.press('Escape');
       const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth);
       assert.equal(overflow,false,kind+' page overflow');
       assert.deepEqual(errors,[]);
-      results.push({viewport,kind,pass:true,checks:['onboarding','all sections','keyboard navigation','set log','brain answer','yoga feedback','reduced motion','normal breathing keyframe phases','alert and option contrast','relaxation completion','progress','export JSON','week rollover','historical progress','optional activity add/remove','native arrow navigation','five visible tabs and Stop on every captured page','no page errors','no horizontal page overflow']});
+      results.push({viewport,kind,pass:true,checks:['onboarding','all sections','keyboard navigation','set log','brain answer','yoga feedback','reduced motion','normal breathing keyframe phases','alert and option contrast','relaxation completion','progress','export JSON','week rollover','historical progress','optional activity add/remove','optional timer start pause reset','calendar export','large text and high contrast','About evidence dialog','native arrow navigation','five visible tabs and Stop on every captured page','no page errors','no horizontal page overflow']});
       await context.close();
     }
   } finally {await browser.close();}
