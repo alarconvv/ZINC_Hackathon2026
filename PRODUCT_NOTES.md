@@ -30,3 +30,5 @@ Scaffold: Expo SDK 58 (expo ~58.0.19), React Native 0.88, TypeScript 6, Expo Rou
 - B2: build accessible aquatic design components and typography. Backend and unchanged Streamlit suites PASS.
 
 - B3: connect accounts consent and one question safety onboarding. Backend and unchanged Streamlit suites PASS.
+
+- B4: connect five tabs training coach proposals and progress board. Backend and unchanged Streamlit suites PASS.
