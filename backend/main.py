@@ -17,3 +17,5 @@ def health():
     return {'status': 'ok', 'service': 'ZINC Beta'}
 
 app.include_router(auth.router)
+from .routes import onboarding
+app.include_router(onboarding.router)
