@@ -17,3 +17,5 @@ Task 3.3 exception: raw Markdown chat rendering is skipped because it reverses t
 - 1.6: plain language and readable activity states. Full local suite passed (see task commit).
 
 Phase 1 browser gate: PASS desktop 1280×900 and phone 390×844. Corrected nested radio-circle markup and preserved the mobile sidebar affordance inside Streamlit’s toolbar; deployment actions remain hidden.
+
+- 2.1: overview cards and a clear next activity. Full local suite passed (see task commit).

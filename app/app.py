@@ -276,23 +276,28 @@ if page == 'Overview':
     st.title(f"Your complete week, {s['profile']['name']}.")
     st.write(f"{plan['tier']} · Week {plan['week']} · Beginning {nice_date(plan['start_date'])}")
     st.write('Strength for everyday life, room to stretch, a reasoning challenge, and a moment to relax.')
+    cards = []
+    icons = {'strength': 'exercise', 'yoga': 'self_improvement', 'brain': 'psychology', 'relaxation': 'air'}
     for section, label in LABELS.items():
         scheduled = [a for a in plan['activities'] if a['section'] == section]
         complete = sum(status(a) == 'completed' for a in scheduled)
-        st.write(f'**{label}** · {complete} of {len(scheduled)} completed')
+        percent = round(100 * complete / len(scheduled)) if scheduled else 0
+        cards.append(f'<section class="overview-card"><span class="material-symbols-rounded" aria-hidden="true">{icons[section]}</span><h2>{esc(label)}</h2><div class="mini-ring" style="--completion:{percent}%"><span>{complete}/{len(scheduled)}</span></div><p>{complete} of {len(scheduled)} done</p></section>')
+    st.markdown('<div class="overview-grid">' + ''.join(cards) + '</div>', unsafe_allow_html=True)
     today = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
     remaining = [a for a in plan['activities'] if not s['activity_sessions'].get(a['id'], {}).get('finished')]
     remaining.sort(key=lambda a: (0 if status(a) == 'partial' else 1 if a['date'] == today else 2 if a['date'] > today else 3, a['date']))
-    st.subheader('Your next activity')
-    if remaining:
-        next_activity = remaining[0]
-        st.write(f"{LABELS[next_activity['section']]} · {nice_date(next_activity['date'])} · {next_activity['minutes']} min estimated")
-        if st.button('Resume next activity' if status(next_activity) == 'partial' else 'Start next activity', type='primary'):
-            engine.start_activity(s, next_activity['id'])
-            rerun_to('Train')
-        st.caption('Choose Your week to move this activity to another day.')
-    else:
-        st.success('Every activity is finished or ended. Review your week with your coach.')
+    with st.container(key='next_activity'):
+        st.subheader('Your next activity')
+        if remaining:
+            next_activity = remaining[0]
+            st.write(f"{LABELS[next_activity['section']]} · {nice_date(next_activity['date'])} · {next_activity['minutes']} min estimated")
+            if st.button('Resume next activity' if status(next_activity) == 'partial' else 'Start next activity', type='primary'):
+                engine.start_activity(s, next_activity['id'])
+                rerun_to('Train')
+            st.caption('Choose Your week to move this activity to another day.')
+        else:
+            st.success('Every activity is finished or ended. Review your week with your coach.')
     actions = st.columns(2)
     with actions[0]:
         if st.button('Explore my week'):
@@ -300,20 +305,21 @@ if page == 'Overview':
     with actions[1]:
         if st.button('Ask my coach'):
             rerun_to('Coach')
-    st.subheader('Next-week changes')
-    if s['next_plan']:
-        for item in s['next_plan']['exercises']:
-            current = engine.prescription(plan, item['id'])
-            if item['id'] in s['next_plan']['adjusted_exercises']:
-                st.write(f"{item['name']}: {current['reps']} → {item['reps']} {item['unit']}")
-    else:
-        st.write('No changes yet. Your coach will suggest next week’s goal at check-in.')
-    if st.button('Start next week'):
-        try:
-            engine.start_next_week(s)
-            st.rerun()
-        except ValueError as exc:
-            st.error(str(exc))
+    with st.container(key='next_week'):
+        st.subheader('Next week')
+        if s['next_plan']:
+            for item in s['next_plan']['exercises']:
+                current = engine.prescription(plan, item['id'])
+                if item['id'] in s['next_plan']['adjusted_exercises']:
+                    st.write(f"{item['name']}: {current['reps']} → {item['reps']} {item['unit']}")
+        else:
+            st.write('No changes yet. Your coach will suggest next week’s goal at check-in.')
+        if st.button('Start next week'):
+            try:
+                engine.start_next_week(s)
+                st.rerun()
+            except ValueError as exc:
+                st.error(str(exc))
 
 elif page == 'Your week':
     st.title('Your week')
