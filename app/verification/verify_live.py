@@ -47,6 +47,7 @@ def main():
         from streamlit.testing.v1 import AppTest
         at = AppTest.from_file(str(Path(__file__).resolve().parents[1] / 'app.py'), default_timeout=30).run()
         state['messages'].append({'role': 'assistant', 'text': reply})
+        state['welcomed'] = True
         at.session_state['zinc'] = state
         at.session_state['page'] = 'Coach'
         at.run()

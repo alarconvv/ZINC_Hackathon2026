@@ -140,6 +140,19 @@ def log_set(state, exercise_id, reps, effort, pain):
     state['logs']['version'] += 1
     state['pending_change'] = None
     event(state, 'set_logged', exercise_id=exercise_id, pain=pain, effort=effort)
+    staged = state.get('next_plan')
+    if (pain >= 4 and staged and exercise_id in staged['adjusted_exercises']
+            and prescription(staged, exercise_id)['reps'] >= item['reps']):
+        # Cancel the unsafe decision; a replacement still needs explicit approval.
+        prescription(staged, exercise_id)['reps'] = item['reps']
+        staged['adjusted_exercises'].remove(exercise_id)
+        state['plan']['adjusted_exercises'].remove(exercise_id)
+        state.setdefault('pain_reviews', []).append(exercise_id)
+        for accepted in state['events']:
+            if (accepted['event'] == 'accepted' and accepted.get('week') == state['plan']['week']
+                    and accepted.get('exercise_id') == exercise_id):
+                accepted['revoked'] = True
+        event(state, 'change_revoked', week=state['plan']['week'], exercise_id=exercise_id)
     state['set_index'] += 1
     # Pain steps back immediately by ending this exercise; the next-week plan still needs approval.
     if state['set_index'] >= item['sets'] or pain >= 4:
@@ -243,6 +256,8 @@ def accept_pending_change(state):
     state['plan']['version'] += 1
     state['plan']['applied_ids'].append(proposal['id'])
     state['plan']['adjusted_exercises'].append(proposal['exercise_id'])
+    if proposal['exercise_id'] in state.get('pain_reviews', []):
+        state['pain_reviews'].remove(proposal['exercise_id'])
     event(state, 'accepted', proposal_id=proposal['id'], week=state['plan']['week'], exercise_id=proposal['exercise_id'], proposed=proposal['proposed'])
 
 
@@ -464,6 +479,8 @@ def answer_puzzle(state, answer):
 def start_next_week(state):
     if not eligible(state):
         raise ValueError('Training is blocked or stopped.')
+    if state.get('pain_reviews'):
+        raise ValueError('Later pain cancelled a next-week decision. Approve an easier goal with your coach before starting next week.')
     legacy_unfinished = any(r.get('week') == state['plan']['week'] and r.get('activity_id') is None for r in state['logs']['sessions']) and not state['session_done']
     if legacy_unfinished or any(not s['finished'] for s in state['activity_sessions'].values() if s['week'] == state['plan']['week']):
         raise ValueError('Finish or skip unfinished activities before moving to the next week.')

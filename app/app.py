@@ -265,6 +265,8 @@ with st.container(key='navigation'):
 plan = s['plan']
 if plan['fall_risk']:
     st.info('Supported mode: seated and chair-supported options, with no power cue.')
+if s.get('pain_reviews'):
+    st.warning('Later pain cancelled a next-week decision. Review it with your coach and approve an easier goal before starting next week.')
 
 
 def exercise_card(item):
@@ -290,6 +292,8 @@ def status(activity):
 
 
 def status_label(activity):
+    if status(activity) == 'partial' and s['activity_sessions'][activity['id']]['finished']:
+        return 'Ended early'
     return {'not started': 'Not started', 'partial': 'In progress', 'completed': 'Done', 'skipped': 'Skipped'}.get(status(activity), status(activity))
 
 
@@ -608,7 +612,7 @@ elif page == 'Progress':
         else:
             st.info('Strength and yoga feedback will appear after your first recorded set or pose.')
     with st.expander('Accepted next-week adjustments'):
-        accepted = [e for e in s['events'] if e['event'] == 'accepted' and e.get('week') == selected]
+        accepted = [e for e in s['events'] if e['event'] == 'accepted' and e.get('week') == selected and not e.get('revoked')]
         if accepted:
             st.dataframe([{'Exercise': engine.prescription(selected_plan, e['exercise_id'])['name'], 'Current count': engine.prescription(selected_plan, e['exercise_id'])['reps'], 'Next-week count': e['proposed'], 'Unit': engine.prescription(selected_plan, e['exercise_id'])['unit']} for e in accepted], hide_index=True)
         else:

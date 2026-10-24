@@ -88,3 +88,11 @@ Coach history stays inert plain text to preserve the Markdown/external-request r
 Task commits and verification notes are in `verification/polish-notes.md`; browser captures cover desktop and narrow phones. Presentation polish does not add accounts, durable storage or clinical validation. Live Gemini availability depends on local credentials and is not established by the offline regression suite.
 
 Final polish verification: 82 local automated tests passed, plus browser checks at 1280×900, 390×844 and 360×800. The gate also exercises optional timer controls, calendar download, large text/high contrast and the About dialog. Decision and security modules remain unchanged.
+
+## Audit fixes
+
+Later strength pain of 4 or higher now cancels a conflicting accepted next-week target. The current prescription, recorded work and unrelated accepted changes stay intact. Starting next week is blocked until an easier replacement is explicitly accepted. Revoked decisions stay in exported history but are excluded from the active adjustments table.
+
+Ended partial activities show **Ended early**; resumable activities show **In progress**. Calendar event IDs include the plan's start date, remain stable when rescheduling within that week, and differ between fresh weeks. The live verification setup now passes the welcome step. The root `.gitignore` protects local secrets, virtual environments and generated Python caches.
+
+Audit-fix verification: 88 local tests passed, including an offline run through the provider gate's actual Accept UI using a fake provider. Browser regressions also passed at 1280×900, 390×844 and 360×800. This does not claim a new live Gemini result. Previously imported calendar files use the old identifiers; remove old imported entries before reimporting the corrected export if your calendar creates duplicates.
