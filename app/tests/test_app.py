@@ -64,7 +64,7 @@ class AppTests(unittest.TestCase):
   at=self.screened(True)
   self.assertIsNone(at.session_state['zinc']['plan']);self.assertTrue(at.error)
  def test_stop_blocks_all(self):
-  at=self.screened();button(at,'■ Stop — chest pain, dizziness or faintness').click().run()
+  at=self.screened();button(at,'■ Stop').click().run()
   self.assertTrue(at.session_state['zinc']['stopped']);self.assertFalse(at.exception)
  def test_historical_reasoning_level_stays_in_selected_week(self):
   at=self.screened()

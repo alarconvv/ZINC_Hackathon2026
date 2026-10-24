@@ -76,3 +76,10 @@ input,textarea{caret-color:#126bc5}
 .variant-chips{display:flex;gap:10px;flex-wrap:wrap}.variant-chips span{background:#e1eefb;border:1px solid #c8dff1;border-radius:14px;padding:8px 12px;font-size:.85rem}
 [data-testid="stProgress"]{margin:12px 0}.exercise .prescription{font-size:2rem}
 
+
+
+.st-key-safety{position:sticky;top:0;z-index:980;padding:8px 0;background:#0c4d98}
+.st-key-safety button{color:#8c201d!important;background:#fff7f6!important;border:2px solid #b93c35!important}
+.st-key-safety:has([data-training="false"]){position:fixed;top:16px;right:24px;width:auto;border-radius:24px;padding:0;background:transparent}
+@media(max-width:600px){.st-key-safety:has([data-training="false"]){top:12px;right:16px}.brand-row{padding-right:80px}.demo-pill{margin-top:2px}}
+

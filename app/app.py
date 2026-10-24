@@ -95,9 +95,12 @@ with left:
     st.markdown('<div class="brand-row"><span class="wordmark">✳ ZINC</span><span class="demo-pill">Fictional demo</span></div>', unsafe_allow_html=True)
 with right:
     st.empty()
+training_active = (not s['stopped'] and s.get('requested_page', st.session_state.get('page')) == 'Train' and s.get('active_activity') and not engine.active_session(s)['finished'])
 with st.container(key='safety'):
+    st.markdown('<span class="stop-context" data-training="' + ('true' if training_active else 'false') + '"></span>', unsafe_allow_html=True)
     if s['plan'] is not None and not s['stopped']:
-        if st.button('■ Stop — chest pain, dizziness or faintness', type='secondary', width='stretch'):
+        stop_label = 'Stop — chest pain, dizziness or faintness' if training_active else '■ Stop'
+        if st.button(stop_label, type='secondary', width='stretch' if training_active else 'content', help='Chest pain, dizziness or faintness'):
             engine.stop(s)
             st.rerun()
 if s['stopped']:
