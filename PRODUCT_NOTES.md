@@ -11,3 +11,5 @@ Work proceeds in plan order. Phase C is blocked until the Phase A/B end-to-end g
 - A2: add hashed accounts bearer tokens and login throttling. Backend and unchanged Streamlit suites PASS.
 
 - A3: record explicit versioned health data consent. Backend and unchanged Streamlit suites PASS.
+
+- A4: mirror profile screening and engine generated weekly plans. Backend and unchanged Streamlit suites PASS.
