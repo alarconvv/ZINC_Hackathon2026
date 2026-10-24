@@ -124,3 +124,9 @@ def content(filename: str):
     if filename not in allowed:
         raise HTTPException(404)
     return FileResponse(Path(engine.__file__).parent / 'content/img' / filename, media_type='image/svg+xml')
+
+@router.post('/guide/dismiss')
+def dismiss_guide(request: Request, user=Depends(consent_required), db: Session = Depends(db_session)):
+    def apply(s):
+        s['tour_done'] = True
+    return mutate(request, db, user, apply)

@@ -76,7 +76,10 @@ function Shell() {
               onPress={() => router.push("/settings")}
             />
           )}
-          {planned && <StopButton onPress={() => void stop()} />}
+          {planned &&
+            (!data?.view?.active || data.view.active.finished || stopped) && (
+              <StopButton onPress={() => void stop()} />
+            )}
         </Row>
         {planned &&
           !stopped &&

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
 import {
   Screen,
@@ -14,11 +13,9 @@ import {
 } from "../../components";
 import { useSession } from "../../session";
 import { labels } from "../../types";
-const seen = new Set<string>();
 export default function Today() {
+  const phone = useWindowDimensions().width < 600;
   const { data, run, act, busy } = useSession();
-  const key = data?.user?.email || "";
-  const [guide, setGuide] = useState(!seen.has(key));
   const view = data?.view,
     plan = data?.state.plan;
   if (!plan || !view) return null;
@@ -29,7 +26,7 @@ export default function Today() {
       <Meta light>
         {plan.tier} · Week {plan.week} · Beginning {plan.start_date}
       </Meta>
-      {guide && (
+      {!data.state.tour_done && (
         <Card>
           <H>How ZINC works</H>
           <T>1. Week — your dated activities.</T>
@@ -41,22 +38,35 @@ export default function Today() {
             title="Got it"
             variant="secondary"
             onPress={() => {
-              seen.add(key);
-              setGuide(false);
+              void run(async () => {
+                await act("/guide/dismiss");
+              });
             }}
           />
         </Card>
       )}
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
         {view.sections.map((s) => (
-          <View key={s.id} style={{ flexGrow: 1, flexBasis: 210 }}>
-            <Card>
+          <View
+            key={s.id}
+            style={{ flexGrow: 1, flexBasis: phone ? "47%" : 210 }}
+          >
+            <Card compact={phone}>
               <Row>
                 <View style={{ flex: 1 }}>
-                  <H>{s.name}</H>
+                  <T
+                    accessibilityRole="header"
+                    style={{
+                      fontFamily: "DMSans_600SemiBold",
+                      fontSize: phone ? 16 : 22,
+                      lineHeight: phone ? 23 : 30,
+                    }}
+                  >
+                    {s.name}
+                  </T>
                 </View>
                 <Ring
-                  size={68}
+                  size={phone ? 44 : 68}
                   percent={s.total ? (100 * s.done) / s.total : 0}
                   label={`${s.done}/${s.total}`}
                 />

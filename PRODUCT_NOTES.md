@@ -70,3 +70,9 @@ Npm audit reports 5 high advisories in the Expo CLI/development dependency chain
 - D3 web export: PASS, Expo SDK 58 static export to mobile/dist. TypeScript and lint PASS. New product source formatted; unused template assets and the template reset command removed. The export does not contain a live provider key. Toolchain audit findings are recorded separately above and are not represented as a clean security audit.
 
 - D3: verify typed mobile source and production web export. Backend and unchanged Streamlit suites PASS.
+- D4 final browser gate: 4 PASS at 390×844 and 1280×900. Both disposable-account flows cover register, consent/privacy, seven safety answers, chosen days, optional scheduling, all four activities, offline coach, unfinished Accept disabled, explicit accepted proposal, home-test saving, rollover/reload, persisted guide dismissal, export, Stop/423, deletion/Welcome. Both demo flows sign in and verify populated progress. Screenshots: mobile/e2e/screenshots/. Live provider access was explicitly disabled. Stop is also available above open sheets. Native notification delivery, native simulators/hardware and live Gemini were not tested.
+
+- D4: verify saved product flows demo progress and modal safety access. Backend and unchanged Streamlit suites PASS.
+- D4 visual-review fixes: compact two-column phone Today summaries, adjacent weekday/completion values for the chart, and selected-tab/heading assertions before screenshots. Initial Coach/Progress and large-text/high-contrast keyboard-focus captures added. Four browser scenarios PASS again after the fix batch. Web review verdict is recorded below when returned; native verification is still not established.
+
+- D4: confirm the reviewed phone grid chart context and truthful captures. Backend and unchanged Streamlit suites PASS.

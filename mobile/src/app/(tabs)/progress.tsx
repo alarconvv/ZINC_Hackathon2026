@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { useFocusEffect, router } from "expo-router";
+import { View } from "react-native";
 import Svg, { Path, Line, Circle, Text as SvgText } from "react-native-svg";
 import {
   Screen,
@@ -127,6 +128,24 @@ export default function Progress() {
                 0
               </SvgText>
             </Svg>
+            <View style={{ flexDirection: "row" }}>
+              {b.days.map((day, i) => (
+                <View
+                  key={day}
+                  style={{ flex: 1, alignItems: "center" }}
+                  accessibilityLabel={`${new Date(day + "T12:00:00").toLocaleDateString("en", { weekday: "long" })}: ${b.daily[i]} activities completed`}
+                >
+                  <T style={{ fontSize: 13 }}>
+                    {new Date(day + "T12:00:00").toLocaleDateString("en", {
+                      weekday: "short",
+                    })}
+                  </T>
+                  <T style={{ fontFamily: "DMSans_600SemiBold" }}>
+                    {b.daily[i]}
+                  </T>
+                </View>
+              ))}
+            </View>
           </Card>
           <Card>
             <H>Your scoreboard</H>

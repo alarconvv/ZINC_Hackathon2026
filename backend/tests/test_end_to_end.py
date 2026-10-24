@@ -81,3 +81,12 @@ def test_red_flags_override_a_stale_version(client):
         response = client.post(path, headers={**h, 'If-Match': '0'}, json=body)
         assert response.status_code == (200 if suffix == 'symptom' else 423)
         assert client.get('/plan', headers=h).json()['state']['stopped']
+
+
+def test_first_run_guide_dismissal_survives_rollover(client):
+    h, original = planned(client)
+    result = post(client, h, '/guide/dismiss')
+    assert result.json()['state']['tour_done']
+    assert result.json()['state']['plan'] == original['plan']
+    post(client, h, '/week/next')
+    assert client.get('/plan', headers=h).json()['state']['tour_done']

@@ -1,4 +1,5 @@
 import React from "react";
+import { useSession } from "../session";
 import {
   ActivityIndicator,
   Modal,
@@ -109,15 +110,17 @@ export function Screen({ children }: React.PropsWithChildren) {
 export function Card({
   children,
   testID,
-}: React.PropsWithChildren<{ testID?: string }>) {
+  compact = false,
+}: React.PropsWithChildren<{ testID?: string; compact?: boolean }>) {
   return (
     <View
       testID={testID}
       style={{
         backgroundColor: c.surface,
         borderRadius: 24,
-        padding: 24,
-        gap: 14,
+        padding: compact ? 14 : 24,
+        gap: compact ? 8 : 14,
+        flexGrow: compact ? 1 : undefined,
       }}
     >
       {children}
@@ -399,6 +402,7 @@ export function Sheet({
   visible: boolean;
   onClose: () => void;
 }>) {
+  const { data, stop } = useSession();
   return (
     <Modal
       visible={visible}
@@ -415,6 +419,11 @@ export function Sheet({
           padding: 20,
         }}
       >
+        {data?.state.plan && (
+          <View style={{ maxWidth: 600, width: "100%", alignSelf: "center" }}>
+            <StopButton full onPress={() => void stop()} />
+          </View>
+        )}
         <ScrollView contentContainerStyle={{ paddingVertical: 20 }}>
           <View style={{ maxWidth: 600, width: "100%", alignSelf: "center" }}>
             <Card>

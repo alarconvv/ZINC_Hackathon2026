@@ -1,10 +1,9 @@
 import { router } from "expo-router";
-import Constants from "expo-constants";
+import legal from "../../content/legal.json";
 import { Screen, Title, Card, H, T, Button } from "./index";
 export default function LegalDocument({ kind }: { kind: "privacy" | "terms" }) {
   const text = String(
-    Constants.expoConfig?.extra?.[kind] ||
-      "Draft — pending legal review. Content unavailable.",
+    legal[kind] || "Draft — pending legal review. Content unavailable.",
   );
   return (
     <Screen>

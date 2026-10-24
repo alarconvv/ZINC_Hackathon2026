@@ -66,6 +66,7 @@ export type Proposal = {
   reason: string;
 };
 export type State = {
+  tour_done?: boolean;
   profile: Profile;
   plan: Plan | null;
   safety_result: string | null;
