@@ -96,3 +96,23 @@ Later strength pain of 4 or higher now cancels a conflicting accepted next-week 
 Ended partial activities show **Ended early**; resumable activities show **In progress**. Calendar event IDs include the plan's start date, remain stable when rescheduling within that week, and differ between fresh weeks. The live verification setup now passes the welcome step. The root `.gitignore` protects local secrets, virtual environments and generated Python caches.
 
 Audit-fix verification: 88 local tests passed, including an offline run through the provider gate's actual Accept UI using a fake provider. Browser regressions also passed at 1280×900, 390×844 and 360×800. This does not claim a new live Gemini result. Previously imported calendar files use the old identifiers; remove old imported entries before reimporting the corrected export if your calendar creates duplicates.
+
+## Deploy
+
+Preparation for Streamlit Community Cloud (human handoff; nothing was pushed or deployed):
+
+1. Use the repository and branch you want to publish. Set the main file to `app/app.py` and Python to **3.11**.
+2. Install the pinned dependencies from `app/requirements.txt`. The root `.streamlit/config.toml` supplies the theme.
+3. Paste server-side secrets using `.streamlit/secrets.toml.example`: `GEMINI_API_KEY` and `MODEL`. Fill them with your own provider configuration. Keep actual keys out of Git.
+4. If available, choose `zinc-coach.streamlit.app`. The demo entry link is `https://zinc-coach.streamlit.app/?demo=1`.
+5. Run the local live-provider verification before the human deployment, then repeat browser and provider checks on the deployed app.
+
+A fresh Python 3.11/macOS virtual environment installed requirements.txt successfully, passed pip check, and passed the full local test suite during R2. This verifies the local installation; cloud deployment and Linux hosting remain human checks.
+
+## Round 2
+
+The content-aligned header retains Stop on every planned page and a sticky training safety bar. Week uses compact agenda rows and a planning toolbar. Overview cards show the next scheduled day instead of repeating counts. Train uses quiet date/duration metadata and responsive illustration/detail columns. Completion keeps factual counts, warm copy, grouped actions and a collapsed symptom form only after the activity ends. Active-session symptom checks stay open.
+
+DM Sans and Manrope load through the Streamlit theme. A dismissible first-run guide explains Week, Train and Coach. Fictional confirmation, the demo marker and the shortened-screen caveat remain. The favicon uses a vector-built mark; adding app/static/logo.png overrides it.
+
+Final art is a human handoff in content/img/ART_BRIEF.md. Cards accept PNG, WebP or SVG and retain accessible icon fallbacks. No keys were added, no live Gemini request was made, and nothing was pushed or deployed. Exact live-test instructions and the expected PASS result are in verification/polish-notes.md.

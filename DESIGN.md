@@ -17,3 +17,14 @@ A calm aquatic canvas: rich ocean blue (#126bc5 → #063774), white rounded pane
 
 ## Scope
 This pass improves presentation, not clinical validation or public-service readiness. Accounts, durable storage, clinical clearance, notifications, and a native application remain outside the build plan.
+
+## Round 2 refinement
+The single content-aligned header groups brand, demo marker, Aa, Demo and compact Stop with 8px gaps. During active training the full Stop bar sits directly below it; Streamlit's outer layout wrapper owns sticky positioning so the control survives scrolling. Phone branding remains legible alongside 48px controls.
+
+Week is a dated agenda: compact day blocks, activity names, text status, fully worded evidence badges, minutes and optional Extra markers. Start/Resume/Review and rescheduling remain native controls. A toolbar collects calendar export, estimates and optional activities; agenda rows stack their full-width action on phones.
+
+Exercise and yoga cards use a 40/60 illustration/detail grid at desktop widths and a stacked image capped at 280px on phones. Raster art is preferred over SVG; absent art uses an accessible movement icon. The final-art brief is a human handoff.
+
+The completion screen has warm app-written copy, factual counts, left-aligned actions and a collapsed symptom form only for finished sessions. Coach has a static first-message greeting and a white floating composer. The footer uses a quiet tertiary About link.
+
+Typography belongs to Streamlit's theme: DM Sans body, Manrope headings, 24px base corners and #d6e7f5 rules. Browser checks assert the computed families, header containment, chip/action separation, native navigation and safety visibility.

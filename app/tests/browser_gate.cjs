@@ -71,6 +71,7 @@ async function main() {
       await waitHeading('Your complete week, Maria.');
       await page.getByRole('heading',{name:'How ZINC works',exact:true}).waitFor();
       await button('Got it').click();
+      await page.getByRole('heading',{name:'How ZINC works',exact:true}).waitFor({state:'hidden'});
       await settle();
       for(const section of ['Strength & balance','Yoga','Brain games','Relaxation'])assert(await page.getByText(section,{exact:false}).count()>0);
       await capture('overview');

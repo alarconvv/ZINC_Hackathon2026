@@ -326,7 +326,7 @@
       "week": 1,
       "optional": false,
       "minutes": 25,
-      "session_id": "dc33169f-08ae-48c9-90be-dbbf6051549c",
+      "session_id": "5b519c72-7e3f-4673-b605-5aea80bbac7d",
       "activity_id": "w1-strength-0",
       "status": "partial",
       "finished": true,
@@ -344,7 +344,7 @@
       "week": 1,
       "optional": false,
       "minutes": 5,
-      "session_id": "3df289b5-66ec-4200-9b7a-8bc9eb175690",
+      "session_id": "dc24a504-2ee0-4065-83f3-a3a90b8dbfd8",
       "activity_id": "w1-brain-1",
       "status": "partial",
       "finished": true,
@@ -370,7 +370,7 @@
       "week": 1,
       "optional": false,
       "minutes": 3,
-      "session_id": "355dda2d-15fa-4600-a44b-20d4f888471a",
+      "session_id": "5c55db5a-63a4-4908-a73d-8c442401b09c",
       "activity_id": "w1-relaxation-1",
       "status": "completed",
       "finished": true,
@@ -388,7 +388,7 @@
       "week": 1,
       "optional": false,
       "minutes": 5,
-      "session_id": "b137dc94-47a3-4cf9-9497-848a17134d6e",
+      "session_id": "c85ec825-1345-4fda-abea-823216992ab6",
       "activity_id": "w1-yoga-1",
       "status": "partial",
       "finished": true,
@@ -409,11 +409,11 @@
     "version": 7,
     "sessions": [
       {
-        "id": "326fe495-c7ac-4d81-ab91-1df3ddf635e0",
+        "id": "393940c4-c9bf-4db2-a4fa-7e8643cb5f48",
         "exercise_id": "sit_to_stand",
         "week": 1,
         "activity_id": "w1-strength-0",
-        "session_id": "dc33169f-08ae-48c9-90be-dbbf6051549c",
+        "session_id": "5b519c72-7e3f-4673-b605-5aea80bbac7d",
         "reps": 10,
         "effort": 6,
         "pain": 0,
@@ -424,41 +424,41 @@
   },
   "events": [
     {
-      "time": "2026-10-24T02:36:36.324632+00:00",
+      "time": "2026-10-24T02:41:56.305968+00:00",
       "event": "screening",
       "result": "cleared"
     },
     {
-      "time": "2026-10-24T02:36:36.440645+00:00",
+      "time": "2026-10-24T02:41:56.423494+00:00",
       "event": "plan_created"
     },
     {
-      "time": "2026-10-24T02:36:37.186437+00:00",
+      "time": "2026-10-24T02:41:57.287259+00:00",
       "event": "set_logged",
       "exercise_id": "sit_to_stand",
       "pain": 0,
       "effort": 6
     },
     {
-      "time": "2026-10-24T02:36:38.904672+00:00",
+      "time": "2026-10-24T02:41:59.004488+00:00",
       "event": "activity_finished",
       "activity_id": "w1-strength-0",
       "status": "partial"
     },
     {
-      "time": "2026-10-24T02:36:39.453897+00:00",
+      "time": "2026-10-24T02:41:59.554557+00:00",
       "event": "activity_finished",
       "activity_id": "w1-brain-1",
       "status": "partial"
     },
     {
-      "time": "2026-10-24T02:36:40.054946+00:00",
+      "time": "2026-10-24T02:42:00.171305+00:00",
       "event": "activity_finished",
       "activity_id": "w1-relaxation-1",
       "status": "completed"
     },
     {
-      "time": "2026-10-24T02:36:40.704954+00:00",
+      "time": "2026-10-24T02:42:00.839649+00:00",
       "event": "activity_finished",
       "activity_id": "w1-yoga-1",
       "status": "partial"

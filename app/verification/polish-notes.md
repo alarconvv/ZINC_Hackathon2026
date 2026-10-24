@@ -98,3 +98,16 @@ cd app && ../.venv/bin/python verification/verify_live.py
 Expected successful output is JSON containing status PASS, stage complete, tools get_plan/get_last_session/propose_change, and prescriptions active_before 10, active_after_accept 10, staged_next_week 11, active_after_rollover 11. Exit code is 0. Missing configuration is BLOCKED with exit code 2; a provider or acceptance failure is FAIL with exit code 1. A PASS is only established after the human runs it successfully.
 
 - 2.5: prepare human live coach verification handoff. Full local suite passed.
+
+### Deployment preparation
+Fresh environment: /var/folders/vb/l5wq1svs0w38299xkbrzsr6m0000gn/T/zinc-r2-clean-c3apukto/venv; Python 3.11/macOS. requirements.txt installation PASS; pip check PASS; full fresh-environment suite PASS. Installation log: /private/tmp/zinc-r2-clean-install.log; tests: /private/tmp/zinc-r2-clean-tests.log. No push, credentials or deployment. Port 8505 was occupied, so isolated browser verification uses port 8508.
+
+- 2.6: prepare clean installation and deployment handoff. Full local suite passed.
+
+### R2 final verification
+- All fourteen tasks completed in order, one polish2 task commit each; human tasks stop at the requested preparation.
+- Full Python suite passed after every task: 88 tests through Phase 1, increasing to 93 for Phase 2. Final repeat: 93 tests PASS. Fresh Python 3.11 installation, pip check and its 93-test suite also PASS.
+- Browser gate after both phases: PASS at 1280×900, 390×844 and 360×800. Final captures reviewed for header/card alignment, fonts, agenda spacing, responsive exercise cards, completion and coach. The guide dismissal now waits for its heading to disappear before the overview capture.
+- Browser checks retain native keyboard navigation, visible Stop, scrolled training Stop, all activity flows, optional scheduling, export, historical progress, timers, large type/high contrast, no page errors and no horizontal page overflow.
+- Engine, coach, security tests and engine tests are unchanged from audit checkpoint 0886bc7. Acceptance changes only the required checkbox display string; safety assertions remain intact.
+- No final art, provider credentials, live Gemini calls, push or deployment. Physical devices and cloud hosting were not tested. Human handoff commands are above.
