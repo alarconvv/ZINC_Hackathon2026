@@ -43,3 +43,8 @@ Above-cut-line browser gate PASS at 390×844 and 1280×900: UI register, consent
 - C1: test native reminder trigger mapping and time validation. Backend and unchanged Streamlit suites PASS.
 
 - C2: record home tests and scoreboard without changing prescriptions. Backend and unchanged Streamlit suites PASS.
+
+## Privacy wording clarification
+The plan's blanket “no sharing” wording would hide the existing optional Gemini processing. The draft instead states no sale, advertising, analytics or sharing with other users, and explicitly discloses the Gemini request and relevant engine context. No sharing-consent checkbox is added. Contact, processor terms, backups and legal review remain human launch requirements. Policy reference: Washington RCW 19.373.020, read 2026-10-24.
+
+- C3: add clearly marked draft legal pages and health data disclosures. Backend and unchanged Streamlit suites PASS.
