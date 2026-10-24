@@ -1,3 +1,11 @@
 .streamlit/secrets.toml
 __pycache__/
 .venv/
+backend/.venv/
+backend/*.db
+backend/*.db-*
+.env
+node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/e2e/test-results/
