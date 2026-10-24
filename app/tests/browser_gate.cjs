@@ -53,7 +53,7 @@ async function main() {
       assert((await page.getByRole('heading').first().evaluate(el=>getComputedStyle(el).fontFamily)).includes('Manrope'));
       await page.screenshot({path:path.join(out,kind+'-welcome.png'),fullPage:true});
       await button('Try the demo with Maria').click();
-      await page.getByText('I am using fictional information for this prototype.',{exact:true}).click();
+      await page.getByText("I'll use made-up information for this demo",{exact:true}).click();
       await button('Continue to safety').click();
       await waitHeading('Before we make a plan');
       await button('Continue to focus').click();

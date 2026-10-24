@@ -49,3 +49,16 @@ class FirstRunTests(unittest.TestCase):
         button(at, 'Start next week').click().run()
         self.assertFalse(any('How ZINC works' in m.value for m in at.markdown))
         self.assertFalse(at.exception)
+
+
+    def test_demo_sidebar_and_header_controls_do_not_conflict(self):
+        from streamlit.testing.v1 import AppTest
+        from test_app import ROOT
+        at = AppTest.from_file(str(ROOT / 'app.py'), default_timeout=30)
+        at.query_params['demo'] = '1'
+        at.run()
+        self.assertFalse(at.exception)
+        self.assertEqual(sum(b.label == 'Load Maria' for b in at.button), 2)
+        at.button(key='load_maria').click().run()
+        self.assertFalse(at.exception)
+        self.assertFalse(at.session_state['zinc'].get('fictional_confirmed', False))

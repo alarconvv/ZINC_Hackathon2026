@@ -99,18 +99,18 @@ def about_zinc():
     st.subheader('Not medical advice')
     st.write('Follow clinician guidance where needed. Stop if you feel unwell. For chest pain, dizziness or faintness, use Stop and follow the urgent safety instructions.')
 
-def demo_controls():
-    if st.button('About ZINC', key='demo_about'):
+def demo_controls(prefix=""):
+    if st.button('About ZINC', key=prefix + 'demo_about'):
         about_zinc()
     st.caption('Fictional profiles only. Loading a profile resets this session and requires a new safety screen.')
-    if st.button('Load Maria', width='stretch'):
+    if st.button('Load Maria', width='stretch', key=prefix + 'load_maria'):
         reset(engine.MARIA)
-    if st.button('Start fresh', width='stretch'):
+    if st.button('Start fresh', width='stretch', key=prefix + 'start_fresh'):
         reset({'name': '', 'age': 52, 'level': 'beginner', 'limits': [], 'mci': False, 'clinician_clearance': False, 'toggles': {'yoga': False, 'brain': False}})
 
 if st.query_params.get('demo') == '1':
     with st.sidebar:
-        demo_controls()
+        demo_controls('sidebar_')
 
 training_active = (not s['stopped'] and s.get('requested_page', st.session_state.get('page')) == 'Train' and s.get('active_activity') and not engine.active_session(s)['finished'])
 
@@ -128,9 +128,8 @@ with st.container(key='product_header'):
             with st.popover('Aa'):
                 st.segmented_control('Text size', ['Normal', 'Large'], default='Normal', key='text_size')
                 st.toggle('High contrast', key='high_contrast')
-            if st.query_params.get('demo') != '1':
-                with st.popover('Demo'):
-                    demo_controls()
+            with st.popover('Demo'):
+                demo_controls()
             if s['plan'] is not None and not s['stopped'] and not training_active:
                 safety_control()
     if s['plan'] is not None and not s['stopped'] and training_active:
@@ -188,7 +187,7 @@ if s['safety_result'] is None or s['plan'] is None:
                 limits = st.multiselect('Movement limitations', ['knees', 'back', 'balance'], default=s['profile']['limits'])
                 mci = st.checkbox('A clinician has identified mild cognitive impairment', s['profile'].get('mci', False))
                 clearance = st.checkbox('I have clinician sign-off for supported exercise (required for age 80+ or mild cognitive impairment)', s['profile'].get('clinician_clearance', False))
-                confirmed = st.checkbox('I am using fictional information for this prototype.', value=s.get('fictional_confirmed', False))
+                confirmed = st.checkbox("I'll use made-up information for this demo", value=s.get('fictional_confirmed', False))
                 if st.form_submit_button('Continue to safety', type='primary'):
                     s['profile'].update(name=name.strip(), age=int(age), level=level, limits=limits, mci=mci, clinician_clearance=clearance)
                     s['fictional_confirmed'] = confirmed

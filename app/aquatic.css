@@ -237,3 +237,5 @@ button{min-height:48px!important}
 .guide-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding-left:20px;margin:0}
 .guide-steps li{padding-left:4px;font-size:.85rem}.guide-steps strong,.guide-steps span{display:block}
 @media(max-width:600px){.guide-steps{grid-template-columns:1fr;gap:10px}.st-key-first_run_guide{padding:18px}}
+
+.demo-pill{background:transparent!important;color:#d5e9ff;border:1px solid #d5e9ff80}

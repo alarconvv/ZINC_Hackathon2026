@@ -15,7 +15,7 @@ class AcceptanceTests(unittest.TestCase):
     def onboard(self, create=True):
         at = AppTest.from_file(str(ROOT / 'app.py'), default_timeout=30).run()
         button(at, 'Try the demo with Maria').click().run()
-        checkbox(at, 'I am using fictional information for this prototype.').check()
+        checkbox(at, "I'll use made-up information for this demo").check()
         button(at, 'Continue to safety').click().run()
         for radio in at.radio:
             radio.set_value('No')
