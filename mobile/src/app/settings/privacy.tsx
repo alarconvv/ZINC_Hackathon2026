@@ -1,0 +1,3 @@
+import {router} from 'expo-router';
+import {Screen,Title,Card,T,Button} from '../../components';
+export default function Privacy(){return <Screen><Title>Privacy information</Title><Card><T>Draft — pending legal review.</T><T>ZINC stores your account, profile, screening, activity feedback and coach history. No sale, advertising or third-party analytics. Coach requests send relevant information to Gemini. You can export and delete your account in Settings.</T><T>A complete policy and contact details are required before public release.</T><Button title="Go back" variant="secondary" onPress={()=>router.back()}/></Card></Screen>;}
