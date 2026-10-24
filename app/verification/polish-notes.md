@@ -59,3 +59,5 @@ Phase 2: 76 Python tests passed. Browser gate PASS at 1280×900, 390×844 and 36
 Presentation-only follow-up. Audit corrections are checkpointed separately; engine.py, coach.py, security/engine tests and safety assertions remain unchanged during R2. Project .venv is absent; tests use /private/tmp/zinc-planner-venv (Python 3.11). Human tasks stop at preparation; no keys, final art, push or deployment.
 
 - 1.1: align header controls and training safety bar. Full local suite passed.
+
+- 1.2: replace repeated activity titles with quiet metadata. Full local suite passed.

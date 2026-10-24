@@ -429,7 +429,7 @@ elif page == 'Train':
     else:
         session = engine.active_session(s)
         section = session['section']
-        st.subheader(f"{LABELS[section]} · {nice_date(session['date'])}")
+        st.caption(f"{nice_date(session['date'])} · {session['minutes']} min estimated")
         if session['finished']:
             summary = 'Activity completed.' if session['status'] == 'completed' else f"Activity ended: {session['status']}."
             count = sum(log.get('activity_id') == session['id'] for log in s['logs']['sessions']) if section == 'strength' else len(session['feedback']) if section == 'yoga' else len(session['answers']) if section == 'brain' else session.get('completed_minutes', 0)
