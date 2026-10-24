@@ -9,3 +9,6 @@ node_modules/
 mobile/.expo/
 mobile/dist/
 mobile/e2e/test-results/
+.env.*
+!.env.example
+!**/.env.example

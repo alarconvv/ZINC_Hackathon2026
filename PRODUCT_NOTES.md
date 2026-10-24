@@ -164,3 +164,17 @@ Real exercise videos, server push, device health-platform integrations, human co
 Human preparation handoffs are recorded in H1–H4 below as they are completed. No hosting, store submission or live-provider check is performed by those preparation tasks.
 
 - D5: run guides, environment variables, demo instructions, verified results, scope and known limits documented. Mobile design tokens and components recorded in mobile/DESIGN.md and its validated JSON sidecar; root Streamlit design preserved.
+
+## H1 — Backend hosting preparation
+
+Prepared backend/Dockerfile, root render.yaml and a secret-safe .dockerignore. The image runs as a non-root user and imports the unchanged app core. It has no demo seed or live keys. Use a persistent managed PostgreSQL DATABASE_URL for hosting; an ephemeral container SQLite file is not durable hosting. Set the exact HTTPS web origin in CORS_ORIGINS. Render can generate JWT_SECRET when the human applies the blueprint. GEMINI_API_KEY and MODEL remain human-entered server secrets.
+
+Local container preparation, if Docker is available:
+
+```sh
+docker build -f backend/Dockerfile -t zinc-api .
+```
+
+Do not apply the Render blueprint or expose personal health data until the operator completes the known launch requirements. No backend service was deployed. The .env.example is documentation only and has empty secret placeholders; the application reads environment variables directly.
+
+H1 checks: Docker command shell syntax, required hosting variables and ignore rules PASS. Docker image build was not run: the local Docker daemon is unavailable. No daemon was started and no deployment was attempted.
