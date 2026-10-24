@@ -21,3 +21,8 @@ Work proceeds in plan order. Phase C is blocked until the Phase A/B end-to-end g
 - A7: serve progress personal exports and complete account deletion. Backend and unchanged Streamlit suites PASS.
 
 - A8: verify backend safety isolation persistence and all activity flows. Backend and unchanged Streamlit suites PASS.
+
+## Expo runtime
+Scaffold: Expo SDK 58 (expo ~58.0.19), React Native 0.88, TypeScript 6, Expo Router. Dependencies installed with expo install. SDK 58 transition: physical Expo Go clients must support SDK 58; otherwise use a development build. See https://docs.expo.dev/router/introduction/ .
+
+- B1: scaffold Expo Router SDK 58 and typed secure API transport. Backend and unchanged Streamlit suites PASS.
