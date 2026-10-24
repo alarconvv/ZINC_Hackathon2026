@@ -65,3 +65,5 @@ Presentation-only follow-up. Audit corrections are checkpointed separately; engi
 - 1.3: load DM Sans and Manrope through the theme. Full local suite passed.
 
 - 1.4: compact weekly agenda and planning toolbar. Full local suite passed.
+
+- 1.5: compact overview cards with the next scheduled day. Full local suite passed.

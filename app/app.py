@@ -362,7 +362,9 @@ if page == 'Overview':
         scheduled = [a for a in plan['activities'] if a['section'] == section]
         complete = sum(status(a) == 'completed' for a in scheduled)
         percent = round(100 * complete / len(scheduled)) if scheduled else 0
-        cards.append(f'<section class="overview-card"><span class="material-symbols-rounded" aria-hidden="true">{icons[section]}</span><h2>{esc(label)}</h2><div class="mini-ring" style="--completion:{percent}%"><span>{complete}/{len(scheduled)}</span></div><p>{complete} of {len(scheduled)} done</p></section>')
+        upcoming = next((a for a in scheduled if not s['activity_sessions'].get(a['id'], {}).get('finished')), None)
+        next_label = f'Next: {nice_date(upcoming["date"])}' if upcoming else 'All done ✓' if complete == len(scheduled) else 'No activities remaining'
+        cards.append(f'<section class="overview-card"><span class="material-symbols-rounded" aria-hidden="true">{icons[section]}</span><h2>{esc(label)}</h2><div class="mini-ring" style="--completion:{percent}%"><span>{complete}/{len(scheduled)}</span></div><p>{esc(next_label)}</p></section>')
     st.markdown('<div class="overview-grid">' + ''.join(cards) + '</div>', unsafe_allow_html=True)
     today = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
     remaining = [a for a in plan['activities'] if not s['activity_sessions'].get(a['id'], {}).get('finished')]
