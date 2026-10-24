@@ -215,10 +215,14 @@ if plan['fall_risk']:
 
 
 def exercise_card(item):
-    st.markdown(f'<div class="exercise"><span class="pill">{esc(item["badge"])} evidence</span><h3>{esc(item["name"])}</h3><p>{esc(item["version"])}</p><p class="prescription">{item["sets"]} × {item["reps"]} {esc(item["unit"])}</p><p>{esc(item["cue"])}</p></div>', unsafe_allow_html=True)
-    if item['power']:
-        st.write('Power cue · Lift fast, lower slow, within a comfortable range. Moderate evidence; prototype cue for age 40+.')
-    st.caption(f"Easier: {item['easier']} · Harder: {item['harder']} · Source: {item['source']}")
+    power = '<p class="pill">Power: lift fast, lower slow</p>' if item['power'] else ''
+    st.markdown(f'<div class="exercise"><span class="evidence {esc(item["badge"].lower())}">{esc(item["badge"])} evidence</span><h3>{esc(item["name"])}</h3><p>{esc(item["version"])}</p><p class="prescription">{item["sets"]} × {item["reps"]} {esc(item["unit"])}</p><p>{esc(item["cue"])}</p>{power}<div class="variant-chips"><span>Easier: {esc(item["easier"])}</span><span>Harder: {esc(item["harder"])}</span></div></div>', unsafe_allow_html=True)
+    with st.popover('Why this exercise?'):
+        st.write(item['source'])
+        if item['power']:
+            st.write('Power cue: lift fast, lower slow within a comfortable range. Moderate evidence; prototype cue for age 40+. Alternatives are examples only; your current prescription stays unchanged.')
+        else:
+            st.write('Alternatives are examples only; your current prescription stays unchanged.')
 
 
 def status(activity):

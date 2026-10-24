@@ -71,3 +71,8 @@ input,textarea{caret-color:#126bc5}
 .status-chip,.evidence{display:inline-block;padding:4px 10px;border-radius:18px;font-size:.75rem;font-weight:700}
 .status-chip{background:#e1eefb;color:#12365b}.evidence.strong{background:#126bc5;color:white}.evidence.moderate{border:1px solid #126bc5;color:#0758aa}.evidence.emerging{border:1px solid #667788;color:#455c70}
 
+
+
+.variant-chips{display:flex;gap:10px;flex-wrap:wrap}.variant-chips span{background:#e1eefb;border:1px solid #c8dff1;border-radius:14px;padding:8px 12px;font-size:.85rem}
+[data-testid="stProgress"]{margin:12px 0}.exercise .prescription{font-size:2rem}
+
