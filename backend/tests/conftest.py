@@ -20,3 +20,10 @@ def register(client, email='maria@example.com'):
     response = client.post('/auth/register', json={'email': email, 'password': 'a-long-test-password', 'name': 'Maria'})
     assert response.status_code == 201, response.text
     return {'Authorization': 'Bearer ' + response.json()['access_token']}
+
+@pytest.fixture(autouse=True)
+def no_live_coach(monkeypatch):
+    from backend.zinc_core import coach
+    def offline(*args, **kwargs):
+        raise RuntimeError('Network calls are disabled in tests')
+    monkeypatch.setattr(coach, 'run_model', offline)
