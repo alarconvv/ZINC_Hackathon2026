@@ -76,3 +76,91 @@ Npm audit reports 5 high advisories in the Expo CLI/development dependency chain
 - D4 visual-review fixes: compact two-column phone Today summaries, adjacent weekday/completion values for the chart, and selected-tab/heading assertions before screenshots. Initial Coach/Progress and large-text/high-contrast keyboard-focus captures added. Four browser scenarios PASS again after the fix batch. Web review verdict is recorded below when returned; native verification is still not established.
 
 - D4: confirm the reviewed phone grid chart context and truthful captures. Backend and unchanged Streamlit suites PASS.
+- Fresh Impeccable web verdict pass: all three original findings RESOLVED (Today grid/next action, chart day/count context, truthful Week captures). Initial Coach/Progress and large-text/high-contrast focus evidence inspected. This closes those screenshot/source findings at 390 and 1280 widths only; it is not a native, clinical, legal or comprehensive accessibility certification.
+
+## Run locally
+
+Run backend commands from the repository root. Python 3.11 and a Node release supported by Expo SDK 58 are required (verified here with Python 3.11.9 and Node 24.5.0).
+
+### API
+
+```sh
+python3.11 -m venv backend/.venv
+backend/.venv/bin/python -m pip install -r backend/requirements.txt
+export JWT_SECRET="$(python3.11 -c 'import secrets; print(secrets.token_urlsafe(48))')"
+export DATABASE_URL='sqlite:///backend/zinc.db'
+export CORS_ORIGINS='http://localhost:8081,http://127.0.0.1:8081'
+backend/.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --no-access-log
+```
+
+Use a stable private JWT_SECRET in the server environment for saved logins across restarts. The example generates an ephemeral local secret; changing it invalidates tokens, while the account data remains in the database. SQLite is persisted at backend/zinc.db and ignored by Git.
+
+To seed the fictional account, use the same DATABASE_URL, set DEMO_PASSWORD to the value in the Fictional demo login section above, and run in another terminal from the repository root:
+
+```sh
+backend/.venv/bin/python -m backend.seed_demo
+```
+
+The seeder requires DEMO_PASSWORD in the environment and preserves any existing demo account. It does not print the password. The demo is not auto-created when the API starts.
+
+### App and web
+
+In a separate terminal:
+
+```sh
+cd mobile
+npm ci
+EXPO_PUBLIC_API_URL=http://127.0.0.1:8000 npx expo start --web
+```
+
+For a static build:
+
+```sh
+cd mobile
+EXPO_PUBLIC_API_URL=http://127.0.0.1:8000 npm run build:web
+cd ..
+python3 mobile/scripts/serve_web.py
+```
+
+Open http://127.0.0.1:8081 . The API must be running. Stop any other process on 8081 before starting Metro or the local static server. Only one is needed.
+
+### Environment variables
+
+- DATABASE_URL: server database; SQLite locally, PostgreSQL with psycopg supported by URL normalization. Live PostgreSQL was not exercised.
+- JWT_SECRET: server-only signing secret, at least 32 characters, stable/private in hosting.
+- GEMINI_API_KEY and MODEL: server-only optional Gemini configuration. Leave empty for the offline acceptance gate. No keys were added during this build.
+- CORS_ORIGINS: comma-separated exact browser origins; update to the actual HTTPS web host before release.
+- EXPO_PUBLIC_API_URL: public API base URL compiled into Expo. It contains no credentials.
+- DEMO_PASSWORD: seeder/live-check input only; use the fictional demo value above for local judge use. No password is embedded in the mobile app.
+
+### Checks
+
+```sh
+cd backend
+.venv/bin/python -m pytest -q
+cd ../mobile
+npm run typecheck
+npm run lint
+npm test
+npm run build:web
+npx playwright install chromium
+npm run test:e2e
+```
+
+Run the API with GEMINI_API_KEY and MODEL unset/empty for the browser test, since it verifies the offline fallback. Seed the fictional demo first. Install the matching Chromium version via Playwright. The implementation used isolated Python environments under /private/tmp; these are not repository dependencies.
+
+The Streamlit fallback is unchanged. With its own root .venv installed from app/requirements.txt, run `cd app && ../.venv/bin/python -m unittest discover -s tests -v` or `../.venv/bin/python -m streamlit run app.py --server.port 8507`.
+
+## Delivered and limits
+
+All Phase A, B and C features in the plan were implemented. Nothing above the cut line was cut. The above-cut-line gate passed before C1 began. Phase D: 93 unchanged Streamlit tests, 20 backend tests, three mobile logic/content tests, TypeScript/lint, static web export and four phone/desktop browser scenarios pass. The fresh web review resolved its three original findings; it does not certify the whole product.
+
+This is a Beta with content pending professional review. No clinical or legal review is complete. Draft contacts, provider arrangements, retention/backup practices, operational controls and legal rights handling must be completed by the operator before public release. SQLite is not encrypted by this code. There is no email verification, password recovery, refresh-token flow, multi-worker login throttle, migration framework or backup/recovery workflow. Do not interpret the completion gauge as a health measure. Home tests only record user-reported results and never change prescriptions.
+
+No usable iOS simulator was available (`simctl` absent), and adb was absent. Actual native UI/keyboard, large OS text, gestures, notification permission/delivery, signed builds and store review remain unverified. Expo SDK 58 needs a compatible Expo Go client; a development build may be needed during SDK transitions. Reminders are local only and resync with changed days when the app opens; no server push exists. The fixed engine scheduling timezone is unchanged. Live Gemini, hosted PostgreSQL, public hosting and deployment were not tested. Five high Expo toolchain dependency advisories remain documented above.
+
+Real exercise videos, server push, device health-platform integrations, human coaches, a clinician portal, payments, the full PAR-Q+, Spanish and store submission remain outside the supplied plan. The referenced ZINC_Product_Description.md was not present under that exact filename; existing app copy and evidence sources were used without adding new health-outcome claims.
+
+Human preparation handoffs are recorded in H1–H4 below as they are completed. No hosting, store submission or live-provider check is performed by those preparation tasks.
+
+- D5: run guides, environment variables, demo instructions, verified results, scope and known limits documented. Mobile design tokens and components recorded in mobile/DESIGN.md and its validated JSON sidecar; root Streamlit design preserved.

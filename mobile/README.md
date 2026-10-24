@@ -1,56 +1,42 @@
-# Welcome to your Expo app 👋
+# ZINC mobile and web
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Expo SDK 58 / React Native 0.88 / TypeScript / Expo Router. The aquatic interface extends the existing ZINC design; see [DESIGN.md](DESIGN.md) and [PRODUCT_NOTES.md](../PRODUCT_NOTES.md).
 
-## Get started
+Start the API first, then in a separate terminal:
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```sh
+cd mobile
+npm ci
+EXPO_PUBLIC_API_URL=http://127.0.0.1:8000 npx expo start --web
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+The API URL is public configuration, compiled into the app. Never put provider keys or JWT secrets in `EXPO_PUBLIC_*` variables. For a physical phone, the API URL must be your computer's reachable LAN address or an HTTPS host, not the phone's localhost. See the phone handoff in PRODUCT_NOTES.md.
 
-### Other setup steps
+```sh
+npm run typecheck
+npm run lint
+npm test
+EXPO_PUBLIC_API_URL=http://127.0.0.1:8000 npm run build:web
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+`content/privacy.md` and `content/terms.md` are the draft sources. `npm run prepare:content` regenerates the bundled `content/legal.json`; the consistency test rejects drift. The build:web command performs this automatically. The direct `npx expo export --platform web` command also builds the checked-in bundle.
 
-## Learn more
+To serve the export locally from the repository root:
 
-To learn more about developing your project with Expo, look at the following resources:
+```sh
+python3 mobile/scripts/serve_web.py
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Open http://127.0.0.1:8081 . Stop any Metro/static process already using port 8081 first. The local static helper supports extensionless Expo routes; it is not a public production server.
 
-## Join the community
+With the API running, the fictional demo seeded and Gemini credentials unset for the offline test fixture:
 
-Join our community of developers creating universal apps.
+```sh
+cd mobile
+npx playwright install chromium
+npm run test:e2e
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The smoke matrix uses disposable fictional accounts, exports their JSON, stops and deletes them, and signs in to the fictional demo for populated progress. Screenshots are in `e2e/screenshots/`. No live Gemini requests are part of this gate.
+
+Native notifications are local-only, requested in context and hidden on web. Actual iOS/Android UI, keyboard behavior and notification delivery still require device checks. Beta — content pending professional review; legal pages remain drafts. Expo CLI dependency advisories are documented in PRODUCT_NOTES.md and need review before public builds.

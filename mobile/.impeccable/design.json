@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-24T04:32:07.129365+00:00",
+  "title": "Design System: ZINC mobile",
+  "extensions": {
+    "breakpoints": [
+      {
+        "name": "today-compact",
+        "value": "600px"
+      },
+      {
+        "name": "training-columns",
+        "value": "900px"
+      }
+    ],
+    "motion": [
+      {
+        "name": "coach-reveal",
+        "value": "5 characters / 20ms",
+        "purpose": "Latest assistant reply only; reduced motion renders full text."
+      },
+      {
+        "name": "sheet-animation",
+        "value": "none",
+        "purpose": "Modal animationType in shared Sheet."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Shared Button variant; HTML is a visual translation of the native primitive.",
+      "html": "<button class=\"ds-button-primary\">Continue</button>",
+      "css": ".ds-button-primary { min-height:48px;border:3px solid transparent;border-radius:24px;padding:12px 20px;background:#126bc5;color:#ffffff;font-family:\"DM Sans\",sans-serif;font-size:16px;font-weight:600;line-height:25px; } .ds-button-primary:focus-visible { border-color:#12365b; } .ds-button-primary:active { opacity:0.78; } .ds-button-primary:disabled { background:#d6e7f5;color:#526b84; }"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Shared Button variant; HTML is a visual translation of the native primitive.",
+      "html": "<button class=\"ds-button-secondary\">Continue</button>",
+      "css": ".ds-button-secondary { min-height:48px;border:3px solid transparent;border-radius:24px;padding:12px 20px;background:#e8f3ff;color:#12365b;font-family:\"DM Sans\",sans-serif;font-size:16px;font-weight:600;line-height:25px; } .ds-button-secondary:focus-visible { border-color:#12365b; } .ds-button-secondary:active { opacity:0.78; } .ds-button-secondary:disabled { background:#d6e7f5;color:#526b84; }"
+    },
+    {
+      "name": "Danger button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Shared Button variant; HTML is a visual translation of the native primitive.",
+      "html": "<button class=\"ds-button-danger\">Stop</button>",
+      "css": ".ds-button-danger { min-height:48px;border:3px solid #a51d25;border-radius:24px;padding:12px 20px;background:#fff7f7;color:#a51d25;font-family:\"DM Sans\",sans-serif;font-size:16px;font-weight:600;line-height:25px; } .ds-button-danger:focus-visible { border-color:#12365b; } .ds-button-danger:active { opacity:0.78; } .ds-button-danger:disabled { background:#d6e7f5;color:#526b84; }"
+    },
+    {
+      "name": "Labeled field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Native Input visual translation; browser-default focus remains browser-owned.",
+      "html": "<label class=\"ds-field\">Ask your coach<input aria-label=\"Ask your coach\"></label>",
+      "css": ".ds-field { display:grid;gap:6px;color:#12365b;font-family:\"DM Sans\",sans-serif;font-size:16px;font-weight:600; } .ds-field input { min-height:52px;border:1px solid #526b84;border-radius:16px;padding:14px;background:white;color:#12365b;font-family:\"DM Sans\",sans-serif;font-size:16px;font-weight:400; }"
+    },
+    {
+      "name": "Evidence badge",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Text always spells out the evidence level.",
+      "html": "<span class=\"ds-chip\">Strong evidence</span>",
+      "css": ".ds-chip { display:inline-block;background:#e8f3ff;color:#12365b;border-radius:16px;padding:4px 12px;font-family:\"DM Sans\",sans-serif;font-size:13px;font-weight:600;line-height:25px; }"
+    },
+    {
+      "name": "Pale card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Shared Card with default padding and gap; no shadow.",
+      "html": "<section class=\"ds-card\"><strong>Your next activity</strong><span>Strength \u00b7 20 min estimated</span></section>",
+      "css": ".ds-card { display:flex;flex-direction:column;gap:14px;border-radius:24px;background:#f4faff;padding:24px;color:#12365b;font-family:\"DM Sans\",sans-serif;font-size:16px;line-height:25px; } .ds-card strong { font-family:Manrope,sans-serif;font-size:22px;line-height:30px;font-weight:700; }"
+    },
+    {
+      "name": "Bottom tab labels",
+      "kind": "nav",
+      "description": "Static label/color reference; Expo Router owns actual navigation and focus behavior. Icons omitted from this label reference.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main\"><span aria-current=\"page\">Today</span><span>Week</span><span>Train</span><span>Coach</span><span>Progress</span></nav>",
+      "css": ".ds-nav { display:flex;justify-content:space-around;align-items:center;gap:10px;min-height:78px;padding:10px 0 16px;border-top:1px solid #d6e7f5;background:#f4faff;color:#12365b;font-family:\"DM Sans\",sans-serif;font-size:12px;font-weight:600; } .ds-nav [aria-current] { color:#126bc5; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A calm aquatic canvas",
+    "overview": "ZINC mobile extends the incumbent ocean-blue visual world into an Expo application for iOS, Android and web. Rich blue frames pale, rounded panels; clear type and factual counts make a dated week easy to follow. This document captures implemented source rather than a new visual direction. The root [DESIGN.md](../DESIGN.md) continues to describe the Streamlit fallback.",
+    "keyCharacteristics": [
+      "Ocean-blue framing with pale content surfaces.",
+      "Rounded controls and readable, explicit labels.",
+      "Completion and evidence presented with their meaning in words.",
+      "Persistent Stop access and explicit acceptance of proposed changes."
+    ],
+    "rules": [
+      {
+        "name": "The Meaning in Words Rule",
+        "body": "Status and evidence stay readable as text; color alone never supplies their meaning.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do extend the incumbent ocean-blue canvas and pale rounded panels.",
+      "Do keep weekday/count text adjacent to the curve and completion denominators visible.",
+      "Do keep Stop accessible in the root header, active-session bar and shared sheets.",
+      "Do use plain-text coach replies and explicit proposal acceptance."
+    ],
+    "donts": [
+      "Don't describe a completion ring as a health score.",
+      "Don't flatten Strong, Moderate and Emerging evidence into one badge level.",
+      "Don't infer that a timer completes or records an activity automatically."
+    ]
+  }
+}
