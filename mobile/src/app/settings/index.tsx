@@ -1,13 +1,178 @@
-import {useState} from 'react';
-import Reminders from '../../components/Reminders';
-import {Platform} from 'react-native';
-import {router} from 'expo-router';
-import {File,Paths} from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
-import {Screen,Title,Card,H,T,Meta,Button,Check,Row,Sheet} from '../../components';
-import {useSession} from '../../session';
-import {usePreferences} from '../../theme';
-export default function Settings(){const {data,act,run,signOut,busy}=useSession(),prefs=usePreferences();const [confirm,setConfirm]=useState(false),[agree,setAgree]=useState(false);
- async function download(){const result=await act('/account/export',undefined,'GET'),content=JSON.stringify(result,null,2);if(Platform.OS==='web'){const url=URL.createObjectURL(new Blob([content],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='zinc-data.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}else{if(!await Sharing.isAvailableAsync())throw new Error('File sharing is unavailable on this device. Use the web app to download your data.');const file=new File(Paths.cache,'zinc-data.json');try{file.write(content);await Sharing.shareAsync(file.uri,{mimeType:'application/json',dialogTitle:'Your ZINC data'});}finally{if(file.exists)file.delete();}}}
- return <Screen><Title>Settings</Title><Card><H>Your account</H><T>{data?.state.profile.name}</T><T>{data?.user?.email}</T><Button title="Sign out" variant="secondary" onPress={()=>void run(async()=>{await signOut();router.replace('/');})}/><Button title="Download my data" variant="secondary" busy={busy} onPress={()=>void run(download)}/><Button title="Delete my account" variant="danger" onPress={()=>setConfirm(true)}/></Card><Card><H>Make yourself comfortable</H><Check label="Larger text" value={prefs.large} onChange={prefs.setLarge}/><Check label="High contrast" value={prefs.contrast} onChange={prefs.setContrast}/><Meta>ZINC also follows your device’s text size and reduced-motion preferences.</Meta></Card><Reminders/><Card><H>About ZINC</H><T>General strength, balance, yoga, reasoning and relaxation in a week you can shape. All prescriptions and adjustments come from the server’s rules engine.</T><T>A next-week change is only staged after you choose Accept. You can always decline.</T><Meta>Strength: ICFSR sarcopenia guidance and ACSM resistance training position stand. Yoga: IJBNPA 2019 and Annals of Internal Medicine 2023. Evidence does not replace personal clinician guidance.</Meta><Meta>Beta — content pending professional review. No clinical or legal review has been completed.</Meta><Row><Button title="Privacy policy" variant="secondary" onPress={()=>router.push('/settings/privacy')}/><Button title="Terms" variant="secondary" onPress={()=>router.push('/settings/terms')}/></Row></Card><Button title="Back to my week" variant="secondary" onPress={()=>router.replace(data?.state.stopped?'/stopped':data?.state.plan?'/today':'/')}/><Sheet title="Delete your account permanently?" visible={confirm} onClose={()=>setConfirm(false)}><T>This permanently removes your account, saved plan, logs, coach history, consent and audit records. Download your data first if you want a copy.</T><Check label="Delete my account permanently" value={agree} onChange={setAgree}/><Button title="Confirm account deletion" variant="danger" disabled={!agree} onPress={()=>void run(async()=>{await act('/account',undefined,'DELETE');await signOut();router.replace('/');})}/></Sheet></Screen>;
+import { useState } from "react";
+import Reminders from "../../components/Reminders";
+import { Platform } from "react-native";
+import { router } from "expo-router";
+import { File, Paths } from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import {
+  Screen,
+  Title,
+  Card,
+  H,
+  T,
+  Meta,
+  Button,
+  Check,
+  Row,
+  Sheet,
+} from "../../components";
+import { useSession } from "../../session";
+import { usePreferences } from "../../theme";
+export default function Settings() {
+  const { data, act, run, signOut, busy } = useSession(),
+    prefs = usePreferences();
+  const [confirm, setConfirm] = useState(false),
+    [agree, setAgree] = useState(false);
+  async function download() {
+    const result = await act("/account/export", undefined, "GET"),
+      content = JSON.stringify(result, null, 2);
+    if (Platform.OS === "web") {
+      const url = URL.createObjectURL(
+          new Blob([content], { type: "application/json" }),
+        ),
+        a = document.createElement("a");
+      a.href = url;
+      a.download = "zinc-data.json";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } else {
+      if (!(await Sharing.isAvailableAsync()))
+        throw new Error(
+          "File sharing is unavailable on this device. Use the web app to download your data.",
+        );
+      const file = new File(Paths.cache, "zinc-data.json");
+      try {
+        file.write(content);
+        await Sharing.shareAsync(file.uri, {
+          mimeType: "application/json",
+          dialogTitle: "Your ZINC data",
+        });
+      } finally {
+        if (file.exists) file.delete();
+      }
+    }
+  }
+  return (
+    <Screen>
+      <Title>Settings</Title>
+      <Card>
+        <H>Your account</H>
+        <T>{data?.state.profile.name}</T>
+        <T>{data?.user?.email}</T>
+        <Button
+          title="Sign out"
+          variant="secondary"
+          onPress={() =>
+            void run(async () => {
+              await signOut();
+              router.replace("/");
+            })
+          }
+        />
+        <Button
+          title="Download my data"
+          variant="secondary"
+          busy={busy}
+          onPress={() => void run(download)}
+        />
+        <Button
+          title="Delete my account"
+          variant="danger"
+          onPress={() => setConfirm(true)}
+        />
+      </Card>
+      <Card>
+        <H>Make yourself comfortable</H>
+        <Check
+          label="Larger text"
+          value={prefs.large}
+          onChange={prefs.setLarge}
+        />
+        <Check
+          label="High contrast"
+          value={prefs.contrast}
+          onChange={prefs.setContrast}
+        />
+        <Meta>
+          ZINC also follows your device’s text size and reduced-motion
+          preferences.
+        </Meta>
+      </Card>
+      <Reminders />
+      <Card>
+        <H>About ZINC</H>
+        <T>
+          General strength, balance, yoga, reasoning and relaxation in a week
+          you can shape. All prescriptions and adjustments come from the
+          server’s rules engine.
+        </T>
+        <T>
+          A next-week change is only staged after you choose Accept. You can
+          always decline.
+        </T>
+        <Meta>
+          Strength: ICFSR sarcopenia guidance and ACSM resistance training
+          position stand. Yoga: IJBNPA 2019 and Annals of Internal Medicine
+          2023. Evidence does not replace personal clinician guidance.
+        </Meta>
+        <Meta>
+          Beta — content pending professional review. No clinical or legal
+          review has been completed.
+        </Meta>
+        <Row>
+          <Button
+            title="Privacy policy"
+            variant="secondary"
+            onPress={() => router.push("/settings/privacy")}
+          />
+          <Button
+            title="Terms"
+            variant="secondary"
+            onPress={() => router.push("/settings/terms")}
+          />
+        </Row>
+      </Card>
+      <Button
+        title="Back to my week"
+        variant="secondary"
+        onPress={() =>
+          router.replace(
+            data?.state.stopped
+              ? "/stopped"
+              : data?.state.plan
+                ? "/today"
+                : "/",
+          )
+        }
+      />
+      <Sheet
+        title="Delete your account permanently?"
+        visible={confirm}
+        onClose={() => setConfirm(false)}
+      >
+        <T>
+          This permanently removes your account, saved plan, logs, coach
+          history, consent and audit records. Download your data first if you
+          want a copy.
+        </T>
+        <Check
+          label="Delete my account permanently"
+          value={agree}
+          onChange={setAgree}
+        />
+        <Button
+          title="Confirm account deletion"
+          variant="danger"
+          disabled={!agree}
+          onPress={() =>
+            void run(async () => {
+              await act("/account", undefined, "DELETE");
+              await signOut();
+              router.replace("/");
+            })
+          }
+        />
+      </Sheet>
+    </Screen>
+  );
 }

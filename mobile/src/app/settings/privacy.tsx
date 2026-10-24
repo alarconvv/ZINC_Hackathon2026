@@ -1,2 +1,4 @@
-import LegalDocument from '../../components/LegalDocument';
-export default function Privacy(){return <LegalDocument kind="privacy"/>;}
+import LegalDocument from "../../components/LegalDocument";
+export default function Privacy() {
+  return <LegalDocument kind="privacy" />;
+}

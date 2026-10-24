@@ -1,8 +1,202 @@
-import {useCallback,useState} from 'react';
-import {useFocusEffect,router} from 'expo-router';
-import Svg,{Path,Line,Circle,Text as SvgText} from 'react-native-svg';
-import {Screen,Title,Card,H,T,Meta,Button,Row,Ring} from '../../components';
-import {useSession} from '../../session';
-import {request} from '../../api';
-import {Progress as ProgressData} from '../../types';
-export default function Progress(){const {token}=useSession();const [week,setWeek]=useState<number|undefined>(),[progress,setProgress]=useState<ProgressData|null>(null),[error,setError]=useState(''),[feedback,setFeedback]=useState(false);useFocusEffect(useCallback(()=>{let live=true;request<ProgressData>('/progress'+(week?`?week=${week}`:''),token).then(r=>{if(live){setProgress(r);setError('');}}).catch(e=>{if(live)setError(e.message);});return ()=>{live=false;};},[week,token]));const b=progress?.board;return <Screen><Title>Your progress</Title>{error?<T style={{color:'white'}} accessibilityRole="alert">{error}</T>:!b?<Meta light>Loading your recorded week…</Meta>:<><Row>{progress.weeks.map(w=><Button key={w.week} title={`Week ${w.week}`} variant={progress.week===w.week?'secondary':'primary'} onPress={()=>setWeek(w.week)}/>)}</Row><Meta light>{progress.date_range}</Meta><Card><H>A week of showing up</H><Row>{b.days.map((d,i)=><Meta key={d}>{new Date(d+'T12:00:00').toLocaleDateString('en',{weekday:'short'})} {d.slice(-2)} · {b.daily[i]}</Meta>)}</Row><Row><Ring percent={b.percent} label={`${b.percent}%`} size={150}/><T>{b.done} of {b.total} baseline activities completed.{ '\n'}{b.partial} partial · {b.extra_done} extra completed</T></Row>{b.sections.map(s=><Row key={s.name}><T style={{flex:1}}>{s.name}</T><T>{s.done} / {s.total}</T></Row>)}</Card><Card><H>Your activity rhythm</H><Meta>Completed activities by scheduled day. Zero is the baseline.</Meta><Svg width="100%" height={200} viewBox="0 0 600 200" accessibilityRole="image" accessibilityLabel={`Daily completions: ${b.daily.join(', ')}`}><Line x1="24" x2="576" y1="160" y2="160" stroke="#526b84"/><Path d={b.daily.map((v,i)=>`${i?'L':'M'} ${30+i*90} ${160-v/Math.max(4,...b.daily)*130}`).join(' ')} stroke="#126bc5" strokeWidth="3" fill="none"/>{b.daily.map((v,i)=><Circle key={i} cx={30+i*90} cy={160-v/Math.max(4,...b.daily)*130} r={4} fill="#126bc5"/>)}<SvgText x="8" y="160" fill="#526b84">0</SvgText></Svg></Card><Card><H>Your scoreboard</H><Meta>Self-reported home tests. These records never change your plan.</Meta>{progress.scoreboard.retest_due&&<H>Retest due</H>}{progress.scoreboard.records.map((r,i)=><T key={i}>{r.timestamp.slice(0,10)} · {r.kind==='chair_stand'?'Chair stands':'Single-leg balance'}: {r.value} {r.unit}</T>)}<Button title="Record a home test" variant="secondary" onPress={()=>router.push('/home-tests')}/></Card><Card><H>What you recorded</H><T>Reasoning accuracy: {progress.reasoning.accuracy===null?'No answers yet':`${progress.reasoning.accuracy}%`} · {progress.reasoning.answers} answers</T><T>Relaxation: {progress.relaxation_minutes} minutes self-reported</T><Button title={feedback?'Hide feedback':'Show feedback'} variant="secondary" onPress={()=>setFeedback(!feedback)}/>{feedback&&<>{progress.feedback.length?progress.feedback.map((r,i)=><T key={i}>{Object.entries(r).map(([k,v])=>`${k}: ${v}`).join(' · ')}</T>):<Meta>No set or pose feedback recorded yet.</Meta>}<H>Accepted goals</H>{progress.accepted_changes.length?progress.accepted_changes.map((r,i)=><T key={i}>{String(r.exercise_id)} · {String(r.proposed)} {r.revoked?'— cancelled after later pain':'— accepted for next week'}</T>):<Meta>No next-week changes accepted.</Meta>}</>}</Card></>}</Screen>;}
+import { useCallback, useState } from "react";
+import { useFocusEffect, router } from "expo-router";
+import Svg, { Path, Line, Circle, Text as SvgText } from "react-native-svg";
+import {
+  Screen,
+  Title,
+  Card,
+  H,
+  T,
+  Meta,
+  Button,
+  Row,
+  Ring,
+} from "../../components";
+import { useSession } from "../../session";
+import { request } from "../../api";
+import { Progress as ProgressData } from "../../types";
+export default function Progress() {
+  const { token } = useSession();
+  const [week, setWeek] = useState<number | undefined>(),
+    [progress, setProgress] = useState<ProgressData | null>(null),
+    [error, setError] = useState(""),
+    [feedback, setFeedback] = useState(false);
+  useFocusEffect(
+    useCallback(() => {
+      let live = true;
+      request<ProgressData>("/progress" + (week ? `?week=${week}` : ""), token)
+        .then((r) => {
+          if (live) {
+            setProgress(r);
+            setError("");
+          }
+        })
+        .catch((e) => {
+          if (live) setError(e.message);
+        });
+      return () => {
+        live = false;
+      };
+    }, [week, token]),
+  );
+  const b = progress?.board;
+  return (
+    <Screen>
+      <Title>Your progress</Title>
+      {error ? (
+        <T style={{ color: "white" }} accessibilityRole="alert">
+          {error}
+        </T>
+      ) : !b ? (
+        <Meta light>Loading your recorded week…</Meta>
+      ) : (
+        <>
+          <Row>
+            {progress.weeks.map((w) => (
+              <Button
+                key={w.week}
+                title={`Week ${w.week}`}
+                variant={progress.week === w.week ? "secondary" : "primary"}
+                onPress={() => setWeek(w.week)}
+              />
+            ))}
+          </Row>
+          <Meta light>{progress.date_range}</Meta>
+          <Card>
+            <H>A week of showing up</H>
+            <Row>
+              {b.days.map((d, i) => (
+                <Meta key={d}>
+                  {new Date(d + "T12:00:00").toLocaleDateString("en", {
+                    weekday: "short",
+                  })}{" "}
+                  {d.slice(-2)} · {b.daily[i]}
+                </Meta>
+              ))}
+            </Row>
+            <Row>
+              <Ring percent={b.percent} label={`${b.percent}%`} size={150} />
+              <T>
+                {b.done} of {b.total} baseline activities completed.{"\n"}
+                {b.partial} partial · {b.extra_done} extra completed
+              </T>
+            </Row>
+            {b.sections.map((s) => (
+              <Row key={s.name}>
+                <T style={{ flex: 1 }}>{s.name}</T>
+                <T>
+                  {s.done} / {s.total}
+                </T>
+              </Row>
+            ))}
+          </Card>
+          <Card>
+            <H>Your activity rhythm</H>
+            <Meta>
+              Completed activities by scheduled day. Zero is the baseline.
+            </Meta>
+            <Svg
+              width="100%"
+              height={200}
+              viewBox="0 0 600 200"
+              accessibilityRole="image"
+              accessibilityLabel={`Daily completions: ${b.daily.join(", ")}`}
+            >
+              <Line x1="24" x2="576" y1="160" y2="160" stroke="#526b84" />
+              <Path
+                d={b.daily
+                  .map(
+                    (v, i) =>
+                      `${i ? "L" : "M"} ${30 + i * 90} ${160 - (v / Math.max(4, ...b.daily)) * 130}`,
+                  )
+                  .join(" ")}
+                stroke="#126bc5"
+                strokeWidth="3"
+                fill="none"
+              />
+              {b.daily.map((v, i) => (
+                <Circle
+                  key={i}
+                  cx={30 + i * 90}
+                  cy={160 - (v / Math.max(4, ...b.daily)) * 130}
+                  r={4}
+                  fill="#126bc5"
+                />
+              ))}
+              <SvgText x="8" y="160" fill="#526b84">
+                0
+              </SvgText>
+            </Svg>
+          </Card>
+          <Card>
+            <H>Your scoreboard</H>
+            <Meta>
+              Self-reported home tests. These records never change your plan.
+            </Meta>
+            {progress.scoreboard.retest_due && <H>Retest due</H>}
+            {progress.scoreboard.records.map((r, i) => (
+              <T key={i}>
+                {r.timestamp.slice(0, 10)} ·{" "}
+                {r.kind === "chair_stand"
+                  ? "Chair stands"
+                  : "Single-leg balance"}
+                : {r.value} {r.unit}
+              </T>
+            ))}
+            <Button
+              title="Record a home test"
+              variant="secondary"
+              onPress={() => router.push("/home-tests")}
+            />
+          </Card>
+          <Card>
+            <H>What you recorded</H>
+            <T>
+              Reasoning accuracy:{" "}
+              {progress.reasoning.accuracy === null
+                ? "No answers yet"
+                : `${progress.reasoning.accuracy}%`}{" "}
+              · {progress.reasoning.answers} answers
+            </T>
+            <T>
+              Relaxation: {progress.relaxation_minutes} minutes self-reported
+            </T>
+            <Button
+              title={feedback ? "Hide feedback" : "Show feedback"}
+              variant="secondary"
+              onPress={() => setFeedback(!feedback)}
+            />
+            {feedback && (
+              <>
+                {progress.feedback.length ? (
+                  progress.feedback.map((r, i) => (
+                    <T key={i}>
+                      {Object.entries(r)
+                        .map(([k, v]) => `${k}: ${v}`)
+                        .join(" · ")}
+                    </T>
+                  ))
+                ) : (
+                  <Meta>No set or pose feedback recorded yet.</Meta>
+                )}
+                <H>Accepted goals</H>
+                {progress.accepted_changes.length ? (
+                  progress.accepted_changes.map((r, i) => (
+                    <T key={i}>
+                      {String(r.exercise_id)} · {String(r.proposed)}{" "}
+                      {r.revoked
+                        ? "— cancelled after later pain"
+                        : "— accepted for next week"}
+                    </T>
+                  ))
+                ) : (
+                  <Meta>No next-week changes accepted.</Meta>
+                )}
+              </>
+            )}
+          </Card>
+        </>
+      )}
+    </Screen>
+  );
+}

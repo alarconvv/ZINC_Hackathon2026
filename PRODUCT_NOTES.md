@@ -64,3 +64,9 @@ These credentials are for fictional judge/demo use only. Never use this account 
 - D1: exact existing Streamlit unittest discovery command PASS: 93 tests in Python 3.11.9. Project .venv is absent, so the isolated /private/tmp/zinc-planner-venv was used. Full app/ diff against pre-product f7b5c9f is empty; engine.py, coach.py and app/tests/ were not edited.
 
 - D2: verify relational integrity PostgreSQL readiness and private database errors. Backend and unchanged Streamlit suites PASS.
+
+## Dependency audit (2026-10-24)
+Npm audit reports 5 high advisories in the Expo CLI/development dependency chain (node-forge and Zod, including transitive Expo packages). node-forge 1.4.0 has no published patch; Expo CLI uses Zod 3, whose currently available release is still affected by the advisory. The suggested automated Expo 44 downgrade is not a valid SDK 58 fix. No forced override or downgrade was applied. These are toolchain findings; the FastAPI backend does not use either package. Do not expose the development server to untrusted networks or enable unreviewed OTA/code-signing flows. Recheck upstream fixes before public builds. Sources: https://github.com/advisories/GHSA-86w9-cpqp-85rv and https://github.com/advisories/GHSA-mrhx-c7xc-m3w5 .
+- D3 web export: PASS, Expo SDK 58 static export to mobile/dist. TypeScript and lint PASS. New product source formatted; unused template assets and the template reset command removed. The export does not contain a live provider key. Toolchain audit findings are recorded separately above and are not represented as a clean security audit.
+
+- D3: verify typed mobile source and production web export. Backend and unchanged Streamlit suites PASS.

@@ -1,13 +1,125 @@
-export type Section = 'strength'|'yoga'|'brain'|'relaxation';
-export const labels:Record<Section,string>={strength:'Strength & balance',yoga:'Yoga',brain:'Brain games',relaxation:'Relaxation'};
-export type Activity={id:string;section:Section;date:string;minutes:number;optional:boolean;status?:string;finished?:boolean};
-export type Movement={id:string;name:string;version:string;cue:string;badge:string;source:string;image?:string;reps:number;sets:number;unit:string;power:boolean;easier:string;harder:string;exercise_number:number;exercise_total:number;set_number:number;question?:string};
-export type Plan={week:number;start_date:string;tier:string;days:string[];exercises:Movement[];activities:Activity[];yoga:Movement[]};
-export type Active=Activity & {finished:boolean;count:number;pain_warning:boolean;item:Movement|null;pose_index:number;completed_minutes?:number;answers:unknown[]};
-export type Profile={name:string;age:number;level:string;limits:string[];mci:boolean;clinician_clearance:boolean};
-export type Proposal={exercise_id:string;current:number;proposed:number;reason:string};
-export type State={profile:Profile;plan:Plan|null;safety_result:string|null;screening_answers:Record<string,boolean>;stopped:boolean;pending_change:Proposal|null;next_plan:Plan|null;messages:{role:string;text:string}[];history:Plan[]};
-export type ViewData={activities:Activity[];next_activity:Activity|null;active:Active|null;percent:number;sections:{id:Section;name:string;done:number;total:number;next_date:string|null}[];can_accept:boolean;stop_message:string};
-export type Snapshot={version:number;state:State;view?:ViewData;consented?:boolean;user?:{name:string;email:string}};
-export type Scoreboard={records:{kind:string;value:number;unit:string;timestamp:string}[];retest_due:boolean};
-export type Progress={scoreboard:Scoreboard;week:number;weeks:{week:number;start_date:string}[];date_range:string;board:{percent:number;done:number;total:number;partial:number;extra_done:number;extra_total:number;days:string[];daily:number[];sections:{name:string;done:number;total:number}[]};reasoning:{accuracy:number|null;answers:number};relaxation_minutes:number;feedback:Record<string,string|number>[];accepted_changes:Record<string,unknown>[]};
+export type Section = "strength" | "yoga" | "brain" | "relaxation";
+export const labels: Record<Section, string> = {
+  strength: "Strength & balance",
+  yoga: "Yoga",
+  brain: "Brain games",
+  relaxation: "Relaxation",
+};
+export type Activity = {
+  id: string;
+  section: Section;
+  date: string;
+  minutes: number;
+  optional: boolean;
+  status?: string;
+  finished?: boolean;
+};
+export type Movement = {
+  id: string;
+  name: string;
+  version: string;
+  cue: string;
+  badge: string;
+  source: string;
+  image?: string;
+  reps: number;
+  sets: number;
+  unit: string;
+  power: boolean;
+  easier: string;
+  harder: string;
+  exercise_number: number;
+  exercise_total: number;
+  set_number: number;
+  question?: string;
+};
+export type Plan = {
+  week: number;
+  start_date: string;
+  tier: string;
+  days: string[];
+  exercises: Movement[];
+  activities: Activity[];
+  yoga: Movement[];
+};
+export type Active = Activity & {
+  finished: boolean;
+  count: number;
+  pain_warning: boolean;
+  item: Movement | null;
+  pose_index: number;
+  completed_minutes?: number;
+  answers: unknown[];
+};
+export type Profile = {
+  name: string;
+  age: number;
+  level: string;
+  limits: string[];
+  mci: boolean;
+  clinician_clearance: boolean;
+};
+export type Proposal = {
+  exercise_id: string;
+  current: number;
+  proposed: number;
+  reason: string;
+};
+export type State = {
+  profile: Profile;
+  plan: Plan | null;
+  safety_result: string | null;
+  screening_answers: Record<string, boolean>;
+  stopped: boolean;
+  pending_change: Proposal | null;
+  next_plan: Plan | null;
+  messages: { role: string; text: string }[];
+  history: Plan[];
+};
+export type ViewData = {
+  activities: Activity[];
+  next_activity: Activity | null;
+  active: Active | null;
+  percent: number;
+  sections: {
+    id: Section;
+    name: string;
+    done: number;
+    total: number;
+    next_date: string | null;
+  }[];
+  can_accept: boolean;
+  stop_message: string;
+};
+export type Snapshot = {
+  version: number;
+  state: State;
+  view?: ViewData;
+  consented?: boolean;
+  user?: { name: string; email: string };
+};
+export type Scoreboard = {
+  records: { kind: string; value: number; unit: string; timestamp: string }[];
+  retest_due: boolean;
+};
+export type Progress = {
+  scoreboard: Scoreboard;
+  week: number;
+  weeks: { week: number; start_date: string }[];
+  date_range: string;
+  board: {
+    percent: number;
+    done: number;
+    total: number;
+    partial: number;
+    extra_done: number;
+    extra_total: number;
+    days: string[];
+    daily: number[];
+    sections: { name: string; done: number; total: number }[];
+  };
+  reasoning: { accuracy: number | null; answers: number };
+  relaxation_minutes: number;
+  feedback: Record<string, string | number>[];
+  accepted_changes: Record<string, unknown>[];
+};

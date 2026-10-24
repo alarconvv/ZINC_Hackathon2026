@@ -1,6 +1,105 @@
-import {useEffect,useState} from 'react';
-import {Animated} from 'react-native';
-import {Button,H,Meta,Row,T} from './index';
-import {useReducedMotion} from '../theme';
-export function RestTimer(){const [seconds,setSeconds]=useState(60),[running,setRunning]=useState(false);useEffect(()=>{if(!running)return;const id=setInterval(()=>setSeconds(v=>{if(v<=1){setRunning(false);return 0;}return v-1;}),1000);return ()=>clearInterval(id);},[running]);return <><H>Rest timer</H><T>{seconds} seconds</T><Row><Button title={running?'Pause rest timer':'Start rest timer'} variant="secondary" onPress={()=>setRunning(!running)}/><Button title="Reset rest timer" variant="secondary" onPress={()=>{setRunning(false);setSeconds(60);}}/></Row><Meta>Optional aid. This timer records nothing.</Meta></>;}
-export function Breathing(){const reduce=useReducedMotion(),[scale]=useState(()=>new Animated.Value(1));const [phase,setPhase]=useState('Breathe in');useEffect(()=>{const id=setInterval(()=>setPhase(v=>v==='Breathe in'?'Breathe out':'Breathe in'),5000);return ()=>clearInterval(id);},[]);useEffect(()=>{if(reduce){scale.setValue(1);return;}const animation=Animated.loop(Animated.sequence([Animated.timing(scale,{toValue:1.18,duration:5000,useNativeDriver:true}),Animated.timing(scale,{toValue:1,duration:5000,useNativeDriver:true})]));animation.start();return ()=>animation.stop();},[reduce,scale]);return <><Animated.View accessibilityRole="image" accessibilityLabel="Ten second breathing cycle" style={{height:150,width:150,borderRadius:75,backgroundColor:'#d6e7f5',alignSelf:'center',margin:22,alignItems:'center',justifyContent:'center',transform:[{scale}]}}><T>{phase}</T></Animated.View><Meta>Follow a comfortable pace. Breathe normally if this rhythm does not suit you. Reduced motion keeps the circle still.</Meta></>;}
+import { useEffect, useState } from "react";
+import { Animated } from "react-native";
+import { Button, H, Meta, Row, T } from "./index";
+import { useReducedMotion } from "../theme";
+export function RestTimer() {
+  const [seconds, setSeconds] = useState(60),
+    [running, setRunning] = useState(false);
+  useEffect(() => {
+    if (!running) return;
+    const id = setInterval(
+      () =>
+        setSeconds((v) => {
+          if (v <= 1) {
+            setRunning(false);
+            return 0;
+          }
+          return v - 1;
+        }),
+      1000,
+    );
+    return () => clearInterval(id);
+  }, [running]);
+  return (
+    <>
+      <H>Rest timer</H>
+      <T>{seconds} seconds</T>
+      <Row>
+        <Button
+          title={running ? "Pause rest timer" : "Start rest timer"}
+          variant="secondary"
+          onPress={() => setRunning(!running)}
+        />
+        <Button
+          title="Reset rest timer"
+          variant="secondary"
+          onPress={() => {
+            setRunning(false);
+            setSeconds(60);
+          }}
+        />
+      </Row>
+      <Meta>Optional aid. This timer records nothing.</Meta>
+    </>
+  );
+}
+export function Breathing() {
+  const reduce = useReducedMotion(),
+    [scale] = useState(() => new Animated.Value(1));
+  const [phase, setPhase] = useState("Breathe in");
+  useEffect(() => {
+    const id = setInterval(
+      () =>
+        setPhase((v) => (v === "Breathe in" ? "Breathe out" : "Breathe in")),
+      5000,
+    );
+    return () => clearInterval(id);
+  }, []);
+  useEffect(() => {
+    if (reduce) {
+      scale.setValue(1);
+      return;
+    }
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(scale, {
+          toValue: 1.18,
+          duration: 5000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scale, {
+          toValue: 1,
+          duration: 5000,
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [reduce, scale]);
+  return (
+    <>
+      <Animated.View
+        accessibilityRole="image"
+        accessibilityLabel="Ten second breathing cycle"
+        style={{
+          height: 150,
+          width: 150,
+          borderRadius: 75,
+          backgroundColor: "#d6e7f5",
+          alignSelf: "center",
+          margin: 22,
+          alignItems: "center",
+          justifyContent: "center",
+          transform: [{ scale }],
+        }}
+      >
+        <T>{phase}</T>
+      </Animated.View>
+      <Meta>
+        Follow a comfortable pace. Breathe normally if this rhythm does not suit
+        you. Reduced motion keeps the circle still.
+      </Meta>
+    </>
+  );
+}

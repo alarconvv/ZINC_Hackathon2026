@@ -1,8 +1,122 @@
-import {useState} from 'react';
-import {View} from 'react-native';
-import {router} from 'expo-router';
-import {Screen,Title,Card,H,T,Meta,Button,Row,Ring} from '../../components';
-import {useSession} from '../../session';
-import {labels} from '../../types';
-const seen=new Set<string>();
-export default function Today(){const {data,run,act,busy}=useSession();const key=data?.user?.email||'';const [guide,setGuide]=useState(!seen.has(key));const view=data?.view,plan=data?.state.plan;if(!plan||!view)return null;const next=view.next_activity;return <Screen><Title>Your complete week, {data.state.profile.name}.</Title><Meta light>{plan.tier} · Week {plan.week} · Beginning {plan.start_date}</Meta>{guide&&<Card><H>How ZINC works</H><T>1. Week — your dated activities.</T><T>2. Train — log each set, effort and pain.</T><T>3. Coach — review your week and accept or decline next week’s goal.</T><Button title="Got it" variant="secondary" onPress={()=>{seen.add(key);setGuide(false);}}/></Card>}<View style={{flexDirection:'row',flexWrap:'wrap',gap:12}}>{view.sections.map(s=><View key={s.id} style={{flexGrow:1,flexBasis:210}}><Card><Row><View style={{flex:1}}><H>{s.name}</H></View><Ring size={68} percent={s.total?100*s.done/s.total:0} label={`${s.done}/${s.total}`}/></Row><Meta>{s.next_date?`Next: ${s.next_date}`:s.done===s.total?'All done':'No activities remaining'}</Meta></Card></View>)}</View><Card><H>{next?'Your next activity':'Your week is recorded'}</H>{next?<><T>{labels[next.section]} · {next.date} · {next.minutes} min estimated</T><Button title={next.status==='partial'?'Resume next activity':'Start next activity'} busy={busy} onPress={()=>void run(async()=>{await act(`/activities/${next.id}/start`);router.push('/train');})}/></>:<T>Review what you recorded on Progress.</T>}<Button title="Explore my week" variant="secondary" onPress={()=>router.push('/week')}/></Card><Card><H>A fresh week, when you’re ready</H><T>Review your feedback with Coach. Accepted goals begin next week.</T><Button title="Start next week" variant="secondary" onPress={()=>void run(async()=>{await act('/week/next');})}/></Card></Screen>;}
+import { useState } from "react";
+import { View } from "react-native";
+import { router } from "expo-router";
+import {
+  Screen,
+  Title,
+  Card,
+  H,
+  T,
+  Meta,
+  Button,
+  Row,
+  Ring,
+} from "../../components";
+import { useSession } from "../../session";
+import { labels } from "../../types";
+const seen = new Set<string>();
+export default function Today() {
+  const { data, run, act, busy } = useSession();
+  const key = data?.user?.email || "";
+  const [guide, setGuide] = useState(!seen.has(key));
+  const view = data?.view,
+    plan = data?.state.plan;
+  if (!plan || !view) return null;
+  const next = view.next_activity;
+  return (
+    <Screen>
+      <Title>Your complete week, {data.state.profile.name}.</Title>
+      <Meta light>
+        {plan.tier} · Week {plan.week} · Beginning {plan.start_date}
+      </Meta>
+      {guide && (
+        <Card>
+          <H>How ZINC works</H>
+          <T>1. Week — your dated activities.</T>
+          <T>2. Train — log each set, effort and pain.</T>
+          <T>
+            3. Coach — review your week and accept or decline next week’s goal.
+          </T>
+          <Button
+            title="Got it"
+            variant="secondary"
+            onPress={() => {
+              seen.add(key);
+              setGuide(false);
+            }}
+          />
+        </Card>
+      )}
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
+        {view.sections.map((s) => (
+          <View key={s.id} style={{ flexGrow: 1, flexBasis: 210 }}>
+            <Card>
+              <Row>
+                <View style={{ flex: 1 }}>
+                  <H>{s.name}</H>
+                </View>
+                <Ring
+                  size={68}
+                  percent={s.total ? (100 * s.done) / s.total : 0}
+                  label={`${s.done}/${s.total}`}
+                />
+              </Row>
+              <Meta>
+                {s.next_date
+                  ? `Next: ${s.next_date}`
+                  : s.done === s.total
+                    ? "All done"
+                    : "No activities remaining"}
+              </Meta>
+            </Card>
+          </View>
+        ))}
+      </View>
+      <Card>
+        <H>{next ? "Your next activity" : "Your week is recorded"}</H>
+        {next ? (
+          <>
+            <T>
+              {labels[next.section]} · {next.date} · {next.minutes} min
+              estimated
+            </T>
+            <Button
+              title={
+                next.status === "partial"
+                  ? "Resume next activity"
+                  : "Start next activity"
+              }
+              busy={busy}
+              onPress={() =>
+                void run(async () => {
+                  await act(`/activities/${next.id}/start`);
+                  router.push("/train");
+                })
+              }
+            />
+          </>
+        ) : (
+          <T>Review what you recorded on Progress.</T>
+        )}
+        <Button
+          title="Explore my week"
+          variant="secondary"
+          onPress={() => router.push("/week")}
+        />
+      </Card>
+      <Card>
+        <H>A fresh week, when you’re ready</H>
+        <T>Review your feedback with Coach. Accepted goals begin next week.</T>
+        <Button
+          title="Start next week"
+          variant="secondary"
+          onPress={() =>
+            void run(async () => {
+              await act("/week/next");
+            })
+          }
+        />
+      </Card>
+    </Screen>
+  );
+}

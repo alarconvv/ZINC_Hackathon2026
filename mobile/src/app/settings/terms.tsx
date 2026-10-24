@@ -1,2 +1,4 @@
-import LegalDocument from '../../components/LegalDocument';
-export default function Terms(){return <LegalDocument kind="terms"/>;}
+import LegalDocument from "../../components/LegalDocument";
+export default function Terms() {
+  return <LegalDocument kind="terms" />;
+}
