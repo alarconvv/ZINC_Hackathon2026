@@ -165,3 +165,21 @@ iframe{border-radius:24px}
 /* Streamlit's layout wrapper must own stickiness, otherwise it clips the header. */
 [data-testid="stLayoutWrapper"]:has(>.st-key-product_header){position:sticky;top:0;z-index:1100}
 .st-key-product_header{position:static}
+
+/* R2 1.4 — A dated agenda, with compact actions and explicit evidence words. */
+[class*="st-key-act_"]{padding:18px 20px;margin-bottom:10px}
+[class*="st-key-act_"] h3{font-size:1.1rem;margin:0}
+.activity-meta{gap:6px;margin:4px 0 0;font-size:.8rem}
+.agenda-date{display:flex;flex-direction:column;align-items:center;color:#12365b;line-height:1.25}
+.agenda-date span{font-size:.7rem;letter-spacing:.08em;color:#526b84}.agenda-date strong{font-size:1.9rem;font-weight:600}
+.st-key-week_toolbar{gap:8px!important;margin-bottom:12px}
+@media(max-width:600px){
+ [class*="st-key-act_"]{padding:16px}
+ [class*="st-key-act_"]>[data-testid="stHorizontalBlock"],[class*="st-key-act_"] [data-testid="stHorizontalBlock"]{display:grid!important;grid-template-columns:42px minmax(0,1fr) 48px;gap:10px!important}
+ [class*="st-key-act_"] [data-testid="stColumn"]{width:100%!important;min-width:0!important}
+ [class*="st-key-act_"] [data-testid="stColumn"]:nth-child(1){grid-column:1;grid-row:1}
+ [class*="st-key-act_"] [data-testid="stColumn"]:nth-child(2){grid-column:2;grid-row:1}
+ [class*="st-key-act_"] [data-testid="stColumn"]:nth-child(3){grid-column:1/-1;grid-row:2}
+ [class*="st-key-act_"] [data-testid="stColumn"]:nth-child(4){grid-column:3;grid-row:1}
+ .activity-meta{gap:5px}.evidence{font-size:.7rem}
+}

@@ -301,31 +301,38 @@ def status_label(activity):
 
 
 def show_schedule():
+    descriptions = {'strength': 'Large-muscle patterns and supported balance. Record repetitions, effort and pain after every set.', 'yoga': 'Five guided pose cards with supported alternatives and feedback.', 'brain': 'Five reasoning and pattern puzzles. Difficulty follows your answers.', 'relaxation': 'Slow breathing: five seconds in, five seconds out. Choose three or five minutes.'}
     for activity in plan['activities']:
         label = LABELS[activity['section']]
+        session = s['activity_sessions'].get(activity['id'])
+        day = datetime.fromisoformat(activity['date'])
         with st.container(key=f"act_{activity['id']}"):
-            st.subheader(f"{nice_date(activity['date'])} · {label}")
-            badge = BADGES[activity['section']]
-            badges = ''.join(f'<span class="evidence {esc(word.lower())}">{esc(word)}</span>' for word in badge.split(' / '))
-            st.markdown(f'<div class="activity-meta"><span>{activity["minutes"]} min estimated</span><span class="status-chip">{esc(status_label(activity))}</span>{badges}</div>', unsafe_allow_html=True)
-            st.caption({'strength': 'Large-muscle patterns and supported balance. Record repetitions, effort and pain after every set.', 'yoga': 'Five guided pose cards with supported alternatives and feedback.', 'brain': 'Five reasoning and pattern puzzles. Difficulty follows your answers.', 'relaxation': 'Slow breathing: five seconds in, five seconds out. Choose three or five minutes.'}[activity['section']])
-            session = s['activity_sessions'].get(activity['id'])
-            if st.button('Review' if session and session['finished'] else 'Resume' if session else 'Start activity', key='start_' + activity['id']):
-                engine.start_activity(s, activity['id'])
-                rerun_to('Train')
-            st.caption('Optional extra' if activity.get('optional') else 'Baseline activity')
+            date_col, details, action, menu = st.columns([.6, 4, 1.25, .5], vertical_alignment='center', wrap=False)
+            with date_col:
+                st.markdown(f'<div class="agenda-date"><span>{esc(day.strftime("%a").upper())}</span><strong>{esc(day.day)}</strong></div>', unsafe_allow_html=True)
+            with details:
+                st.subheader(label)
+                badges = ''.join(f'<span class="evidence {esc(word.lower())}">{esc(word)} evidence</span>' for word in BADGES[activity['section']].split(' / '))
+                extra = '<span class="status-chip">Extra</span>' if activity.get('optional') else ''
+                st.markdown(f'<div class="activity-meta"><span class="status-chip">{esc(status_label(activity))}</span>{badges}<span>{esc(activity["minutes"])} min</span>{extra}</div>', unsafe_allow_html=True)
+            with action:
+                if st.button('Review' if session and session['finished'] else 'Resume' if session else 'Start activity', key='start_' + activity['id'], help=descriptions[activity['section']], width='stretch'):
+                    engine.start_activity(s, activity['id'])
+                    rerun_to('Train')
             if not session or not session['finished']:
-                with st.expander('Reschedule or remove' if activity.get('optional') else 'Reschedule'):
-                    with st.form('move_' + activity['id']):
-                        selected_day = st.selectbox('Move to', engine.WEEKDAYS, index=(datetime.fromisoformat(activity['date']).date() - datetime.fromisoformat(plan['start_date']).date()).days)
-                        move = st.form_submit_button('Save new day')
-                        remove = st.form_submit_button('Remove optional activity') if activity.get('optional') and not session else False
-                        if move or remove:
-                            try:
-                                engine.change_schedule(s, activity_id=activity['id'], day=engine.WEEKDAYS.index(selected_day), remove=remove)
-                                st.rerun()
-                            except ValueError as exc:
-                                st.error(str(exc))
+                with menu:
+                    with st.popover('⋯', help='Reschedule', key='menu_' + activity['id']):
+                        st.caption('Reschedule or remove' if activity.get('optional') else 'Reschedule')
+                        with st.form('move_' + activity['id']):
+                            selected_day = st.selectbox('Move to', engine.WEEKDAYS, index=(day.date() - datetime.fromisoformat(plan['start_date']).date()).days)
+                            move = st.form_submit_button('Save new day')
+                            remove = st.form_submit_button('Remove optional activity') if activity.get('optional') and not session else False
+                            if move or remove:
+                                try:
+                                    engine.change_schedule(s, activity_id=activity['id'], day=engine.WEEKDAYS.index(selected_day), remove=remove)
+                                    st.rerun()
+                                except ValueError as exc:
+                                    st.error(str(exc))
 
 
 def submit_strength(exercise_id, keys):
@@ -396,21 +403,22 @@ if page == 'Overview':
 
 elif page == 'Your week':
     st.title('Your week')
-    st.download_button('Add week to calendar', week_ics(plan), file_name='zinc-week.ics', mime='text/calendar')
-    with st.popover('About activity estimates'):
-        st.write('Durations are estimates, not measured exercise time. Source badges describe strength, function, trained reasoning or stress outcomes, never disease outcomes.')
-    with st.expander('Add an optional activity'):
-        with st.form('add_activity'):
-            added_section = st.selectbox('Activity type', list(LABELS), index=3, format_func=LABELS.get)
-            added_day = st.selectbox('Day', engine.WEEKDAYS, index=2)
-            st.caption(f'Adding this activity will increase your week from {len(plan["activities"])} to {len(plan["activities"]) + 1} activities. Baseline completion is tracked separately from extras.')
-            st.caption('At most one activity of each type per day. Strength: at most three days with a rest day between; supported mode keeps its prescribed frequency. These are prototype scheduling limits, not clinical clearance.')
-            if st.form_submit_button('Add to my week', type='primary'):
-                try:
-                    engine.change_schedule(s, section=added_section, day=engine.WEEKDAYS.index(added_day))
-                    st.rerun()
-                except ValueError as exc:
-                    st.error(str(exc))
+    with st.container(key='week_toolbar', horizontal=True, vertical_alignment='center'):
+        st.download_button('Add week to calendar', week_ics(plan), file_name='zinc-week.ics', mime='text/calendar')
+        with st.popover('About activity estimates'):
+            st.write('Durations are estimates, not measured exercise time. Source badges describe strength, function, trained reasoning or stress outcomes, never disease outcomes.')
+        with st.popover('Add an optional activity'):
+            with st.form('add_activity'):
+                added_section = st.selectbox('Activity type', list(LABELS), index=3, format_func=LABELS.get)
+                added_day = st.selectbox('Day', engine.WEEKDAYS, index=2)
+                st.caption(f'Adding this activity will increase your week from {len(plan["activities"])} to {len(plan["activities"]) + 1} activities. Baseline completion is tracked separately from extras.')
+                st.caption('At most one activity of each type per day. Strength: at most three days with a rest day between; supported mode keeps its prescribed frequency. These are prototype scheduling limits, not clinical clearance.')
+                if st.form_submit_button('Add to my week', type='primary'):
+                    try:
+                        engine.change_schedule(s, section=added_section, day=engine.WEEKDAYS.index(added_day))
+                        st.rerun()
+                    except ValueError as exc:
+                        st.error(str(exc))
     st.caption('Your chosen days and optional activities carry into next week. Finished activities keep their recorded dates.')
     show_schedule()
     with st.expander('Strength and balance prescriptions'):

@@ -181,11 +181,11 @@ async function main() {
       await extraDay.press('ArrowDown');
       await extraDay.press('Enter');
       await button('Add to my week').click();
-      await page.getByText('Optional extra',{exact:true}).waitFor();
+      await page.getByText('Extra',{exact:true}).waitFor();
       await capture('planner');
-      await page.getByText('Reschedule or remove',{exact:true}).click();
+      await page.locator('[class*="st-key-act_"]').filter({has:page.getByText('Extra',{exact:true})}).getByRole('button',{name:'⋯',exact:true}).click();
       await button('Remove optional activity').click();
-      await page.getByText('Optional extra',{exact:true}).waitFor({state:'hidden'});
+      await page.getByText('Extra',{exact:true}).waitFor({state:'hidden'});
       const calendarPromise=page.waitForEvent('download');
       await button('Add week to calendar').click();
       const calendar=await calendarPromise;
