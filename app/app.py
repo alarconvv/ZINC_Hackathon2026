@@ -3,6 +3,7 @@ from pathlib import Path
 import streamlit as st
 import engine
 import coach
+from timers import countdown
 from ui_helpers import nice_date, nice_range, friendly_rows
 
 st.set_page_config(page_title='ZINC · Strength for the years ahead', page_icon='✳', layout='wide', initial_sidebar_state='collapsed')
@@ -393,7 +394,12 @@ elif page == 'Train':
         section = session['section']
         st.subheader(f"{LABELS[section]} · {nice_date(session['date'])}")
         if session['finished']:
-            st.success('Activity completed.' if session['status'] == 'completed' else f"Activity ended: {session['status']}.")
+            summary = 'Activity completed.' if session['status'] == 'completed' else f"Activity ended: {session['status']}."
+            count = len(session['feedback']) if section in ('strength', 'yoga') else len(session['answers']) if section == 'brain' else session.get('completed_minutes', 0)
+            unit = {'strength': 'sets recorded', 'yoga': 'poses recorded', 'brain': 'puzzles answered', 'relaxation': 'minutes self-reported'}[section]
+            upcoming = next((a for a in plan['activities'] if not s['activity_sessions'].get(a['id'], {}).get('finished')), None)
+            next_up = f'{LABELS[upcoming["section"]]} · {nice_date(upcoming["date"])}' if upcoming else 'All activities finished or ended'
+            st.markdown(f'<section class="session-summary"><span class="kicker">Your activity</span><h2>{esc(summary)}</h2><strong>{count} {esc(unit)}</strong><p>Next up: {esc(next_up)}</p></section>', unsafe_allow_html=True)
             if session.get('pain_limited') or any(f['pain'] >= 4 for f in session['feedback']):
                 st.warning('Pain reached 4 or higher. Do not push through pain; seek guidance if pain persists.')
             actions = st.columns(2)
@@ -415,6 +421,8 @@ elif page == 'Train':
                 effort = st.slider('Effort · 1 easy, 10 maximal', 1, 10, 6, key=keys[1])
                 pain = st.slider('Pain · 0 none, 10 severe', 0, 10, 0, key=keys[2])
                 st.form_submit_button('Done set', type='primary', on_click=submit_strength, args=(item['id'], keys))
+            if session['feedback']:
+                countdown(60, 'Take a comfortable rest')
         elif section == 'yoga':
             pose = plan['yoga'][session['pose_index']]
             st.write(f"Pose {session['pose_index'] + 1} of 5 · {pose['name']}")
@@ -442,7 +450,9 @@ elif page == 'Train':
             st.write('Breathe comfortably. Follow the circle only if the pace feels natural. Stop if you feel unwell.')
             minutes = st.radio('Practice length', [3, 5], horizontal=True, format_func=lambda n: f'{n} minutes', key='breath_' + session['id'])
             st.markdown('<style>@keyframes breathe{0%,100%{transform:scale(.65)}50%{transform:scale(1)}}@keyframes breathword{0%,49.99%{content:"Breathe in"}50%,100%{content:"Breathe out"}}.breath-space{height:240px;display:grid;place-items:center}.breath-circle{width:180px;height:180px;border-radius:50%;background:#dceeff;color:#12365b;display:grid;place-items:center;animation:breathe 10s ease-in-out infinite}.breath-circle:after{content:"Breathe in";animation:breathword 10s steps(1) infinite}@media(prefers-reduced-motion:reduce){.breath-circle{animation:none}.breath-circle:after{animation:none;content:"In 5s · Out 5s"}}</style><div class="breath-space" aria-label="Breathe in for five seconds and out for five seconds"><div class="breath-circle"></div></div>', unsafe_allow_html=True)
-            st.caption('The circle loops continuously; it is not a countdown. Completion time is self-reported.')
+            st.caption('The circle loops continuously. The optional timer records nothing; completion time is self-reported.')
+            if st.checkbox('Show breathing timer', key='timer_' + session['id']):
+                countdown(minutes * 60, 'Your breathing time')
             if st.button('I completed my breathing practice', type='primary'):
                 engine.finish_activity(s, minutes=minutes)
                 st.rerun()

@@ -113,3 +113,5 @@ input,textarea{caret-color:#126bc5}
 .exercise-art{width:120px;height:120px;display:block;margin:0 0 12px;background:#e7f3ff;border-radius:24px}
 .movement-fallback{display:block;font-size:64px;color:#126bc5}
 .stFormSubmitButton button[kind="primaryFormSubmit"]{background:#126bc5!important;color:white!important;border-color:#126bc5!important}
+
+.session-summary{background:#f4faff;color:#12365b;padding:28px;border-radius:24px;margin:20px 0}.session-summary .kicker{color:#526b84}.session-summary strong{font-size:1.5rem}
