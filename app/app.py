@@ -4,7 +4,7 @@ import streamlit as st
 import engine
 import coach
 from timers import countdown
-from ui_helpers import nice_date, nice_range, friendly_rows, inert_chunks
+from ui_helpers import nice_date, nice_range, friendly_rows, inert_chunks, week_ics
 
 st.set_page_config(page_title='ZINC · Strength for the years ahead', page_icon='✳', layout='wide', initial_sidebar_state='collapsed')
 st.markdown('''<style>
@@ -361,6 +361,7 @@ if page == 'Overview':
 
 elif page == 'Your week':
     st.title('Your week')
+    st.download_button('Add week to calendar', week_ics(plan), file_name='zinc-week.ics', mime='text/calendar')
     with st.popover('About activity estimates'):
         st.write('Durations are estimates, not measured exercise time. Source badges describe strength, function, trained reasoning or stress outcomes, never disease outcomes.')
     with st.expander('Add an optional activity'):
