@@ -50,4 +50,5 @@ def mutate(request: Request, db, user, fn, *, check_stop=True):
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from None
     version = save(db, user.id, state, version)
-    return {'version': version, 'state': state, **extra}
+    from .views import screen_data
+    return {'version': version, 'state': state, 'view': screen_data(state), **extra}

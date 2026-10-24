@@ -19,3 +19,5 @@ def health():
 app.include_router(auth.router)
 from .routes import onboarding
 app.include_router(onboarding.router)
+from .routes import activities
+app.include_router(activities.router)
