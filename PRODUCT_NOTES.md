@@ -62,3 +62,5 @@ These credentials are for fictional judge/demo use only. Never use this account 
 
 ## Final verification
 - D1: exact existing Streamlit unittest discovery command PASS: 93 tests in Python 3.11.9. Project .venv is absent, so the isolated /private/tmp/zinc-planner-venv was used. Full app/ diff against pre-product f7b5c9f is empty; engine.py, coach.py and app/tests/ were not edited.
+
+- D2: verify relational integrity PostgreSQL readiness and private database errors. Backend and unchanged Streamlit suites PASS.

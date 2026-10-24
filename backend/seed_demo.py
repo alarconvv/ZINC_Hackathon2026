@@ -50,6 +50,7 @@ def seed(db, password):
     s = demo_state()
     user = User(email='maria@demo.zinc', name='Maria', password_hash=hasher.hash(password))
     db.add(user)
+    db.flush()
     db.add(UserState(user_id=user.id, data=json.dumps(s)))
     db.add(Consent(user_id=user.id, collect_health_data=True, version='2026-10-beta'))
     for event in s['events']:

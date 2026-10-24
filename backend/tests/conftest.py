@@ -8,7 +8,7 @@ from backend.main import app
 
 @pytest.fixture
 def client(tmp_path, monkeypatch):
-    db = create_engine('sqlite:///' + str(tmp_path / 'test.db'), connect_args={'check_same_thread': False})
+    db = create_engine('sqlite:///' + str(tmp_path / 'test.db'), connect_args={'check_same_thread': False}, hide_parameters=True)
     monkeypatch.setattr(deps, 'engine', db)
     auth.attempts.clear()
     SQLModel.metadata.create_all(db)

@@ -49,9 +49,10 @@ def register(body: Register, db: Session = Depends(db_session)):
     jwt_secret()
     user = User(email=body.email, name=body.name, password_hash=hasher.hash(body.password))
     state = engine.new_state({'name': body.name, 'age': 52, 'level': 'beginner', 'limits': [], 'mci': False, 'clinician_clearance': False, 'toggles': {'yoga': False, 'brain': False}})
-    db.add(user)
-    db.add(UserState(user_id=user.id, data=json.dumps(state)))
     try:
+        db.add(user)
+        db.flush()
+        db.add(UserState(user_id=user.id, data=json.dumps(state)))
         db.commit()
     except IntegrityError:
         db.rollback()

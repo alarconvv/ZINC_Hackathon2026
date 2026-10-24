@@ -1,4 +1,6 @@
-import os
+import os, sqlite3
+from sqlalchemy import event as sa_event
+from sqlalchemy.engine import Engine
 from datetime import datetime, timezone
 from uuid import uuid4
 from fastapi import Depends, HTTPException
@@ -29,8 +31,19 @@ class Consent(SQLModel, table=True):
     version: str
     timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
-url = os.getenv('DATABASE_URL', 'sqlite:///backend/zinc.db')
-engine = create_engine(url, connect_args={'check_same_thread': False} if url.startswith('sqlite') else {})
+@sa_event.listens_for(Engine, 'connect')
+def sqlite_foreign_keys(connection, _record):
+    if isinstance(connection, sqlite3.Connection):
+        connection.execute('PRAGMA foreign_keys=ON')
+
+def database_url(value):
+    for prefix in ('postgres://', 'postgresql://'):
+        if value.startswith(prefix):
+            return 'postgresql+psycopg://' + value[len(prefix):]
+    return value
+
+url = database_url(os.getenv('DATABASE_URL', 'sqlite:///backend/zinc.db'))
+engine = create_engine(url, hide_parameters=True, connect_args={'check_same_thread': False} if url.startswith('sqlite') else {})
 
 def db_session():
     with Session(engine) as db:
