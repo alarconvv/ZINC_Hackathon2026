@@ -69,3 +69,5 @@ Presentation-only follow-up. Audit corrections are checkpointed separately; engi
 - 1.5: compact overview cards with the next scheduled day. Full local suite passed.
 
 - 1.6: coach greeting floating composer and quiet footer. Full local suite passed.
+
+- 1.7: warm completion summary and contextual symptom form. Full local suite passed.

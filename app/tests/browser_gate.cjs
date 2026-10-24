@@ -90,7 +90,7 @@ async function main() {
       assert(stopBox && stopBox.y>=0 && stopBox.y+stopBox.height<=viewport.height,'Stop remains in viewport while training');
       await page.screenshot({path:path.join(out,kind+'-strength-form.png')});
       await button('Skip / end this activity').click();
-      await page.getByText('Activity ended: partial.',{exact:true}).waitFor();
+      await page.getByText('Activity ended',{exact:true}).waitFor();
       await navigate('Your week');
       // Remaining Start activity controls are brain, relaxation, yoga, strength, etc.
       await button('Start activity').first().click();
@@ -103,7 +103,7 @@ async function main() {
       assert.equal(await feedback.locator('p').first().evaluate(el=>getComputedStyle(el).color),'rgb(18, 54, 91)');
       assert.equal(await feedback.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(242, 248, 255)');
       await button('Skip / end this activity').click();
-      await page.getByText('Activity ended: partial.',{exact:true}).waitFor();
+      await page.getByText('Activity ended',{exact:true}).waitFor();
       await navigate('Your week');
       await button('Start activity').first().click();
       await page.getByText('5 minutes',{exact:true}).waitFor();
@@ -124,7 +124,7 @@ async function main() {
       await page.frameLocator('iframe').first().getByText('5:00',{exact:true}).waitFor();
       await capture('relaxation');
       await button('I completed my breathing practice').click();
-      await page.getByText('Activity completed.',{exact:true}).waitFor();
+      await page.getByText('Nice work, Maria.',{exact:true}).waitFor();
       await page.getByText('5 minutes self-reported',{exact:true}).waitFor();
       await capture('activity-complete');
       await navigate('Your week');
@@ -134,7 +134,7 @@ async function main() {
       await page.getByText(/Pose 2 of 5/).waitFor();
       await capture('yoga');
       await button('Skip / end this activity').click();
-      await page.getByText('Activity ended: partial.',{exact:true}).waitFor();
+      await page.getByText('Activity ended',{exact:true}).waitFor();
       await navigate('Progress');
       await page.getByText('Relaxation: 5 self-reported minutes',{exact:true}).waitFor();
       await capture('progress');

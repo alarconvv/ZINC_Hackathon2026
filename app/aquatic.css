@@ -200,3 +200,8 @@ iframe{border-radius:24px}
 .coach-greeting{background:#f4faff;color:#12365b;border-radius:24px;padding:20px 24px;margin:16px 0;max-width:65ch}.coach-greeting p{margin:0}
 .st-key-wellness_footer{gap:8px!important;margin-bottom:16px}.st-key-wellness_footer button{background:transparent!important;color:#fff!important;border:0;box-shadow:none;font-weight:500;padding:0 4px;text-decoration:underline;text-underline-offset:4px}
 
+
+
+.st-key-completion_actions{gap:8px!important;justify-content:flex-start}
+.session-summary h2{margin:8px 0}.session-summary>.material-symbols-rounded{color:#126bc5;font-size:32px}
+

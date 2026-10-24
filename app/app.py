@@ -440,20 +440,18 @@ elif page == 'Train':
         section = session['section']
         st.caption(f"{nice_date(session['date'])} · {session['minutes']} min estimated")
         if session['finished']:
-            summary = 'Activity completed.' if session['status'] == 'completed' else f"Activity ended: {session['status']}."
+            summary = f'Nice work, {s["profile"]["name"]}.' if session['status'] == 'completed' else 'Activity ended'
             count = sum(log.get('activity_id') == session['id'] for log in s['logs']['sessions']) if section == 'strength' else len(session['feedback']) if section == 'yoga' else len(session['answers']) if section == 'brain' else session.get('completed_minutes', 0)
             noun, verb = {'strength': ('set', 'recorded'), 'yoga': ('pose', 'recorded'), 'brain': ('puzzle', 'answered'), 'relaxation': ('minute', 'self-reported')}[section]
             unit = f'{noun}{"s" if count != 1 else ""} {verb}'
             upcoming = next((a for a in plan['activities'] if not s['activity_sessions'].get(a['id'], {}).get('finished')), None)
             next_up = f'{LABELS[upcoming["section"]]} · {nice_date(upcoming["date"])}' if upcoming else 'All activities finished or ended'
-            st.markdown(f'<section class="session-summary"><span class="kicker">Your activity</span><h2>{esc(summary)}</h2><strong>{count} {esc(unit)}</strong><p>Next up: {esc(next_up)}</p></section>', unsafe_allow_html=True)
+            st.markdown(f'<section class="session-summary"><span class="material-symbols-rounded" aria-hidden="true">check_circle</span><h2>{esc(summary)}</h2><strong>{count} {esc(unit)}</strong><p>Next up: {esc(next_up)}</p></section>', unsafe_allow_html=True)
             if session.get('pain_limited') or any(f['pain'] >= 4 for f in session['feedback']):
                 st.warning('Pain reached 4 or higher. Do not push through pain; seek guidance if pain persists.')
-            actions = st.columns(2)
-            with actions[0]:
+            with st.container(key='completion_actions', horizontal=True, vertical_alignment='center'):
                 if st.button('Choose another activity', type='primary'):
                     rerun_to('Your week')
-            with actions[1]:
                 if st.button('Review with my coach'):
                     rerun_to('Coach')
         elif section == 'strength':
@@ -507,14 +505,15 @@ elif page == 'Train':
             if st.button('Skip / end this activity'):
                 engine.finish_activity(s, skipped=True)
                 st.rerun()
-        with st.form('symptoms'):
-            symptom = st.text_input('Feeling unwell? Describe symptoms', max_chars=500)
-            if st.form_submit_button('Check symptoms'):
-                if engine.red_flag(symptom):
-                    engine.stop(s)
-                    st.rerun()
-                else:
-                    st.info('This text check cannot assess symptoms. Press Stop whenever you feel unwell or uncertain.')
+        with (st.expander('Feeling unwell?') if session['finished'] else st.container()):
+            with st.form('symptoms'):
+                symptom = st.text_input('Feeling unwell? Describe symptoms', max_chars=500)
+                if st.form_submit_button('Check symptoms'):
+                    if engine.red_flag(symptom):
+                        engine.stop(s)
+                        st.rerun()
+                    else:
+                        st.info('This text check cannot assess symptoms. Press Stop whenever you feel unwell or uncertain.')
 
 elif page == 'Coach':
     st.title('Your coach')
