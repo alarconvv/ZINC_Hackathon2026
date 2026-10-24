@@ -209,7 +209,7 @@ onboarding.empty()
 if s.get('requested_page'):
     st.session_state.page = s.pop('requested_page')
 with st.container(key='navigation'):
-    page = st.radio('Your space', ['Overview', 'Your week', 'Train', 'Coach', 'Progress'], horizontal=True, label_visibility='collapsed', key='page')
+    page = st.radio('Your space', ['Overview', 'Your week', 'Train', 'Coach', 'Progress'], horizontal=True, label_visibility='collapsed', key='page', format_func=lambda value: {'Overview': ':material/home: Overview', 'Your week': ':material/calendar_month: Week', 'Train': ':material/exercise: Train', 'Coach': ':material/forum: Coach', 'Progress': ':material/monitoring: Progress'}[value])
 plan = s['plan']
 if plan['fall_risk']:
     st.info('Supported mode: seated and chair-supported options, with no power cue.')
