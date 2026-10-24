@@ -10,7 +10,7 @@
 .env*
 .streamlit/secrets.toml
 **/.streamlit/secrets.toml
-mobile
+mobileApp/mobile
 app-protoype-presentation
 design
 *.docx
