@@ -199,3 +199,7 @@ Open a compatible Expo Go release on iPhone or Android. Scan the terminal QR cod
 This app uses SDK 58. Check the current Expo Go SDK support before trying the QR flow. During a transition, a compatible development build may be needed; that requires human native-build setup and, for cloud builds, an Expo account and signing choices. No EAS build profile, signing credentials, remote build or store submission was created. Before a distributable build, replace com.zinc.coach with identifiers you control and configure an HTTPS API URL in the build environment. Reference: https://docs.expo.dev/router/introduction/ .
 
 On actual iPhone and Android, verify safe areas, keyboard movement, system text scaling, Back/edge gestures, Stop while scrolling and inside sheets, and local notification permission/delivery. Notification permission should appear only after Enable reminders. Web hides reminders. These device checks remain a human handoff, not a reported pass.
+
+## H3 — Web link preparation
+
+mobile/DEPLOY_WEB.md documents building mobile/dist with the actual HTTPS API origin, uploading it to a static host, preserving route and asset files, configuring extensionless links and exact backend CORS, and rerunning the acceptance checks. The local static helper is not a public server. No host account, public URL, upload or deployment was created. Build output and API keys are not committed.
