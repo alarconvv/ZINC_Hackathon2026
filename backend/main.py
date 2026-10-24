@@ -21,3 +21,5 @@ from .routes import onboarding
 app.include_router(onboarding.router)
 from .routes import activities
 app.include_router(activities.router)
+from .routes import coaching
+app.include_router(coaching.router)
