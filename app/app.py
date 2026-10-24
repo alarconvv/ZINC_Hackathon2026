@@ -3,6 +3,7 @@ from pathlib import Path
 import streamlit as st
 import engine
 import coach
+from ui_helpers import nice_date, nice_range, friendly_rows
 
 st.set_page_config(page_title='ZINC · Strength for the years ahead', page_icon='✳', layout='wide')
 st.markdown('''<style>
@@ -230,7 +231,7 @@ def show_schedule():
     for activity in plan['activities']:
         label = LABELS[activity['section']]
         with st.container(border=True):
-            st.subheader(f"{activity['date']} · {label}")
+            st.subheader(f"{nice_date(activity['date'])} · {label}")
             st.write(f"{activity['minutes']} min estimated · {status(activity).title()} · {BADGES[activity['section']]} evidence")
             st.caption({'strength': 'Large-muscle patterns and supported balance. Record repetitions, effort and pain after every set.', 'yoga': 'Five guided pose cards with supported alternatives and feedback.', 'brain': 'Five reasoning and pattern puzzles. Difficulty follows your answers.', 'relaxation': 'Slow breathing: five seconds in, five seconds out. Choose three or five minutes.'}[activity['section']])
             session = s['activity_sessions'].get(activity['id'])
@@ -271,7 +272,7 @@ def submit_brain(key):
 
 if page == 'Overview':
     st.title(f"Your complete week, {s['profile']['name']}.")
-    st.write(f"{plan['tier']} · Week {plan['week']} · Beginning {plan['start_date']}")
+    st.write(f"{plan['tier']} · Week {plan['week']} · Beginning {nice_date(plan['start_date'])}")
     st.write('Strength for everyday life, room to stretch, a reasoning challenge, and a moment to relax.')
     for section, label in LABELS.items():
         scheduled = [a for a in plan['activities'] if a['section'] == section]
@@ -283,7 +284,7 @@ if page == 'Overview':
     st.subheader('Your next activity')
     if remaining:
         next_activity = remaining[0]
-        st.write(f"{LABELS[next_activity['section']]} · {next_activity['date']} · {next_activity['minutes']} min estimated")
+        st.write(f"{LABELS[next_activity['section']]} · {nice_date(next_activity['date'])} · {next_activity['minutes']} min estimated")
         if st.button('Resume next activity' if status(next_activity) == 'partial' else 'Start next activity', type='primary'):
             engine.start_activity(s, next_activity['id'])
             rerun_to('Train')
@@ -341,7 +342,7 @@ elif page == 'Train':
     else:
         session = engine.active_session(s)
         section = session['section']
-        st.subheader(f"{LABELS[section]} · {session['date']}")
+        st.subheader(f"{LABELS[section]} · {nice_date(session['date'])}")
         if session['finished']:
             st.success('Activity completed.' if session['status'] == 'completed' else f"Activity ended: {session['status']}.")
             if session.get('pain_limited') or any(f['pain'] >= 4 for f in session['feedback']):
@@ -463,7 +464,7 @@ elif page == 'Progress':
     plans = s['history'] + [plan]
     weeks = [p['week'] for p in plans]
     selected = st.selectbox('Week', weeks, index=len(weeks)-1,
-                           format_func=lambda week: f"Week {week} · {board_ui.date_range(next(p for p in plans if p['week'] == week))}")
+                           format_func=lambda week: f"Week {week} · {nice_range(next(p for p in plans if p['week'] == week)['start_date'], (datetime.fromisoformat(next(p for p in plans if p['week'] == week)['start_date']) + timedelta(days=6)).date().isoformat())}")
     selected_plan = next(p for p in plans if p['week'] == selected)
     board = board_ui.summarize(selected_plan, s['activity_sessions'])
     sessions = [a for a in s['activity_sessions'].values() if a['week'] == selected]
@@ -492,12 +493,12 @@ elif page == 'Progress':
         st.button('Choose an activity →', type='primary', on_click=lambda: s.update(requested_page='Your week'))
     st.subheader('Activity board')
     with st.expander('View dated activities and status'):
-        st.dataframe(board['rows'], hide_index=True, width='stretch')
+        st.dataframe(friendly_rows(board['rows']), hide_index=True, width='stretch')
     with st.expander('Pain and effort · recorded feedback'):
         feedback = board_ui.feedback_rows(s, selected_plan)
         if feedback:
             st.caption('Self-reported pain: 0–10. Effort: 1–10. Each observation belongs to the movement and activity shown; unlike activities are not joined into a trend.')
-            st.dataframe(feedback, hide_index=True, width='stretch')
+            st.dataframe(friendly_rows(feedback), hide_index=True, width='stretch')
         else:
             st.info('Strength and yoga feedback will appear after your first recorded set or pose.')
     with st.expander('Accepted next-week adjustments'):
@@ -507,7 +508,7 @@ elif page == 'Progress':
         else:
             st.write('No accepted adjustments this week.')
     with st.expander('Prototype diagnostics · selected week'):
-        st.json([e for e in s['events'] if e.get('week') == selected])
+        st.write('Technical event records are included in the history download.')
     st.download_button('Export all demo history', __import__('json').dumps({'profile': s['profile'], 'plan': plan, 'next_plan': s['next_plan'], 'history': s['history'], 'activity_sessions': s['activity_sessions'], 'logs': s['logs'], 'events': s['events']}, indent=2), file_name='zinc-history.json', mime='application/json')
 
 st.divider()
