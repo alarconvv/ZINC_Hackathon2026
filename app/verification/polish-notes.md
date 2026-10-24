@@ -31,3 +31,5 @@ Phase 1 browser gate: PASS desktop 1280×900 and phone 390×844. Corrected neste
 - 2.6: clear safety screening controls and results. Full local suite passed (see task commit).
 
 Phase 2: 76 Python tests passed. Browser gate PASS at 1280×900, 390×844 and 360×800, including native arrow navigation, all five tabs, history correctness, and Stop viewport position after scrolling the training form. Native popovers require scrolling to settle before opening; the gate now waits for this and uses ordinary clicks. An isolated verification server disables file watching.
+
+- 3.1: consistent exercise movement illustrations. Full local suite passed (see task commit).

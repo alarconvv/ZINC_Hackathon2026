@@ -109,3 +109,7 @@ input,textarea{caret-color:#126bc5}
 .st-key-navigation [data-testid="stRadio"],.st-key-navigation [role="radiogroup"]{width:100%!important}
 .st-key-navigation [role="radiogroup"]>div,.st-key-navigation [data-testid="stRadioOption"]{width:100%!important;min-width:0}
 .st-key-navigation .stElementContainer,.st-key-navigation .stRadio{width:100%!important}
+
+.exercise-art{width:120px;height:120px;display:block;margin:0 0 12px;background:#e7f3ff;border-radius:24px}
+.movement-fallback{display:block;font-size:64px;color:#126bc5}
+.stFormSubmitButton button[kind="primaryFormSubmit"]{background:#126bc5!important;color:white!important;border-color:#126bc5!important}
