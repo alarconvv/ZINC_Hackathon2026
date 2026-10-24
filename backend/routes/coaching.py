@@ -19,13 +19,13 @@ class PreviewBody(BaseModel):
 async def coach_message(body: MessageBody, request: Request, user=Depends(consent_required), db: Session = Depends(db_session)):
     s, version = load(db, user.id)
     unlocked(s)
-    expected(request, version)
     if not engine.eligible(s):
         raise HTTPException(422, 'Complete screening and create your plan first.')
     if engine.red_flag(body.message):
-        engine.stop(s)
-        save(db, user.id, s, version)
+        from .activities import stop
+        stop(user, db)
         raise HTTPException(423, engine.STOP_MESSAGE)
+    expected(request, version)
     working = deepcopy(s)
     working['messages'].append({'role': 'user', 'text': body.message})
     try:

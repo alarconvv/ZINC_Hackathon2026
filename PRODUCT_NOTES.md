@@ -32,3 +32,8 @@ Scaffold: Expo SDK 58 (expo ~58.0.19), React Native 0.88, TypeScript 6, Expo Rou
 - B3: connect accounts consent and one question safety onboarding. Backend and unchanged Streamlit suites PASS.
 
 - B4: connect five tabs training coach proposals and progress board. Backend and unchanged Streamlit suites PASS.
+
+## Cut-line gate
+Above-cut-line browser gate PASS at 390×844 and 1280×900: UI register, consent and privacy link, seven-question safety screen, chosen days, plan, optional add/remove, twelve strength sets, unfinished Accept disabled, accepted next-week proposal, yoga, brain, relaxation, populated progress, rollover with reload, preferences, JSON download, Stop/423, deletion and Welcome. Offline coach fallback verified with provider credentials explicitly empty. No page errors or horizontal page overflow. Backend tests also verify stale safety messages override version conflicts. Phase C begins only after this gate and B5 commit.
+
+- B5: finish account settings and verify the complete cut line. Backend and unchanged Streamlit suites PASS.

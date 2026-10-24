@@ -93,6 +93,8 @@ def finish(body: FinishBody, request: Request, user=Depends(consent_required), d
 
 @router.post('/symptoms')
 def symptoms(body: SymptomsBody, request: Request, user=Depends(consent_required), db: Session = Depends(db_session)):
+    if engine.red_flag(body.text):
+        return stop(user, db)
     def apply(s):
         if engine.red_flag(body.text):
             engine.stop(s)

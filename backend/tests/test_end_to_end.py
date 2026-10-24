@@ -73,3 +73,11 @@ def test_stop_overrides_stale_client_and_survives_new_login(client):
     h['Authorization'] = 'Bearer ' + token
     assert client.get('/plan', headers=h).json()['state']['stopped']
     assert client.get('/activities/active', headers=h).status_code == 423
+
+
+def test_red_flags_override_a_stale_version(client):
+    for suffix, path, body in [('symptom', '/symptoms', {'text': 'chest pain'}), ('coach', '/coach', {'message': 'I feel dizzy'})]:
+        h, s = planned(client, suffix + '@example.com')
+        response = client.post(path, headers={**h, 'If-Match': '0'}, json=body)
+        assert response.status_code == (200 if suffix == 'symptom' else 423)
+        assert client.get('/plan', headers=h).json()['state']['stopped']
