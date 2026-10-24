@@ -83,3 +83,18 @@ R2 Phase 1: full 88-test suite PASS after each of eight task commits. Browser ga
 - 2.3: quieter fictional markers and explicit demo controls. Full local suite passed.
 
 - 2.4: brand favicon with a future logo override. Full local suite passed.
+
+### Human handoff — final art and live Gemini
+Final illustrations are pending Viviana. The twelve-image brief is in app/content/img/ART_BRIEF.md; replacement formats and accessible fallbacks are prepared.
+
+R2 leaves the provider gate's Accept selector unchanged and preserves the audit fix that marks its prepared state as welcomed. No keys were added and no live provider request was made.
+
+After creating the project .venv with the README setup and configuring local secrets, Viviana can run exactly:
+
+```sh
+cd app && ../.venv/bin/python verification/verify_live.py
+```
+
+Expected successful output is JSON containing status PASS, stage complete, tools get_plan/get_last_session/propose_change, and prescriptions active_before 10, active_after_accept 10, staged_next_week 11, active_after_rollover 11. Exit code is 0. Missing configuration is BLOCKED with exit code 2; a provider or acceptance failure is FAIL with exit code 1. A PASS is only established after the human runs it successfully.
+
+- 2.5: prepare human live coach verification handoff. Full local suite passed.
