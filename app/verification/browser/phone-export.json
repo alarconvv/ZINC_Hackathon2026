@@ -198,6 +198,7 @@
         "section": "strength",
         "date": "2026-10-19",
         "week": 1,
+        "optional": false,
         "minutes": 25
       },
       {
@@ -205,6 +206,7 @@
         "section": "brain",
         "date": "2026-10-20",
         "week": 1,
+        "optional": false,
         "minutes": 5
       },
       {
@@ -212,6 +214,7 @@
         "section": "relaxation",
         "date": "2026-10-20",
         "week": 1,
+        "optional": false,
         "minutes": 3
       },
       {
@@ -219,6 +222,7 @@
         "section": "yoga",
         "date": "2026-10-20",
         "week": 1,
+        "optional": false,
         "minutes": 5
       },
       {
@@ -226,6 +230,7 @@
         "section": "strength",
         "date": "2026-10-22",
         "week": 1,
+        "optional": false,
         "minutes": 25
       },
       {
@@ -233,6 +238,7 @@
         "section": "brain",
         "date": "2026-10-24",
         "week": 1,
+        "optional": false,
         "minutes": 5
       },
       {
@@ -240,6 +246,7 @@
         "section": "relaxation",
         "date": "2026-10-24",
         "week": 1,
+        "optional": false,
         "minutes": 3
       },
       {
@@ -247,7 +254,58 @@
         "section": "yoga",
         "date": "2026-10-24",
         "week": 1,
+        "optional": false,
         "minutes": 5
+      }
+    ],
+    "schedule_template": [
+      {
+        "slot": "strength-0",
+        "section": "strength",
+        "day": 0,
+        "optional": false
+      },
+      {
+        "slot": "brain-1",
+        "section": "brain",
+        "day": 1,
+        "optional": false
+      },
+      {
+        "slot": "relaxation-1",
+        "section": "relaxation",
+        "day": 1,
+        "optional": false
+      },
+      {
+        "slot": "yoga-1",
+        "section": "yoga",
+        "day": 1,
+        "optional": false
+      },
+      {
+        "slot": "strength-3",
+        "section": "strength",
+        "day": 3,
+        "optional": false
+      },
+      {
+        "slot": "brain-5",
+        "section": "brain",
+        "day": 5,
+        "optional": false
+      },
+      {
+        "slot": "relaxation-5",
+        "section": "relaxation",
+        "day": 5,
+        "optional": false
+      },
+      {
+        "slot": "yoga-5",
+        "section": "yoga",
+        "day": 5,
+        "optional": false
       }
     ]
   },
@@ -259,8 +317,9 @@
       "section": "strength",
       "date": "2026-10-19",
       "week": 1,
+      "optional": false,
       "minutes": 25,
-      "session_id": "069e0093-cbf8-45ee-9191-555769a9f1f2",
+      "session_id": "7e9f1838-02fa-43b2-99d0-43cb6601ae58",
       "activity_id": "w1-strength-0",
       "status": "partial",
       "finished": true,
@@ -276,8 +335,9 @@
       "section": "brain",
       "date": "2026-10-20",
       "week": 1,
+      "optional": false,
       "minutes": 5,
-      "session_id": "2402b064-8354-4d50-b5ba-30a74c112295",
+      "session_id": "280c51dd-b8d7-4f50-8341-c1625786ce7a",
       "activity_id": "w1-brain-1",
       "status": "partial",
       "finished": true,
@@ -301,8 +361,9 @@
       "section": "relaxation",
       "date": "2026-10-20",
       "week": 1,
+      "optional": false,
       "minutes": 3,
-      "session_id": "d7ee29c5-c65b-4fa4-ab29-adf5cc123653",
+      "session_id": "73200d0f-6788-4ab0-905e-64d59483e789",
       "activity_id": "w1-relaxation-1",
       "status": "completed",
       "finished": true,
@@ -318,8 +379,9 @@
       "section": "yoga",
       "date": "2026-10-20",
       "week": 1,
+      "optional": false,
       "minutes": 5,
-      "session_id": "4e61bd6a-6d47-47e1-953a-887a48442104",
+      "session_id": "380a80d8-d659-422d-99ab-170a07e35fb0",
       "activity_id": "w1-yoga-1",
       "status": "partial",
       "finished": true,
@@ -340,11 +402,11 @@
     "version": 7,
     "sessions": [
       {
-        "id": "87fa8bc9-90c7-4f36-bd27-3207af6f9d08",
+        "id": "8f01613c-5ba1-4e26-a168-5a4ef95149b1",
         "exercise_id": "sit_to_stand",
         "week": 1,
         "activity_id": "w1-strength-0",
-        "session_id": "069e0093-cbf8-45ee-9191-555769a9f1f2",
+        "session_id": "7e9f1838-02fa-43b2-99d0-43cb6601ae58",
         "reps": 10,
         "effort": 6,
         "pain": 0,
@@ -355,41 +417,41 @@
   },
   "events": [
     {
-      "time": "2026-10-23T18:36:30.440816+00:00",
+      "time": "2026-10-23T23:27:45.835118+00:00",
       "event": "screening",
       "result": "cleared"
     },
     {
-      "time": "2026-10-23T18:36:30.589720+00:00",
+      "time": "2026-10-23T23:27:46.052858+00:00",
       "event": "plan_created"
     },
     {
-      "time": "2026-10-23T18:36:31.334612+00:00",
+      "time": "2026-10-23T23:27:46.963682+00:00",
       "event": "set_logged",
       "exercise_id": "sit_to_stand",
       "pain": 0,
       "effort": 6
     },
     {
-      "time": "2026-10-23T18:36:31.654037+00:00",
+      "time": "2026-10-23T23:27:47.282874+00:00",
       "event": "activity_finished",
       "activity_id": "w1-strength-0",
       "status": "partial"
     },
     {
-      "time": "2026-10-23T18:36:32.404270+00:00",
+      "time": "2026-10-23T23:27:48.166604+00:00",
       "event": "activity_finished",
       "activity_id": "w1-brain-1",
       "status": "partial"
     },
     {
-      "time": "2026-10-23T18:36:33.019247+00:00",
+      "time": "2026-10-23T23:27:48.914848+00:00",
       "event": "activity_finished",
       "activity_id": "w1-relaxation-1",
       "status": "completed"
     },
     {
-      "time": "2026-10-23T18:36:33.770130+00:00",
+      "time": "2026-10-23T23:27:49.699810+00:00",
       "event": "activity_finished",
       "activity_id": "w1-yoga-1",
       "status": "partial"

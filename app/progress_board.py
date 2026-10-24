@@ -8,16 +8,19 @@ LABELS = {'strength': 'Strength & balance', 'yoga': 'Yoga', 'brain': 'Brain game
 def summarize(plan, activity_sessions):
     activities = plan['activities']
     rows = [{'Date': a['date'], 'Section': LABELS[a['section']],
-             'Status': activity_sessions.get(a['id'], {}).get('status', 'not started')} for a in activities]
-    complete = sum(r['Status'] == 'completed' for r in rows)
-    partial = sum(r['Status'] == 'partial' for r in rows)
+             'Status': activity_sessions.get(a['id'], {}).get('status', 'not started'),
+             'Plan': 'Optional' if a.get('optional') else 'Baseline'} for a in activities]
+    baseline = [r for r in rows if r['Plan'] == 'Baseline']
+    extras = [r for r in rows if r['Plan'] == 'Optional']
+    complete = sum(r['Status'] == 'completed' for r in baseline)
+    partial = sum(r['Status'] == 'partial' for r in baseline)
     start = date.fromisoformat(plan['start_date'])
     days = [start + timedelta(days=i) for i in range(7)]
     daily = [sum(r['Status'] == 'completed' and r['Date'] == str(day) for r in rows) for day in days]
-    sections = [{'name': label, 'done': sum(r['Status'] == 'completed' and r['Section'] == label for r in rows),
-                 'total': sum(r['Section'] == label for r in rows)} for label in LABELS.values()]
-    return {'rows': rows, 'done': complete, 'partial': partial, 'total': len(rows),
-            'percent': round(100 * complete / len(rows)) if rows else 0,
+    sections = [{'name': label, 'done': sum(r['Status'] == 'completed' and r['Section'] == label for r in baseline),
+                 'total': sum(r['Section'] == label for r in baseline)} for label in LABELS.values()]
+    return {'rows': rows, 'done': complete, 'partial': partial, 'total': len(baseline), 'extra_total': len(extras), 'extra_done': sum(r['Status'] == 'completed' for r in extras),
+            'percent': round(100 * complete / len(baseline)) if baseline else 0,
             'days': days, 'daily': daily, 'sections': sections}
 
 

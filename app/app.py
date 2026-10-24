@@ -173,26 +173,36 @@ if s['safety_result'] is None or s['plan'] is None:
                             st.rerun()
         else:
             st.subheader('Make room for what matters to you')
-            st.write('Every week includes strength and balance, yoga, brain games, and relaxation. Focus choices add a Sunday activity; they never remove a section.')
+            st.write('Choose days that fit your routine. All four baseline sections stay included. You can add optional activities after creating your week.')
             with st.form('focus_step'):
+                st.caption('Quick Sunday extras · optional')
                 yoga = st.checkbox('Extra yoga', s['profile']['toggles'].get('yoga', False))
                 brain = st.checkbox('Extra brain and relaxation', s['profile']['toggles'].get('brain', False))
                 today = datetime.now(ZoneInfo('America/New_York')).date()
                 start = st.date_input('Week beginning (Monday)', value=s.get('chosen_start', today - timedelta(days=today.weekday())))
+                st.markdown('#### Choose your baseline days')
+                strength_default = ['Mon', 'Wed', 'Fri'] if engine.assign_tier(s['profile']['age']) in ('Build', 'Rebuild') and not s['profile'].get('mci') else ['Mon', 'Thu']
+                day_choices = {section: st.multiselect(f'{label} days', engine.WEEKDAYS, default=s.get('chosen_days', {}).get(section, strength_default if section == 'strength' else ['Tue', 'Sat']), key=f'choose_{section}_days') for section, label in LABELS.items()}
+                st.caption('Keep the displayed baseline frequency. Strength needs a rest day between sessions. Optional extras can be added later.')
                 back = st.form_submit_button('Back to safety')
                 create = st.form_submit_button('Create my complete week', type='primary')
                 if back or create:
                     s['profile']['toggles'] = {'yoga': yoga, 'brain': brain}
                     s['chosen_start'] = start
+                    s['chosen_days'] = day_choices
                     if back:
                         s['onboarding_step'] = 1
                         st.rerun()
                     elif start.weekday() != 0:
                         st.error('Choose a Monday so the dated weekly schedule matches your training days.')
                     else:
-                        s['plan'] = engine.make_week(s['profile'], s['safety_result'], engine.AVAILABLE, start)
-                        engine.event(s, 'plan_created')
-                        st.rerun()
+                        try:
+                            initial = engine.make_week(s['profile'], s['safety_result'], engine.AVAILABLE, start)
+                            s['plan'] = engine.choose_days(initial, {section: [engine.WEEKDAYS.index(day) for day in days] for section, days in day_choices.items()})
+                            engine.event(s, 'plan_created')
+                            st.rerun()
+                        except ValueError as exc:
+                            st.error(str(exc))
         st.stop()
     
 onboarding.empty()
@@ -227,6 +237,19 @@ def show_schedule():
             if st.button('Review' if session and session['finished'] else 'Resume' if session else 'Start activity', key='start_' + activity['id']):
                 engine.start_activity(s, activity['id'])
                 rerun_to('Train')
+            st.caption('Optional extra' if activity.get('optional') else 'Baseline activity')
+            if not session or not session['finished']:
+                with st.expander('Reschedule or remove' if activity.get('optional') else 'Reschedule'):
+                    with st.form('move_' + activity['id']):
+                        selected_day = st.selectbox('Move to', engine.WEEKDAYS, index=(datetime.fromisoformat(activity['date']).date() - datetime.fromisoformat(plan['start_date']).date()).days)
+                        move = st.form_submit_button('Save new day')
+                        remove = st.form_submit_button('Remove optional activity') if activity.get('optional') and not session else False
+                        if move or remove:
+                            try:
+                                engine.change_schedule(s, activity_id=activity['id'], day=engine.WEEKDAYS.index(selected_day), remove=remove)
+                                st.rerun()
+                            except ValueError as exc:
+                                st.error(str(exc))
 
 
 def submit_strength(exercise_id, keys):
@@ -254,6 +277,19 @@ if page == 'Overview':
         scheduled = [a for a in plan['activities'] if a['section'] == section]
         complete = sum(status(a) == 'completed' for a in scheduled)
         st.write(f'**{label}** · {complete} of {len(scheduled)} completed')
+    today = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
+    remaining = [a for a in plan['activities'] if not s['activity_sessions'].get(a['id'], {}).get('finished')]
+    remaining.sort(key=lambda a: (0 if status(a) == 'partial' else 1 if a['date'] == today else 2 if a['date'] > today else 3, a['date']))
+    st.subheader('Your next activity')
+    if remaining:
+        next_activity = remaining[0]
+        st.write(f"{LABELS[next_activity['section']]} · {next_activity['date']} · {next_activity['minutes']} min estimated")
+        if st.button('Resume next activity' if status(next_activity) == 'partial' else 'Start next activity', type='primary'):
+            engine.start_activity(s, next_activity['id'])
+            rerun_to('Train')
+        st.caption('Choose Your week to move this activity to another day.')
+    else:
+        st.success('Every activity is finished or ended. Review your week with your coach.')
     if st.button('Explore my week', type='primary'):
         rerun_to('Your week')
     if st.button('Ask my coach'):
@@ -276,6 +312,19 @@ if page == 'Overview':
 elif page == 'Your week':
     st.title('Your week, all four sections.')
     st.caption('Durations are prototype estimates, not measured exercise time. Source badges describe strength, function, trained reasoning or stress outcomes, never disease outcomes.')
+    with st.expander('Add an optional activity'):
+        with st.form('add_activity'):
+            added_section = st.selectbox('Activity type', list(LABELS), index=3, format_func=LABELS.get)
+            added_day = st.selectbox('Day', engine.WEEKDAYS, index=2)
+            st.caption(f'Adding this activity will increase your week from {len(plan["activities"])} to {len(plan["activities"]) + 1} activities. Baseline completion is tracked separately from extras.')
+            st.caption('At most one activity of each type per day. Strength: at most three days with a rest day between; supported mode keeps its prescribed frequency. These are prototype scheduling limits, not clinical clearance.')
+            if st.form_submit_button('Add to my week', type='primary'):
+                try:
+                    engine.change_schedule(s, section=added_section, day=engine.WEEKDAYS.index(added_day))
+                    st.rerun()
+                except ValueError as exc:
+                    st.error(str(exc))
+    st.caption('Your chosen days and optional activities carry into next week. Finished activities keep their recorded dates.')
     show_schedule()
     with st.expander('Strength and balance prescriptions'):
         for item in plan['exercises']:
@@ -426,7 +475,8 @@ elif page == 'Progress':
     if previous:
         prior = board_ui.summarize(previous, s['activity_sessions'])
         comparison = f'Previous week: {prior["done"]} of {prior["total"]} scheduled activities completed.'
-    st.markdown(f'<section class="progress-hero"><div class="completion-gauge" style="--completion:{board["percent"]}%" role="img" aria-label="{board["done"]} of {board["total"]} scheduled activities completed, {board["percent"]} percent"><div><strong>{board["percent"]}<small>%</small></strong><span>week complete</span></div></div><div class="weekly-takeaway"><h2>Your week, taking shape.</h2><p>{board["done"]} of {board["total"]} activities completed · {board["partial"]} partially completed</p><p>{comparison}</p></div></section><div class="section-readings">{section_markup}</div>', unsafe_allow_html=True)
+    st.markdown(f'<section class="progress-hero"><div class="completion-gauge" style="--completion:{board["percent"]}%" role="img" aria-label="{board["done"]} of {board["total"]} baseline activities completed, {board["percent"]} percent"><div><strong>{board["percent"]}<small>%</small></strong><span>baseline complete</span></div></div><div class="weekly-takeaway"><h2>Your week, taking shape.</h2><p>{board["done"]} of {board["total"]} baseline activities completed · {board["partial"]} partially completed</p><p>{comparison}</p></div></section><div class="section-readings">{section_markup}</div>', unsafe_allow_html=True)
+    st.caption(f"Optional extras: {board['extra_done']} of {board['extra_total']} completed. Extras never lower your baseline completion.")
     st.markdown('<section class="chart-panel"><div class="chart-heading"><h2>Your activity rhythm</h2><span>Completed activities · scheduled day</span></div>' + board_ui.activity_chart(board) + '<p>Each point counts completed activities scheduled for that day. Partial and skipped activities are listed separately below.</p></section>', unsafe_allow_html=True)
     answers = [r for a in sessions if a['section'] == 'brain' for r in a['answers']]
     accuracy = f"{sum(r['correct'] for r in answers) / len(answers):.0%}" if answers else '—'

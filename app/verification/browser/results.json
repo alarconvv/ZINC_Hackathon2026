@@ -1,6 +1,6 @@
 {
-  "time": "2026-10-23T18:36:35.027Z",
-  "url": "http://127.0.0.1:8506",
+  "time": "2026-10-23T23:27:53.556Z",
+  "url": "http://127.0.0.1:8507",
   "results": [
     {
       "viewport": {
@@ -24,6 +24,7 @@
         "export JSON",
         "week rollover",
         "historical progress",
+        "optional activity add/remove",
         "no page errors",
         "no horizontal page overflow"
       ]
@@ -50,6 +51,7 @@
         "export JSON",
         "week rollover",
         "historical progress",
+        "optional activity add/remove",
         "no page errors",
         "no horizontal page overflow"
       ]

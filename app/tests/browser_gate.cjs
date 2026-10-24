@@ -132,10 +132,29 @@ async function main() {
       await week.press('ArrowUp');
       await week.press('Enter');
       await page.getByText('Relaxation: 5 self-reported minutes',{exact:true}).waitFor();
+      await navigate('Your week');
+      await page.getByText('Add an optional activity',{exact:true}).click();
+      const activityType=page.getByRole('combobox',{name:'Activity type',exact:true});
+      await activityType.click();
+      await activityType.press('Home');
+      await activityType.press('ArrowDown');
+      await activityType.press('Enter');
+      const extraDay=page.getByRole('combobox',{name:'Day',exact:true});
+      await extraDay.click();
+      await extraDay.press('Home');
+      await extraDay.press('ArrowDown');
+      await extraDay.press('ArrowDown');
+      await extraDay.press('Enter');
+      await button('Add to my week').click();
+      await page.getByText('Optional extra',{exact:true}).waitFor();
+      await capture('planner');
+      await page.getByText('Reschedule or remove',{exact:true}).click();
+      await button('Remove optional activity').click();
+      await page.getByText('Optional extra',{exact:true}).waitFor({state:'hidden'});
       const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth);
       assert.equal(overflow,false,kind+' page overflow');
       assert.deepEqual(errors,[]);
-      results.push({viewport,kind,pass:true,checks:['onboarding','all sections','keyboard navigation','set log','brain answer','yoga feedback','reduced motion','normal breathing keyframe phases','alert and option contrast','relaxation completion','progress','export JSON','week rollover','historical progress','no page errors','no horizontal page overflow']});
+      results.push({viewport,kind,pass:true,checks:['onboarding','all sections','keyboard navigation','set log','brain answer','yoga feedback','reduced motion','normal breathing keyframe phases','alert and option contrast','relaxation completion','progress','export JSON','week rollover','historical progress','optional activity add/remove','no page errors','no horizontal page overflow']});
       await context.close();
     }
   } finally {await browser.close();}

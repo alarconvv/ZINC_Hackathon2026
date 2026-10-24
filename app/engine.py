@@ -251,22 +251,120 @@ def decline_pending_change(state):
     event(state, 'declined')
 
 
+WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+SECTIONS = ('strength', 'yoga', 'brain', 'relaxation')
+
+
 def schedule(plan):
     start = date.fromisoformat(plan['start_date'])
-    records = []
-    day_indexes = {'Mon': 0, 'Wed': 2, 'Thu': 3, 'Fri': 4}
-    sections = {'strength': [day_indexes[d] for d in plan['days']], 'yoga': [1, 5], 'brain': [1, 5], 'relaxation': [1, 5]}
-    if plan['toggles'].get('yoga'):
-        sections['yoga'].append(6)
-    if plan['toggles'].get('brain'):
-        sections['brain'].append(6)
-        sections['relaxation'].append(6)
-    for section, days in sections.items():
-        for day in days:
-            records.append({'id': f"w{plan['week']}-{section}-{day}", 'section': section,
-                            'date': str(start + timedelta(days=day)), 'week': plan['week'],
-                            'minutes': {'strength': 25, 'yoga': 5, 'brain': 5, 'relaxation': 3}[section]})
-    plan['activities'] = sorted(records, key=lambda a: (a['date'], a['section']))
+    template = plan.get('schedule_template')
+    if template is None:
+        sections = {'strength': [WEEKDAYS.index(d) for d in plan['days']], 'yoga': [1, 5], 'brain': [1, 5], 'relaxation': [1, 5]}
+        if plan['toggles'].get('yoga'):
+            sections['yoga'].append(6)
+        if plan['toggles'].get('brain'):
+            sections['brain'].append(6)
+            sections['relaxation'].append(6)
+        template = [{'slot': f'{section}-{day}', 'section': section, 'day': day,
+                     'optional': day == 6 and section != 'strength'} for section, days in sections.items() for day in days]
+    plan['activities'] = sorted([{'id': f"w{plan['week']}-{r['slot']}", 'section': r['section'],
+        'date': str(start + timedelta(days=r['day'])), 'week': plan['week'], 'optional': r['optional'],
+        'minutes': {'strength': 25, 'yoga': 5, 'brain': 5, 'relaxation': 3}[r['section']]} for r in template],
+        key=lambda a: (a['date'], a['section']))
+
+
+def schedule_template(plan):
+    start = date.fromisoformat(plan['start_date'])
+    return [{'slot': a['id'].split('-', 1)[1], 'section': a['section'],
+             'day': (date.fromisoformat(a['date']) - start).days, 'optional': a.get('optional', False)}
+            for a in plan['activities']]
+
+
+def validate_schedule(plan, template):
+    if not isinstance(template, list) or any(not isinstance(r, dict) for r in template):
+        raise ValueError('Choose a valid weekly schedule.')
+    for r in template:
+        if (r.get('section') not in SECTIONS or type(r.get('day')) is not int or not 0 <= r['day'] <= 6
+                or type(r.get('optional')) is not bool or not isinstance(r.get('slot'), str) or not r['slot']):
+            raise ValueError('Choose an activity and a day within this week.')
+    if len({r['slot'] for r in template}) != len(template) or len({(r['section'], r['day']) for r in template}) != len(template):
+        raise ValueError('Each activity type can appear only once per day.')
+    required_strength = 3 if plan['tier'] in ('Build', 'Rebuild') else 2
+    for section in SECTIONS:
+        baseline = [r for r in template if r['section'] == section and not r['optional']]
+        if len(baseline) != (required_strength if section == 'strength' else 2):
+            raise ValueError('Keep all prescribed baseline activities in your week.')
+    strength = sorted(r['day'] for r in template if r['section'] == 'strength')
+    if len(strength) > (required_strength if plan['fall_risk'] else 3):
+        raise ValueError('Keep your prescribed strength frequency in supported mode; otherwise at most three strength days are available.')
+    if any((day + 1) % 7 in strength for day in strength):
+        raise ValueError('Leave at least one rest day between strength sessions, including Sunday and Monday.')
+
+
+def choose_days(plan, choices):
+    """Select baseline weekdays before any activity is started."""
+    if not isinstance(choices, dict) or set(choices) != set(SECTIONS):
+        raise ValueError('Choose days for all four activity types.')
+    template = schedule_template(plan)
+    for section in SECTIONS:
+        rows = [r for r in template if r['section'] == section and not r['optional']]
+        days = choices[section]
+        if not isinstance(days, list) or len(days) != len(rows):
+            raise ValueError(f'Choose {len(rows)} baseline days for {section}. Add optional activities after creating your week.')
+        for row, day in zip(rows, sorted(days) if all(type(d) is int for d in days) else days):
+            row['day'] = day
+    validate_schedule(plan, template)
+    updated = deepcopy(plan)
+    updated['schedule_template'] = template
+    updated['days'] = [WEEKDAYS[r['day']] for r in template if r['section'] == 'strength']
+    schedule(updated)
+    return updated
+
+
+def change_schedule(state, *, activity_id=None, day=None, section=None, remove=False):
+    """Transactional calendar edit; prescriptions and recorded work remain intact."""
+    if not eligible(state):
+        raise ValueError('Complete screening first; stopped sessions cannot change the schedule.')
+    if type(remove) is not bool or (not remove and (type(day) is not int or not 0 <= day <= 6)):
+        raise ValueError('Choose a day within the selected week.')
+    template = schedule_template(state['plan'])
+    if activity_id is None:
+        if section not in SECTIONS or remove:
+            raise ValueError('Choose a valid activity type.')
+        template.append({'slot': f'{section}-extra-{uuid4().hex[:8]}', 'section': section, 'day': day, 'optional': True})
+    else:
+        activity = next((a for a in state['plan']['activities'] if a['id'] == activity_id), None)
+        if activity is None:
+            raise ValueError('Choose an activity from the current week.')
+        session = state['activity_sessions'].get(activity_id)
+        if session and session['finished']:
+            raise ValueError('Finished activities stay on their recorded day.')
+        row = next(r for r in template if r['slot'] == activity_id.split('-', 1)[1])
+        if remove:
+            if not row['optional'] or session is not None:
+                raise ValueError('Only an unstarted optional activity can be removed.')
+            template.remove(row)
+        else:
+            row['day'] = day
+    validate_schedule(state['plan'], template)
+    start = date.fromisoformat(state['plan']['start_date'])
+    earlier_strength = [date.fromisoformat(a['date']) for past in state['history'] for a in past['activities'] if a['section'] == 'strength']
+    if any(0 <= (start + timedelta(days=r['day']) - prior).days <= 1 for r in template if r['section'] == 'strength' for prior in earlier_strength):
+        raise ValueError('Leave a rest day after the previous week’s strength session.')
+    updated = deepcopy(state['plan'])
+    updated.update(schedule_template=template, version=updated['version'] + 1,
+                   days=[WEEKDAYS[r['day']] for r in template if r['section'] == 'strength'])
+    schedule(updated)
+    staged = deepcopy(state['next_plan'])
+    if staged is not None:
+        staged.update(schedule_template=deepcopy(template), days=updated['days'][:])
+        schedule(staged)
+    state['plan'], state['next_plan'] = updated, staged
+    for activity in updated['activities']:
+        if activity['id'] in state['activity_sessions']:
+            state['activity_sessions'][activity['id']]['date'] = activity['date']
+    feedback_changed(state)
+    event(state, 'schedule_changed', week=updated['week'])
 
 
 def start_activity(state, activity_id):
