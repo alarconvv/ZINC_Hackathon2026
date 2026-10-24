@@ -18,3 +18,12 @@ def nice_range(start: str, end: str) -> str:
 
 def friendly_rows(rows):
     return [{key: nice_date(value) if key == 'Date' else value for key, value in row.items()} for row in rows]
+
+
+def inert_chunks(text):
+    """Escape Markdown and HTML before write_stream receives filtered coach text."""
+    import html
+    safe = html.escape(text)
+    safe = ''.join(chr(92) + char if char in chr(92) + '`*_{}[]()#+.!|>~-' else char for char in safe)
+    for word in safe.split(' '):
+        yield word + ' '

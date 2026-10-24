@@ -35,3 +35,5 @@ Phase 2: 76 Python tests passed. Browser gate PASS at 1280×900, 390×844 and 36
 - 3.1: consistent exercise movement illustrations. Full local suite passed (see task commit).
 
 - 3.2: optional timers and activity completion summaries. Full local suite passed (see task commit).
+
+- 3.3: safe coach bubbles prompts and proposal presentation. Full local suite passed (see task commit).

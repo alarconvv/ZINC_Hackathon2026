@@ -4,7 +4,7 @@ import streamlit as st
 import engine
 import coach
 from timers import countdown
-from ui_helpers import nice_date, nice_range, friendly_rows
+from ui_helpers import nice_date, nice_range, friendly_rows, inert_chunks
 
 st.set_page_config(page_title='ZINC · Strength for the years ahead', page_icon='✳', layout='wide', initial_sidebar_state='collapsed')
 st.markdown('''<style>
@@ -473,12 +473,22 @@ elif page == 'Coach':
     st.title('Your coach')
     st.write('Your personal coach can explain your scheduled activities, review your history and propose strength changes for next week. You decide whether to accept.')
     for message in s['messages']:
-        with st.chat_message(message['role']):
-            st.text(message['text'])
-    checkin = st.button('Weekly check-in', type='primary')
+        with st.chat_message(message['role'], avatar='✳' if message['role'] == 'assistant' else None):
+            display_text = 'Your coach is offline right now. Your plan is unchanged — you can still use the rules-only adjustment below.' if message['text'] == coach.FALLBACK else message['text']
+            st.text(display_text)
+    def queue_prompt():
+        chosen = st.session_state.get('coach_prompt')
+        if chosen:
+            s['queued_prompt'] = chosen
+            s['clear_prompt'] = True
+    if s.pop('clear_prompt', False):
+        st.session_state.pop('coach_prompt', None)
+    prompt = s.pop('queued_prompt', None)
+    st.pills('Start a conversation', ['Why this exercise?', 'My knee feels sore', "What's next week?", 'Weekly check-in'], key='coach_prompt', on_change=queue_prompt)
+    checkin = prompt == 'Weekly check-in'
     message = st.chat_input('Ask about strength, yoga, brain games or relaxation', max_chars=2000)
-    if checkin or message:
-        message = message or 'Review my complete weekly activity history and propose a strength goal for next week when feedback supports it.'
+    if prompt or message:
+        message = message or (prompt if not checkin else None) or 'Review my complete weekly activity history and propose a strength goal for next week when feedback supports it.'
         try:
             secrets = {'GEMINI_API_KEY': st.secrets.get('GEMINI_API_KEY'), 'MODEL': st.secrets.get('MODEL')}
         except FileNotFoundError:
@@ -486,9 +496,12 @@ elif page == 'Coach':
         s['messages'].append({'role': 'user', 'text': message})
         with st.spinner('Reviewing your week…'):
             reply = coach.coach_turn(message, s, secrets)
+        with st.chat_message('assistant', avatar='✳'):
+            shown = 'Your coach is offline right now. Your plan is unchanged — you can still use the rules-only adjustment below.' if reply == coach.FALLBACK else reply
+            st.write_stream(inert_chunks(shown))
         s['messages'].append({'role': 'assistant', 'text': reply})
         st.rerun()
-    with st.expander('Rules-only strength adjustment · no AI'):
+    with st.expander('Adjust without AI'):
         st.caption('Works without an API key. Log strength feedback first. Finish the current activity before accepting.')
         with st.form('rule_preview'):
             exercise_id = st.selectbox('Exercise', [i['id'] for i in plan['exercises']], format_func=lambda x: engine.prescription(plan, x)['name'])
@@ -504,8 +517,7 @@ elif page == 'Coach':
     p = s['pending_change']
     if p:
         item = engine.prescription(plan, p['exercise_id'])
-        st.subheader(f"Pending for next week · {item['name']}")
-        st.write(f"{p['current']} → {p['proposed']} {item['unit']} · {p['reason']}")
+        st.markdown(f'<section class="proposal"><span class="kicker">For next week · your choice</span><h2>{esc(item["name"])}</h2><p class="prescription">{esc(p["current"])} → {esc(p["proposed"])} {esc(item["unit"])}</p><p>{esc(p["reason"])}</p></section>', unsafe_allow_html=True)
         unfinished = any(not a['finished'] for a in s['activity_sessions'].values() if a['week'] == plan['week'])
         actions = st.columns(2)
         with actions[0]:

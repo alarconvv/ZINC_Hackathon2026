@@ -94,7 +94,7 @@ class AppTests(unittest.TestCase):
   self.assertFalse(at.exception)
  def test_missing_key(self):
   at=self.screened();at.radio(key='page').set_value('Coach').run()
-  button(at,'Weekly check-in').click().run()
+  at.pills[0].set_value('Weekly check-in').run()
   self.assertIn('fallback',at.session_state['zinc']['messages'][-1]['text'])
   self.assertFalse(at.exception)
 if __name__=='__main__':unittest.main()
