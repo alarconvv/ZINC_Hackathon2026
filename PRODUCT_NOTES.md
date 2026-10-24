@@ -41,3 +41,5 @@ Above-cut-line browser gate PASS at 390×844 and 1280×900: UI register, consent
 - C1: add contextual device local training reminders. Backend and unchanged Streamlit suites PASS.
 
 - C1: test native reminder trigger mapping and time validation. Backend and unchanged Streamlit suites PASS.
+
+- C2: record home tests and scoreboard without changing prescriptions. Backend and unchanged Streamlit suites PASS.

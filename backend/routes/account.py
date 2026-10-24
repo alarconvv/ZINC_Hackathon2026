@@ -4,6 +4,7 @@ from sqlmodel import Session, select, delete
 from ..deps import User, UserState, AuditEvent, Consent, current_user, db_session
 from ..state_store import consent_required, load, expected
 from ..zinc_core import progress_board
+from .home_tests import scoreboard
 
 router = APIRouter()
 @router.get('/progress')
@@ -16,7 +17,7 @@ def progress(week: int | None = None, user=Depends(consent_required), db: Sessio
     sessions = [a for a in s['activity_sessions'].values() if a['week'] == plan['week']]
     answers = [answer for a in sessions for answer in a['answers']]
     correct = sum(a['correct'] for a in answers)
-    return {'version': version, 'week': plan['week'], 'weeks': [{'week': p['week'], 'start_date': p['start_date']} for p in plans],
+    return {'scoreboard': scoreboard(s), 'version': version, 'week': plan['week'], 'weeks': [{'week': p['week'], 'start_date': p['start_date']} for p in plans],
         'date_range': progress_board.date_range(plan), 'board': progress_board.summarize(plan, s['activity_sessions']),
         'reasoning': {'answers': len(answers), 'correct': correct, 'accuracy': round(100 * correct / len(answers)) if answers else None},
         'relaxation_minutes': sum(a.get('completed_minutes', 0) for a in sessions if a['section'] == 'relaxation'),
