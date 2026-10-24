@@ -48,3 +48,12 @@ Above-cut-line browser gate PASS at 390×844 and 1280×900: UI register, consent
 The plan's blanket “no sharing” wording would hide the existing optional Gemini processing. The draft instead states no sale, advertising, analytics or sharing with other users, and explicitly discloses the Gemini request and relevant engine context. No sharing-consent checkbox is added. Contact, processor terms, backups and legal review remain human launch requirements. Policy reference: Washington RCW 19.373.020, read 2026-10-24.
 
 - C3: add clearly marked draft legal pages and health data disclosures. Backend and unchanged Streamlit suites PASS.
+
+## Fictional demo login
+Demo email: `maria@demo.zinc`
+
+Demo password: `Foju1NC4JWjXnQcvzz54njQz`
+
+These credentials are for fictional judge/demo use only. Never use this account for personal health information or on an unrestricted public service. The seed reads DEMO_PASSWORD from the environment; the password is documented only here, not embedded in the app or seeder. Existing demo data is never overwritten.
+
+- C4: seed a fictional saved week using the unchanged engine. Backend and unchanged Streamlit suites PASS.
