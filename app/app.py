@@ -519,6 +519,8 @@ elif page == 'Train':
 elif page == 'Coach':
     st.title('Your coach')
     st.write('Your personal coach can explain your scheduled activities, review your history and propose strength changes for next week. You decide whether to accept.')
+    if not s['messages']:
+        st.markdown(f'<section class="coach-greeting"><p>Hi {esc(s["profile"]["name"])} — I can explain your plan, review how your week went, and suggest next week’s goal. You decide what changes.</p></section>', unsafe_allow_html=True)
     for message in s['messages']:
         with st.chat_message(message['role'], avatar='✳' if message['role'] == 'assistant' else None):
             display_text = 'Your coach is offline right now. Your plan is unchanged — you can still use the rules-only adjustment below.' if message['text'] == coach.FALLBACK else message['text']
@@ -635,6 +637,7 @@ elif page == 'Progress':
     st.download_button('Export all demo history', __import__('json').dumps({'profile': s['profile'], 'plan': plan, 'next_plan': s['next_plan'], 'history': s['history'], 'activity_sessions': s['activity_sessions'], 'logs': s['logs'], 'events': s['events']}, indent=2), file_name='zinc-history.json', mime='application/json')
 
 st.divider()
-st.caption('General wellness, not medical advice')
-if st.button('About ZINC', key='footer_about'):
-    about_zinc()
+with st.container(key='wellness_footer', horizontal=True, vertical_alignment='center'):
+    st.caption('General wellness, not medical advice', width='content')
+    if st.button('About ZINC', key='footer_about', type='tertiary'):
+        about_zinc()

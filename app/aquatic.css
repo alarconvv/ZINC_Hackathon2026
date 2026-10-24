@@ -191,3 +191,12 @@ iframe{border-radius:24px}
 .overview-card .mini-ring span{font-size:.75rem}.st-key-next_activity,.st-key-next_week{padding:22px;margin-bottom:12px}
 @media(max-width:899px){.overview-card .mini-ring{position:static;margin:10px 0}.overview-card h2{max-width:none}.overview-card{min-height:0}}
 
+
+
+[data-testid="stBottom"],[data-testid="stBottom"]>div,[data-testid="stBottomBlockContainer"]{background:transparent!important}
+[data-testid="stChatInput"]{border:1px solid #d6e7f5;border-radius:28px;background:#fff!important;color:#12365b}
+[data-testid="stChatInput"] textarea{background:#fff!important;color:#12365b;font-family:inherit}
+[data-testid="stChatInput"] textarea::placeholder{color:#526b84;opacity:1}
+.coach-greeting{background:#f4faff;color:#12365b;border-radius:24px;padding:20px 24px;margin:16px 0;max-width:65ch}.coach-greeting p{margin:0}
+.st-key-wellness_footer{gap:8px!important;margin-bottom:16px}.st-key-wellness_footer button{background:transparent!important;color:#fff!important;border:0;box-shadow:none;font-weight:500;padding:0 4px;text-decoration:underline;text-underline-offset:4px}
+
