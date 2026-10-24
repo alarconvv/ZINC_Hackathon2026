@@ -24,8 +24,8 @@ async function main() {
       const button = name=>page.getByRole('button',{name,exact:true});
       const waitHeading = name=>page.getByRole('heading',{name,exact:true}).waitFor({state:'visible'});
       const navigate = async name=>{
-        await page.getByText(name,{exact:true}).click();
-        await waitHeading({'Your week':'Your week, all four sections.','Train':'One activity at a time.','Coach':'Guidance for your whole week.','Progress':'Progress','Overview':'Your complete week, Maria.'}[name]);
+        await page.getByTestId('stRadioOption').filter({has:page.getByRole('radio',{name:new RegExp((name==='Your week'?'Week':name)+'$')})}).click();
+        await waitHeading({'Your week':'Your week','Train':'Strength & balance','Coach':'Your coach','Progress':'Progress','Overview':'Your complete week, Maria.'}[name]);
       };
       if(kind==='phone')await page.getByTestId('stExpandSidebarButton').click();
       await button('Load Maria').click();
@@ -51,12 +51,12 @@ async function main() {
       // Keyboard navigation is retained in the real browser, with a visible focus style.
       await button('Explore my week').focus();
       await page.keyboard.press('Enter');
-      await waitHeading('Your week, all four sections.');
+      await waitHeading('Your week');
       assert(await page.getByRole('heading',{name:/Strength & balance/}).count()>0);
       await capture('week');
       // Start a real strength activity and submit exactly one set, then end it as partial.
       await button('Start activity').first().click();
-      await waitHeading('One activity at a time.');
+      await waitHeading('Strength & balance');
       await button('Done set').click();
       await page.getByText(/Set 2 of 2/).waitFor();
       await capture('strength');

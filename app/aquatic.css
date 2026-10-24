@@ -33,7 +33,7 @@ input,textarea{caret-color:#126bc5}
 .st-key-navigation [role="radiogroup"] label>div:not(:last-child){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 
 /* 1.1 — Product canvas, with Streamlit's deployment controls out of the way. */
-[data-testid="stToolbar"],[data-testid="stDecoration"],[data-testid="stAppDeployButton"],button[kind="header"]{display:none!important}
+[data-testid="stToolbar"],[data-testid="stDecoration"],[data-testid="stAppDeployButton"]{display:none!important}
 [data-testid="stHeader"]{background:transparent}
 
 /* 1.2 — Five equal native radio tabs, with decorative circles visually clipped. */
@@ -45,3 +45,9 @@ input,textarea{caret-color:#126bc5}
 .st-key-navigation label:has(input:checked){background:#c2e1ff!important;color:#0758aa}
 
 .brand-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.demo-pill{font-size:.7rem;letter-spacing:.03em;border:1px solid #ffffff60;border-radius:20px;padding:3px 10px;background:#ffffff16;color:#f4faff}
+
+.st-key-navigation [data-testid="stRadioOption"]>div>div:first-child{display:none!important}
+.st-key-navigation [data-testid="stMarkdownContainer"] span[role="img"]{font-size:24px!important}
+/* Streamlit places the sidebar affordance inside its toolbar on mobile. */
+[data-testid="stToolbar"]:has([data-testid="stExpandSidebarButton"]){display:flex!important}
+[data-testid="stToolbarActions"],[data-testid="stMainMenu"]{display:none!important}

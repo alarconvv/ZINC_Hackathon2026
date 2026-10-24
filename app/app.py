@@ -225,12 +225,16 @@ def status(activity):
     return s['activity_sessions'].get(activity['id'], {}).get('status', 'not started')
 
 
+def status_label(activity):
+    return {'not started': 'Not started', 'partial': 'In progress', 'completed': 'Done', 'skipped': 'Skipped'}.get(status(activity), status(activity))
+
+
 def show_schedule():
     for activity in plan['activities']:
         label = LABELS[activity['section']]
         with st.container(border=True):
             st.subheader(f"{nice_date(activity['date'])} · {label}")
-            st.write(f"{activity['minutes']} min estimated · {status(activity).title()} · {BADGES[activity['section']]} evidence")
+            st.write(f"{activity['minutes']} min estimated · {status_label(activity)} · {BADGES[activity['section']]} evidence")
             st.caption({'strength': 'Large-muscle patterns and supported balance. Record repetitions, effort and pain after every set.', 'yoga': 'Five guided pose cards with supported alternatives and feedback.', 'brain': 'Five reasoning and pattern puzzles. Difficulty follows your answers.', 'relaxation': 'Slow breathing: five seconds in, five seconds out. Choose three or five minutes.'}[activity['section']])
             session = s['activity_sessions'].get(activity['id'])
             if st.button('Review' if session and session['finished'] else 'Resume' if session else 'Start activity', key='start_' + activity['id']):
@@ -303,7 +307,7 @@ if page == 'Overview':
             if item['id'] in s['next_plan']['adjusted_exercises']:
                 st.write(f"{item['name']}: {current['reps']} → {item['reps']} {item['unit']}")
     else:
-        st.write('Your current prescriptions carry forward unless you accept a coach proposal.')
+        st.write('No changes yet. Your coach will suggest next week’s goal at check-in.')
     if st.button('Start next week'):
         try:
             engine.start_next_week(s)
@@ -312,8 +316,9 @@ if page == 'Overview':
             st.error(str(exc))
 
 elif page == 'Your week':
-    st.title('Your week, all four sections.')
-    st.caption('Durations are prototype estimates, not measured exercise time. Source badges describe strength, function, trained reasoning or stress outcomes, never disease outcomes.')
+    st.title('Your week')
+    with st.popover('About activity estimates'):
+        st.write('Durations are estimates, not measured exercise time. Source badges describe strength, function, trained reasoning or stress outcomes, never disease outcomes.')
     with st.expander('Add an optional activity'):
         with st.form('add_activity'):
             added_section = st.selectbox('Activity type', list(LABELS), index=3, format_func=LABELS.get)
@@ -335,7 +340,7 @@ elif page == 'Your week':
     st.caption('The speed game is not scored or included in progress. Reasoning games are fully playable.')
 
 elif page == 'Train':
-    st.title('One activity at a time.')
+    st.title(LABELS[engine.active_session(s)['section']] if s['active_activity'] else 'Choose your activity')
     if not s['active_activity']:
         st.info('Choose a dated activity from Your week to begin.')
         if st.button('Choose an activity'):
@@ -413,7 +418,7 @@ elif page == 'Train':
                     st.info('This text check cannot assess symptoms. Press Stop whenever you feel unwell or uncertain.')
 
 elif page == 'Coach':
-    st.title('Guidance for your whole week.')
+    st.title('Your coach')
     st.write('Your personal coach can explain your scheduled activities, review your history and propose strength changes for next week. You decide whether to accept.')
     for message in s['messages']:
         with st.chat_message(message['role']):
@@ -519,4 +524,6 @@ elif page == 'Progress':
     st.download_button('Export all demo history', __import__('json').dumps({'profile': s['profile'], 'plan': plan, 'next_plan': s['next_plan'], 'history': s['history'], 'activity_sessions': s['activity_sessions'], 'logs': s['logs'], 'events': s['events']}, indent=2), file_name='zinc-history.json', mime='application/json')
 
 st.divider()
-st.caption('ZINC · General wellness, not medical advice. Fictional demo data only. Session history may reset on refresh or reconnect. Prototype content requires professional review before real use.')
+st.caption('General wellness, not medical advice')
+with st.popover('About ZINC'):
+    st.write('Fictional demo data only. Session history may reset on refresh or reconnect. Prototype content requires professional review before real use.')
