@@ -203,3 +203,26 @@ On actual iPhone and Android, verify safe areas, keyboard movement, system text 
 ## H3 — Web link preparation
 
 mobile/DEPLOY_WEB.md documents building mobile/dist with the actual HTTPS API origin, uploading it to a static host, preserving route and asset files, configuring extensionless links and exact backend CORS, and rerunning the acceptance checks. The local static helper is not a public server. No host account, public URL, upload or deployment was created. Build output and API keys are not committed.
+
+## H4 — Live coach preparation
+
+backend/verify_live.py is a human-run check against the chosen backend. It signs in to the fictional demo, requests an explanation, requires a new coach_success event (not fallback), and verifies that current/staged prescriptions are unchanged. It never accepts or declines a proposal and never rolls the week. The request is saved to the demo's coach history. Do not use a personal account. It does not send provider keys from the client; the human must configure GEMINI_API_KEY and MODEL on the backend first.
+
+After the human seeds the fictional account on the chosen backend, one command from the repository root is:
+
+```sh
+ZINC_API_URL='https://YOUR_API_HOST' DEMO_EMAIL='<demo email above>' DEMO_PASSWORD='<demo password above>' backend/.venv/bin/python -m backend.verify_live
+```
+
+Replace the host and the two credential placeholders with the Fictional demo login values above. Keep the credentials in your local environment; do not copy them into the mobile bundle or public logs. A normal successful result is JSON with status PASS, stage live_coach, plan_unchanged true and proposal_pending false. If the model creates a validated pending proposal, proposal_pending is true; no change is accepted. Missing configuration returns BLOCKED/exit 2. A failed request, provider fallback or changed prescription returns FAIL/exit 1. PASS exits 0. Remote HTTP origins are refused; localhost HTTP is allowed for local checks.
+
+Only the checker tests with a fake client were run. No real provider request, deployed service check, key entry, push, publication or store submission was performed. Existing demo state is not reset to make this check pass; a stopped account remains stopped.
+
+- H4: prepare a human live coach check with no automatic acceptance. Backend and unchanged Streamlit suites PASS.
+
+## Final local preview
+All 27 task/preparation commits are present in plan order, one per task. Final totals after the handoff tests: 93 unchanged Streamlit tests, 22 backend tests and three mobile tests PASS; TypeScript/lint, static web export and four browser scenarios PASS. The three original web review findings are resolved.
+
+The local web preview is http://127.0.0.1:8081 and the API is http://127.0.0.1:8000 . The running API uses ignored backend/zinc.db (local permissions 0600), freshly seeded fictional Maria and an ephemeral server-only JWT secret. No provider key is configured. The Streamlit fallback remains at http://127.0.0.1:8507 if its prior process is still running. No app/ file was changed.
+
+Native devices, the Docker image build, hosted PostgreSQL, live Gemini and actual deployment remain unverified. Docker daemon, simctl and adb availability limits are recorded above. Five Expo toolchain advisories remain. Human steps were prepared only.
