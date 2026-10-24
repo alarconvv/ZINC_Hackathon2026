@@ -59,3 +59,6 @@ These credentials are for fictional judge/demo use only. Never use this account 
 - C4: seed a fictional saved week using the unchanged engine. Backend and unchanged Streamlit suites PASS.
 
 - C5: add reproducible ZINC app icon splash and placeholder identifiers. Backend and unchanged Streamlit suites PASS.
+
+## Final verification
+- D1: exact existing Streamlit unittest discovery command PASS: 93 tests in Python 3.11.9. Project .venv is absent, so the isolated /private/tmp/zinc-planner-venv was used. Full app/ diff against pre-product f7b5c9f is empty; engine.py, coach.py and app/tests/ were not edited.
