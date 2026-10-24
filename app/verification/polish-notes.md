@@ -75,3 +75,5 @@ Presentation-only follow-up. Audit corrections are checkpointed separately; engi
 - 1.8: responsive two column strength and yoga cards. Full local suite passed.
 
 R2 Phase 1: full 88-test suite PASS after each of eight task commits. Browser gate PASS at 1280×900, 390×844 and 360×800. Computed DM Sans/Manrope fonts, visible marker containment, chip/action separation, native navigation, Stop on every page and sticky training Stop all checked. Native Streamlit layout wrappers own header stickiness; mobile agenda spacing reserves the full wrapped evidence text.
+
+- 2.1: prepare illustration brief and drop in asset pipeline. Full local suite passed.

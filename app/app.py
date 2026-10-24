@@ -4,7 +4,7 @@ import streamlit as st
 import engine
 import coach
 from timers import countdown
-from ui_helpers import nice_date, nice_range, friendly_rows, inert_chunks, week_ics
+from ui_helpers import nice_date, nice_range, friendly_rows, inert_chunks, week_ics, movement_art
 
 st.set_page_config(page_title='ZINC — Strength for the years ahead', page_icon='✳', layout='wide', initial_sidebar_state='collapsed')
 st.markdown('''<style>
@@ -273,13 +273,8 @@ if s.get('pain_reviews'):
 
 
 def exercise_card(item):
-    import base64
-    image = Path(__file__).parent / 'content' / 'img' / Path(item.get('image', '')).name
-    if image.is_file() and image.suffix == '.svg':
-        artwork = f'<img class="exercise-art" src="data:image/svg+xml;base64,{base64.b64encode(image.read_bytes()).decode()}" alt="{esc(item["name"])} movement illustration; follow the written version below">'
-    else:
-        icon = {'Legs': 'directions_walk', 'Hips': 'accessibility_new', 'Back': 'rowing', 'Core': 'exercise', 'Balance': 'accessibility', 'Whole body': 'fitness_center'}.get(item.get('pattern'), 'exercise')
-        artwork = f'<span class="movement-fallback material-symbols-rounded" aria-hidden="true">{icon}</span>'
+    icon = {'Legs': 'directions_walk', 'Hips': 'accessibility_new', 'Back': 'rowing', 'Core': 'exercise', 'Balance': 'accessibility', 'Whole body': 'fitness_center'}.get(item.get('pattern'), 'exercise')
+    artwork = movement_art(item.get('image') or item['id'], item['name'] + ' reference illustration; follow the written version below', icon)
     power = '<p class="pill">Power: lift fast, lower slow</p>' if item['power'] else ''
     st.markdown(f'<div class="exercise training-card"><div class="movement-media">{artwork}</div><div class="movement-copy"><span class="evidence {esc(item["badge"].lower())}">{esc(item["badge"])} evidence</span><h3>{esc(item["name"])}</h3><p>{esc(item["version"])}</p><p class="prescription">{item["sets"]} × {item["reps"]} {esc(item["unit"])}</p><p>{esc(item["cue"])}</p>{power}<div class="variant-chips"><span>Easier: {esc(item["easier"])}</span><span>Harder: {esc(item["harder"])}</span></div></div></div>', unsafe_allow_html=True)
     with st.popover('Why this exercise?'):
@@ -470,7 +465,8 @@ elif page == 'Train':
         elif section == 'yoga':
             pose = plan['yoga'][session['pose_index']]
             st.write(f"Pose {session['pose_index'] + 1} of 5 · {pose['name']}")
-            st.markdown(f'<section class="exercise training-card"><div class="movement-media"><span class="movement-fallback material-symbols-rounded" aria-hidden="true">self_improvement</span></div><div class="movement-copy"><span class="evidence moderate">Moderate evidence</span><h3>{esc(pose["version"])}</h3><p>{esc(pose["cue"])}</p></div></section>', unsafe_allow_html=True)
+            pose_art = movement_art('yoga_' + pose['id'], pose['name'] + ' supported reference; follow the written version below', 'self_improvement')
+            st.markdown(f'<section class="exercise training-card"><div class="movement-media">{pose_art}</div><div class="movement-copy"><span class="evidence moderate">Moderate evidence</span><h3>{esc(pose["version"])}</h3><p>{esc(pose["cue"])}</p></div></section>', unsafe_allow_html=True)
             st.caption(f"{pose['badge']} evidence · {pose['source']}. Move gently for about one minute per card; rest whenever needed.")
             keys = [f"yoga_{field}_{session['id']}_{session['pose_index']}" for field in ('effort', 'pain')]
             with st.form(f"pose_{session['id']}_{session['pose_index']}"):

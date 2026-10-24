@@ -52,3 +52,17 @@ def week_ics(plan):
                   f'DESCRIPTION:Estimated duration: {int(activity["minutes"])} minutes. General wellness activity.',
                   'END:VEVENT']
     return '\r\n'.join(fold(line) for line in lines + ['END:VCALENDAR']) + '\r\n'
+
+
+def movement_art(basename, label, icon='exercise', image_dir=None):
+    """Prefer drop-in raster art, then SVG, then an accessible movement icon."""
+    from base64 import b64encode
+    from html import escape as esc
+    from pathlib import Path
+    folder = Path(image_dir) if image_dir is not None else Path(__file__).parent / 'content/img'
+    stem = Path(basename).stem
+    for suffix, mime in (('.png', 'image/png'), ('.webp', 'image/webp'), ('.svg', 'image/svg+xml')):
+        image = folder / (stem + suffix)
+        if image.is_file():
+            return f'<img class="exercise-art" src="data:{mime};base64,{b64encode(image.read_bytes()).decode()}" alt="{esc(label)}">'
+    return f'<span class="movement-fallback material-symbols-rounded" role="img" aria-label="{esc(label)}">{esc(icon)}</span>'
