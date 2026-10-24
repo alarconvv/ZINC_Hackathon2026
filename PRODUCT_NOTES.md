@@ -57,3 +57,5 @@ Demo password: `Foju1NC4JWjXnQcvzz54njQz`
 These credentials are for fictional judge/demo use only. Never use this account for personal health information or on an unrestricted public service. The seed reads DEMO_PASSWORD from the environment; the password is documented only here, not embedded in the app or seeder. Existing demo data is never overwritten.
 
 - C4: seed a fictional saved week using the unchanged engine. Backend and unchanged Streamlit suites PASS.
+
+- C5: add reproducible ZINC app icon splash and placeholder identifiers. Backend and unchanged Streamlit suites PASS.

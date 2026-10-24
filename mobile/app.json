@@ -1,40 +1,40 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "ZINC",
+    "slug": "zinc-coach",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
+    "icon": "./assets/images/zinc-icon.png",
+    "scheme": "zinc",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "bundleIdentifier": "com.zinc.coach",
+      "supportsTablet": true
     },
     "android": {
+      "package": "com.zinc.coach",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
-      },
-      "predictiveBackGestureEnabled": false
+        "backgroundColor": "#126bc5",
+        "foregroundImage": "./assets/images/zinc-splash.png"
+      }
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/zinc-icon.png"
     },
     "plugins": [
       "expo-router",
+      "expo-secure-store",
+      "expo-sharing",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#063774",
+          "image": "./assets/images/zinc-splash.png",
+          "imageWidth": 160
         }
       ],
-      "expo-secure-store",
-      "expo-sharing"
+      "expo-notifications"
     ],
     "experiments": {
       "typedRoutes": false,
