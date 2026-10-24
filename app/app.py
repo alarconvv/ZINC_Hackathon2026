@@ -93,9 +93,17 @@ if st.query_params.get('demo') == '1':
     with st.sidebar:
         demo_controls()
 
-left, right = st.columns([4, 1])
+left, access, right = st.columns([4, 1, 1])
 with left:
     st.markdown('<div class="brand-row"><span class="wordmark">✳ ZINC</span><span class="demo-pill">Fictional demo</span></div>', unsafe_allow_html=True)
+with access:
+    with st.popover('Aa'):
+        st.segmented_control('Text size', ['Normal', 'Large'], default='Normal', key='text_size')
+        st.toggle('High contrast', key='high_contrast')
+if st.session_state.get('text_size') == 'Large':
+    st.markdown('<span class="large-text-marker" aria-hidden="true"></span>', unsafe_allow_html=True)
+if st.session_state.get('high_contrast'):
+    st.markdown('<span class="contrast-marker" aria-hidden="true"></span>', unsafe_allow_html=True)
 with right:
     if st.query_params.get('demo') != '1':
         with st.popover('Demo'):
