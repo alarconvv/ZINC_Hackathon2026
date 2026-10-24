@@ -9,3 +9,5 @@ Task 3.3 exception: raw Markdown chat rendering is skipped because it reverses t
 - 1.2: icon navigation dock. Full local suite passed (see task commit).
 
 - 1.3: friendly dates throughout the interface. Full local suite passed (see task commit).
+
+- 1.4: pair related actions side by side. Full local suite passed (see task commit).

@@ -291,10 +291,13 @@ if page == 'Overview':
         st.caption('Choose Your week to move this activity to another day.')
     else:
         st.success('Every activity is finished or ended. Review your week with your coach.')
-    if st.button('Explore my week', type='primary'):
-        rerun_to('Your week')
-    if st.button('Ask my coach'):
-        rerun_to('Coach')
+    actions = st.columns(2)
+    with actions[0]:
+        if st.button('Explore my week'):
+            rerun_to('Your week')
+    with actions[1]:
+        if st.button('Ask my coach'):
+            rerun_to('Coach')
     st.subheader('Next-week changes')
     if s['next_plan']:
         for item in s['next_plan']['exercises']:
@@ -347,10 +350,13 @@ elif page == 'Train':
             st.success('Activity completed.' if session['status'] == 'completed' else f"Activity ended: {session['status']}.")
             if session.get('pain_limited') or any(f['pain'] >= 4 for f in session['feedback']):
                 st.warning('Pain reached 4 or higher. Do not push through pain; seek guidance if pain persists.')
-            if st.button('Choose another activity', type='primary'):
-                rerun_to('Your week')
-            if st.button('Review with my coach'):
-                rerun_to('Coach')
+            actions = st.columns(2)
+            with actions[0]:
+                if st.button('Choose another activity', type='primary'):
+                    rerun_to('Your week')
+            with actions[1]:
+                if st.button('Review with my coach'):
+                    rerun_to('Coach')
         elif section == 'strength':
             item = plan['exercises'][s['cursor']]
             st.progress(s['cursor'] / len(plan['exercises']), text=f"Exercise {s['cursor'] + 1} of {len(plan['exercises'])} · Set {s['set_index'] + 1} of {item['sets']}")
@@ -446,15 +452,18 @@ elif page == 'Coach':
         st.subheader(f"Pending for next week · {item['name']}")
         st.write(f"{p['current']} → {p['proposed']} {item['unit']} · {p['reason']}")
         unfinished = any(not a['finished'] for a in s['activity_sessions'].values() if a['week'] == plan['week'])
-        if st.button('Accept for next week', type='primary', disabled=unfinished):
-            try:
-                engine.accept_pending_change(s)
+        actions = st.columns(2)
+        with actions[0]:
+            if st.button('Accept for next week', type='primary', disabled=unfinished):
+                try:
+                    engine.accept_pending_change(s)
+                    st.rerun()
+                except ValueError as exc:
+                    st.error(str(exc))
+        with actions[1]:
+            if st.button('Decline · keep my plan'):
+                engine.decline_pending_change(s)
                 st.rerun()
-            except ValueError as exc:
-                st.error(str(exc))
-        if st.button('Decline · keep my plan'):
-            engine.decline_pending_change(s)
-            st.rerun()
         if unfinished:
             st.caption('Finish or end unfinished activities before accepting.')
 
