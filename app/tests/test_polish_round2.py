@@ -62,3 +62,14 @@ class FirstRunTests(unittest.TestCase):
         at.button(key='load_maria').click().run()
         self.assertFalse(at.exception)
         self.assertFalse(at.session_state['zinc'].get('fictional_confirmed', False))
+
+
+class AppIconTests(unittest.TestCase):
+    def test_icon_is_valid_and_uses_the_brand_palette(self):
+        from PIL import Image
+        icon = Image.open(Path(__file__).resolve().parents[1] / 'static/zinc-icon.png')
+        self.assertEqual(icon.size, (256, 256))
+        self.assertEqual(icon.mode, 'RGBA')
+        self.assertEqual(icon.getpixel((0, 0))[3], 0)
+        self.assertEqual(icon.getpixel((128, 128)), (255, 255, 255, 255))
+        self.assertEqual(icon.getpixel((40, 40))[:3], (18, 107, 197))

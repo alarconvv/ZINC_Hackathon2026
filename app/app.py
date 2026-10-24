@@ -6,7 +6,11 @@ import coach
 from timers import countdown
 from ui_helpers import nice_date, nice_range, friendly_rows, inert_chunks, week_ics, movement_art
 
-st.set_page_config(page_title='ZINC — Strength for the years ahead', page_icon='✳', layout='wide', initial_sidebar_state='collapsed')
+icon_path = Path(__file__).parent / 'static/logo.png'
+if not icon_path.is_file():
+    icon_path = Path(__file__).parent / 'static/zinc-icon.png'
+
+st.set_page_config(page_title='ZINC — Strength for the years ahead', page_icon=str(icon_path), layout='wide', initial_sidebar_state='collapsed')
 st.markdown('''<style>
 :root{--ink:#12365b;--blue:#126bc5;--muted:#526b84}
 html,body,.stApp{line-height:1.6}

@@ -81,3 +81,5 @@ R2 Phase 1: full 88-test suite PASS after each of eight task commits. Browser ga
 - 2.2: dismissible first overview guide. Full local suite passed.
 
 - 2.3: quieter fictional markers and explicit demo controls. Full local suite passed.
+
+- 2.4: brand favicon with a future logo override. Full local suite passed.
