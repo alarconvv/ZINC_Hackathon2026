@@ -10,23 +10,36 @@ async function main() {
   const browser = await chromium.launch({headless:true});
   const results=[];
   try {
-    for (const viewport of [{width:1280,height:900},{width:390,height:844}]) {
-      const kind = viewport.width===390?'phone':'desktop';
+    for (const viewport of [{width:1280,height:900},{width:390,height:844},{width:360,height:800}].filter(v=>!process.env.ZINC_TEST_WIDTH||v.width===Number(process.env.ZINC_TEST_WIDTH))) {
+      const kind = viewport.width===1280?'desktop':viewport.width===390?'phone':'narrow';
       const context=await browser.newContext({viewport, reducedMotion: 'reduce', acceptDownloads:true});
       const page=await context.newPage();
       const capture = async name => {
-        await page.getByTestId('stMain').evaluate(el=>el.scrollTo(0,0));
+        await page.locator('[data-testid="stApp"][data-test-script-state="notRunning"]').waitFor();
+        await page.getByRole('heading').first().evaluate(el=>{while(el){el.scrollTop=0;el=el.parentElement;}});
+        const nav=page.locator('.st-key-navigation');
+        const options=nav.getByTestId('stRadioOption');
+        assert.equal(await options.count(),5);
+        for(let i=0;i<5;i++){
+          const box=await options.nth(i).boundingBox();
+          assert(box && box.x>=0 && box.x+box.width<=viewport.width+1,kind+' visible nav '+i);
+        }
+        assert(await page.getByRole('button',{name:/^(■ Stop|Stop — chest pain, dizziness or faintness)$/}).last().isVisible(),kind+' Stop visible on '+name);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,kind+' overflow on '+name);
         await page.screenshot({path:path.join(out,kind+'-'+name+'.png'),fullPage:true});
       };
       const errors=[];
       page.on('pageerror', e=>errors.push(e.message));
       await page.goto(base);
       const button = name=>page.getByRole('button',{name,exact:true});
-      const waitHeading = name=>page.getByRole('heading',{name,exact:true}).waitFor({state:'visible'});
+      const settle = ()=>page.locator('[data-testid="stApp"][data-test-script-state="notRunning"]').waitFor();
+      const waitHeading = async name=>{await page.getByRole('heading',{name,exact:true}).waitFor({state:'visible'});await settle();};
       const navigate = async name=>{
         await page.getByTestId('stRadioOption').filter({has:page.getByRole('radio',{name:new RegExp((name==='Your week'?'Week':name)+'$')})}).click();
         await waitHeading({'Your week':'Your week','Train':'Strength & balance','Coach':'Your coach','Progress':'Progress','Overview':'Your complete week, Maria.'}[name]);
       };
+      await page.getByRole('heading',{name:'Strength for the years ahead',exact:true}).waitFor();
+      await page.screenshot({path:path.join(out,kind+'-welcome.png'),fullPage:true});
       await button('Try the demo with Maria').click();
       await page.getByText('I am using fictional information for this prototype.',{exact:true}).click();
       await button('Continue to safety').click();
@@ -46,6 +59,11 @@ async function main() {
       await waitHeading('Your complete week, Maria.');
       for(const section of ['Strength & balance','Yoga','Brain games','Relaxation'])assert(await page.getByText(section,{exact:false}).count()>0);
       await capture('overview');
+      await page.locator('.st-key-navigation input').first().focus();
+      await page.keyboard.press('ArrowRight');
+      await waitHeading('Your week');
+      await page.keyboard.press('ArrowLeft');
+      await waitHeading('Your complete week, Maria.');
       // Keyboard navigation is retained in the real browser, with a visible focus style.
       await button('Explore my week').focus();
       await page.keyboard.press('Enter');
@@ -59,6 +77,8 @@ async function main() {
       await page.getByText(/Set 2 of 2/).waitFor();
       await capture('strength');
       await page.getByRole('button',{name:'Done set',exact:true}).scrollIntoViewIfNeeded();
+      const stopBox=await page.getByRole('button',{name:'Stop — chest pain, dizziness or faintness',exact:true}).last().boundingBox();
+      assert(stopBox && stopBox.y>=0 && stopBox.y+stopBox.height<=viewport.height,'Stop remains in viewport while training');
       await page.screenshot({path:path.join(out,kind+'-strength-form.png')});
       await button('Skip / end this activity').click();
       await page.getByText('Activity ended: partial.',{exact:true}).waitFor();
@@ -120,16 +140,20 @@ async function main() {
       assert.equal(data.logs.sessions.length,1);
       assert.equal(Object.values(data.activity_sessions).length,4);
       assert.equal(Object.values(data.activity_sessions).find(a=>a.section==='relaxation').completed_minutes,5);
+      await navigate('Coach');
+      await capture('coach');
       await navigate('Overview');
       await button('Start next week').click();
       await page.getByText(/Protect · Week 2/).waitFor();
       await navigate('Progress');
       // Native Streamlit selectbox supports keyboard selection of the previous week.
       const week=page.getByRole('combobox',{name:'Week',exact:true});
-      await week.click();
-      await week.press('ArrowUp');
-      await week.press('Enter');
-      await page.getByText('Relaxation: 5 self-reported minutes',{exact:true}).waitFor();
+      await week.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(300); // Native popovers close on pending scroll events.
+      await week.locator('..').getByRole('button',{name:'Open',exact:true}).click();
+      await page.getByRole('option',{name:/^Week 1 ·/}).click().catch(async e=>{await page.screenshot({path:path.join(out,'history-failure.png')});console.log(await page.locator('body').innerText());throw e;});
+      await settle();
+      await page.getByText('Relaxation: 5 self-reported minutes',{exact:true}).waitFor().catch(async e=>{await page.screenshot({path:path.join(out,'history-failure.png')});console.log(await page.locator('body').innerText());throw e;});
       await navigate('Your week');
       await page.getByText('Add an optional activity',{exact:true}).click();
       const activityType=page.getByRole('combobox',{name:'Activity type',exact:true});
@@ -152,7 +176,7 @@ async function main() {
       const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth);
       assert.equal(overflow,false,kind+' page overflow');
       assert.deepEqual(errors,[]);
-      results.push({viewport,kind,pass:true,checks:['onboarding','all sections','keyboard navigation','set log','brain answer','yoga feedback','reduced motion','normal breathing keyframe phases','alert and option contrast','relaxation completion','progress','export JSON','week rollover','historical progress','optional activity add/remove','no page errors','no horizontal page overflow']});
+      results.push({viewport,kind,pass:true,checks:['onboarding','all sections','keyboard navigation','set log','brain answer','yoga feedback','reduced motion','normal breathing keyframe phases','alert and option contrast','relaxation completion','progress','export JSON','week rollover','historical progress','optional activity add/remove','native arrow navigation','five visible tabs and Stop on every captured page','no page errors','no horizontal page overflow']});
       await context.close();
     }
   } finally {await browser.close();}

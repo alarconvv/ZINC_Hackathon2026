@@ -191,6 +191,10 @@ if s['safety_result'] is None or s['plan'] is None:
                             engine.event(s, 'screening', result=result)
                             st.rerun()
         else:
+            supported = s['safety_result'] == 'limits' or s['profile']['age'] >= 80 or s['profile'].get('mci', False)
+            with st.container(key='screen_result'):
+                st.subheader('Cleared with limits — supported mode' if supported else "You're cleared to start")
+                st.write('Based on this shortened fictional screen. Follow any clinician guidance and stop if you feel unwell.')
             st.subheader('Make room for what matters to you')
             st.write('Choose days that fit your routine. All four baseline sections stay included. You can add optional activities after creating your week.')
             with st.form('focus_step'):
