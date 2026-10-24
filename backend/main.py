@@ -23,3 +23,5 @@ from .routes import activities
 app.include_router(activities.router)
 from .routes import coaching
 app.include_router(coaching.router)
+from .routes import account
+app.include_router(account.router)

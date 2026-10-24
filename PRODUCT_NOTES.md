@@ -17,3 +17,5 @@ Work proceeds in plan order. Phase C is blocked until the Phase A/B end-to-end g
 - A5: persist weekly scheduling activity logs and server safety locks. Backend and unchanged Streamlit suites PASS.
 
 - A6: add bounded coach requests and explicit proposal acceptance. Backend and unchanged Streamlit suites PASS.
+
+- A7: serve progress personal exports and complete account deletion. Backend and unchanged Streamlit suites PASS.
