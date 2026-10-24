@@ -5,7 +5,7 @@ import engine
 import coach
 from ui_helpers import nice_date, nice_range, friendly_rows
 
-st.set_page_config(page_title='ZINC · Strength for the years ahead', page_icon='✳', layout='wide')
+st.set_page_config(page_title='ZINC · Strength for the years ahead', page_icon='✳', layout='wide', initial_sidebar_state='collapsed')
 st.markdown('''<style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 :root{--ink:#12365b;--blue:#126bc5;--muted:#526b84}
@@ -74,27 +74,31 @@ def esc(value):
 
 def reset(profile=None):
     st.session_state.zinc = engine.new_state(profile)
+    st.session_state.zinc['welcomed'] = True
     for key in list(st.session_state):
         if key != 'zinc':
             del st.session_state[key]
     st.rerun()
 
 
-with st.sidebar:
-    st.caption('TRY THE DEMO')
+def demo_controls():
+    st.caption('Fictional profiles only. Loading a profile resets this session and requires a new safety screen.')
     if st.button('Load Maria', width='stretch'):
         reset(engine.MARIA)
-    st.caption('Maria · 52 · beginner · knee limitations. Loading Maria resets all demo data and requires a new screen.')
     if st.button('Start fresh', width='stretch'):
         reset({'name': '', 'age': 52, 'level': 'beginner', 'limits': [], 'mci': False, 'clinician_clearance': False, 'toggles': {'yoga': False, 'brain': False}})
-    st.divider()
-    st.caption('General wellness, not medical advice. Fictional demo data only. Data lasts for this browser session and may reset on refresh or reconnect.')
+
+if st.query_params.get('demo') == '1':
+    with st.sidebar:
+        demo_controls()
 
 left, right = st.columns([4, 1])
 with left:
     st.markdown('<div class="brand-row"><span class="wordmark">✳ ZINC</span><span class="demo-pill">Fictional demo</span></div>', unsafe_allow_html=True)
 with right:
-    st.empty()
+    if st.query_params.get('demo') != '1':
+        with st.popover('Demo'):
+            demo_controls()
 training_active = (not s['stopped'] and s.get('requested_page', st.session_state.get('page')) == 'Train' and s.get('active_activity') and not engine.active_session(s)['finished'])
 with st.container(key='safety'):
     st.markdown('<span class="stop-context" data-training="' + ('true' if training_active else 'false') + '"></span>', unsafe_allow_html=True)
@@ -124,9 +128,22 @@ def rerun_to(page):
     st.rerun()
 
 
+if not s.get('welcomed'):
+    with st.container(key='welcome'):
+        st.title('Strength for the years ahead')
+        st.write('A coach for your legs, hips, back and core.')
+        st.markdown('**A week that fits your life** — choose your activity days.\n\n**A steady way forward** — practise strength, balance and movement.\n\n**You stay in control** — review every proposed change.')
+        if st.button('Get started', type='primary', width='stretch'):
+            s['welcomed'] = True
+            st.rerun()
+        if st.button('Try the demo with Maria', width='stretch'):
+            reset(engine.MARIA)
+        st.caption('General wellness guidance. This version uses fictional information only.')
+    st.stop()
+
 onboarding = st.empty()
 if s['safety_result'] is None or s['plan'] is None:
-    with onboarding.container():
+    with onboarding.container(key='onboarding'):
         st.title('Your week starts with you.')
         step = s['onboarding_step']
         st.caption(['Step 1 of 3 · Profile', 'Step 2 of 3 · Safety screen', 'Step 3 of 3 · Focus'][step])

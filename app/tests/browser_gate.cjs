@@ -27,9 +27,7 @@ async function main() {
         await page.getByTestId('stRadioOption').filter({has:page.getByRole('radio',{name:new RegExp((name==='Your week'?'Week':name)+'$')})}).click();
         await waitHeading({'Your week':'Your week','Train':'Strength & balance','Coach':'Your coach','Progress':'Progress','Overview':'Your complete week, Maria.'}[name]);
       };
-      if(kind==='phone')await page.getByTestId('stExpandSidebarButton').click();
-      await button('Load Maria').click();
-      if(kind==='phone')await page.getByTestId('stSidebarCollapseButton').click();
+      await button('Try the demo with Maria').click();
       await page.getByText('I am using fictional information for this prototype.',{exact:true}).click();
       await button('Continue to safety').click();
       await waitHeading('Before we make a plan');

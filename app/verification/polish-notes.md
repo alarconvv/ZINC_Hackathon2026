@@ -25,3 +25,5 @@ Phase 1 browser gate: PASS desktop 1280×900 and phone 390×844. Corrected neste
 - 2.3: self contained training cards. Full local suite passed (see task commit).
 
 - 2.4: contextual always available safety stop. Full local suite passed (see task commit).
+
+- 2.5: welcoming onboarding and discreet demo controls. Full local suite passed (see task commit).
