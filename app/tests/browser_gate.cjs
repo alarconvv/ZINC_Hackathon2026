@@ -18,6 +18,15 @@ async function main() {
         await page.locator('[data-testid="stApp"][data-test-script-state="notRunning"]').waitFor();
         await page.getByRole('heading').first().evaluate(el=>{while(el){el.scrollTop=0;el=el.parentElement;}});
         for(const family of await page.getByRole('heading').evaluateAll(els=>els.map(el=>getComputedStyle(el).fontFamily))) assert(family.includes('Manrope'),'Every heading uses Manrope');
+        const headerBox=await page.locator('.st-key-header_row').boundingBox();
+        const markerBox=await page.locator('.demo-pill').boundingBox();
+        assert(markerBox && headerBox && markerBox.y+markerBox.height<=headerBox.y+headerBox.height+1,'Demo marker is not clipped');
+        if(viewport.width<900 && name==='week'){
+          const first=page.locator('[class*="st-key-act_"]').first();
+          const chips=await first.locator('.activity-meta').boundingBox();
+          const action=await first.getByRole('button',{name:'Start activity',exact:true}).boundingBox();
+          assert(chips.y+chips.height<=action.y,'Evidence chips do not overlap the action');
+        }
         const nav=page.locator('.st-key-navigation');
         const options=nav.getByTestId('stRadioOption');
         assert.equal(await options.count(),5);
@@ -34,7 +43,7 @@ async function main() {
       await page.goto(base);
       const button = name=>page.getByRole('button',{name,exact:true});
       const settle = ()=>page.locator('[data-testid="stApp"][data-test-script-state="notRunning"]').waitFor();
-      const waitHeading = async name=>{await page.getByRole('heading',{name,exact:true}).waitFor({state:'visible'});await settle();};
+      const waitHeading = async name=>{await page.getByRole('heading',{name,exact:true,...(name==='Strength & balance'?{level:1}:{})}).waitFor({state:'visible'});await settle();};
       const navigate = async name=>{
         await page.getByTestId('stRadioOption').filter({has:page.getByRole('radio',{name:new RegExp((name==='Your week'?'Week':name)+'$')})}).click();
         await waitHeading({'Your week':'Your week','Train':'Strength & balance','Coach':'Your coach','Progress':'Progress','Overview':'Your complete week, Maria.'}[name]);

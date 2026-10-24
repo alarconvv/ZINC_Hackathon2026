@@ -281,7 +281,7 @@ def exercise_card(item):
         icon = {'Legs': 'directions_walk', 'Hips': 'accessibility_new', 'Back': 'rowing', 'Core': 'exercise', 'Balance': 'accessibility', 'Whole body': 'fitness_center'}.get(item.get('pattern'), 'exercise')
         artwork = f'<span class="movement-fallback material-symbols-rounded" aria-hidden="true">{icon}</span>'
     power = '<p class="pill">Power: lift fast, lower slow</p>' if item['power'] else ''
-    st.markdown(f'<div class="exercise">{artwork}<span class="evidence {esc(item["badge"].lower())}">{esc(item["badge"])} evidence</span><h3>{esc(item["name"])}</h3><p>{esc(item["version"])}</p><p class="prescription">{item["sets"]} × {item["reps"]} {esc(item["unit"])}</p><p>{esc(item["cue"])}</p>{power}<div class="variant-chips"><span>Easier: {esc(item["easier"])}</span><span>Harder: {esc(item["harder"])}</span></div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="exercise training-card"><div class="movement-media">{artwork}</div><div class="movement-copy"><span class="evidence {esc(item["badge"].lower())}">{esc(item["badge"])} evidence</span><h3>{esc(item["name"])}</h3><p>{esc(item["version"])}</p><p class="prescription">{item["sets"]} × {item["reps"]} {esc(item["unit"])}</p><p>{esc(item["cue"])}</p>{power}<div class="variant-chips"><span>Easier: {esc(item["easier"])}</span><span>Harder: {esc(item["harder"])}</span></div></div></div>', unsafe_allow_html=True)
     with st.popover('Why this exercise?'):
         st.write(item['source'])
         if item['power']:
@@ -311,10 +311,9 @@ def show_schedule():
             with date_col:
                 st.markdown(f'<div class="agenda-date"><span>{esc(day.strftime("%a").upper())}</span><strong>{esc(day.day)}</strong></div>', unsafe_allow_html=True)
             with details:
-                st.subheader(label)
                 badges = ''.join(f'<span class="evidence {esc(word.lower())}">{esc(word)} evidence</span>' for word in BADGES[activity['section']].split(' / '))
                 extra = '<span class="status-chip">Extra</span>' if activity.get('optional') else ''
-                st.markdown(f'<div class="activity-meta"><span class="status-chip">{esc(status_label(activity))}</span>{badges}<span>{esc(activity["minutes"])} min</span>{extra}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="agenda-details"><h3>{esc(label)}</h3><div class="activity-meta"><span class="status-chip">{esc(status_label(activity))}</span>{badges}<span>{esc(activity["minutes"])} min</span>{extra}</div></div>', unsafe_allow_html=True)
             with action:
                 if st.button('Review' if session and session['finished'] else 'Resume' if session else 'Start activity', key='start_' + activity['id'], help=descriptions[activity['section']], width='stretch'):
                     engine.start_activity(s, activity['id'])
@@ -471,7 +470,7 @@ elif page == 'Train':
         elif section == 'yoga':
             pose = plan['yoga'][session['pose_index']]
             st.write(f"Pose {session['pose_index'] + 1} of 5 · {pose['name']}")
-            st.markdown(f'<section class="exercise"><span class="material-symbols-rounded" aria-hidden="true">self_improvement</span><span class="evidence moderate">Moderate evidence</span><h3>{esc(pose["version"])}</h3><p>{esc(pose["cue"])}</p></section>', unsafe_allow_html=True)
+            st.markdown(f'<section class="exercise training-card"><div class="movement-media"><span class="movement-fallback material-symbols-rounded" aria-hidden="true">self_improvement</span></div><div class="movement-copy"><span class="evidence moderate">Moderate evidence</span><h3>{esc(pose["version"])}</h3><p>{esc(pose["cue"])}</p></div></section>', unsafe_allow_html=True)
             st.caption(f"{pose['badge']} evidence · {pose['source']}. Move gently for about one minute per card; rest whenever needed.")
             keys = [f"yoga_{field}_{session['id']}_{session['pose_index']}" for field in ('effort', 'pain')]
             with st.form(f"pose_{session['id']}_{session['pose_index']}"):

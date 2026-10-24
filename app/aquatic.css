@@ -205,3 +205,29 @@ iframe{border-radius:24px}
 .st-key-completion_actions{gap:8px!important;justify-content:flex-start}
 .session-summary h2{margin:8px 0}.session-summary>.material-symbols-rounded{color:#126bc5;font-size:32px}
 
+
+
+.training-card{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:28px;align-items:center}
+.movement-media{background:#e8f3ff;border-radius:20px;aspect-ratio:1;display:grid;place-items:center;overflow:hidden}
+.movement-media .exercise-art{width:100%;height:100%;object-fit:contain;display:block;margin:0;border-radius:0;background:transparent}
+.movement-media .movement-fallback{font-size:100px}
+.movement-copy{min-width:0}.movement-copy h3{margin-top:14px}.movement-copy .prescription{font-size:2.4rem}
+@media(max-width:899px){.training-card{grid-template-columns:1fr;gap:18px}.movement-media{width:100%;height:280px;max-height:280px;aspect-ratio:auto}.movement-media .exercise-art{max-height:280px}.movement-copy .prescription{font-size:2rem}}
+
+/* Let native layout wrappers grow with wrapped marker and evidence text. */
+.st-key-header_row{height:auto!important;overflow:visible!important}
+.st-key-header_row>.stElementContainer{height:auto!important;min-height:min-content}
+button{min-height:48px!important}
+@media(max-width:600px){
+ .st-key-header_row{min-height:64px}
+ [class*="st-key-act_"] [data-testid="stHorizontalBlock"]{overflow:visible!important;grid-template-rows:minmax(min-content,auto) minmax(48px,auto);align-items:start}
+ [class*="st-key-act_"] [data-testid="stColumn"],[class*="st-key-act_"] [data-testid="stColumn"]>[data-testid="stVerticalBlock"],[class*="st-key-act_"] [data-testid="stElementContainer"]{height:auto!important;min-height:min-content}
+}
+@media(max-width:600px){
+ .st-key-header_row .brand-row{line-height:1.2}
+ .st-key-header_row>.stElementContainer:first-child{min-height:56px!important}
+}
+.agenda-details h3{padding:0;margin:0;line-height:1.35}
+@media(max-width:600px){
+ [class*="st-key-act_"] [data-testid="stHorizontalBlock"]{row-gap:32px!important}
+}
