@@ -69,6 +69,9 @@ async function main() {
       assert.equal(await page.getByRole('checkbox',{name:'Extra yoga',exact:true}).isChecked(),false);
       await button('Create my complete week').click();
       await waitHeading('Your complete week, Maria.');
+      await page.getByRole('heading',{name:'How ZINC works',exact:true}).waitFor();
+      await button('Got it').click();
+      await settle();
       for(const section of ['Strength & balance','Yoga','Brain games','Relaxation'])assert(await page.getByText(section,{exact:false}).count()>0);
       await capture('overview');
       await page.locator('.st-key-navigation input').first().focus();

@@ -31,3 +31,21 @@ class ArtworkTests(unittest.TestCase):
                 self.assertIn('&lt;pose&gt;', movement_art('pose.svg', '<pose>', image_dir=folder))
                 (directory / ('pose' + suffix)).unlink()
             self.assertIn('role="img"', movement_art('pose', 'Pose', image_dir=folder))
+
+
+class FirstRunTests(unittest.TestCase):
+    def test_guide_dismissal_preserves_plan_and_does_not_repeat(self):
+        from copy import deepcopy
+        from test_app import AppTests, button
+        at = AppTests().screened()
+        self.assertTrue(any('How ZINC works' in m.value for m in at.markdown))
+        before = deepcopy(at.session_state['zinc']['plan'])
+        button(at, 'Got it').click().run()
+        self.assertTrue(at.session_state['zinc']['tour_done'])
+        self.assertEqual(before, at.session_state['zinc']['plan'])
+        at.radio(key='page').set_value('Your week').run()
+        at.radio(key='page').set_value('Overview').run()
+        self.assertFalse(any('How ZINC works' in m.value for m in at.markdown))
+        button(at, 'Start next week').click().run()
+        self.assertFalse(any('How ZINC works' in m.value for m in at.markdown))
+        self.assertFalse(at.exception)

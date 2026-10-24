@@ -348,6 +348,12 @@ def submit_brain(key):
 
 if page == 'Overview':
     st.title(f"Your complete week, {s['profile']['name']}.")
+    if not s.get('tour_done'):
+        with st.container(key='first_run_guide'):
+            st.markdown('<h2>How ZINC works</h2><ol class="guide-steps"><li><strong>Week</strong><span>Your dated activities.</span></li><li><strong>Train</strong><span>Log each set, effort and pain.</span></li><li><strong>Coach</strong><span>Review your week and accept or decline next week’s goal.</span></li></ol>', unsafe_allow_html=True)
+            if st.button('Got it', key='tour_got_it'):
+                s['tour_done'] = True
+                st.rerun()
     st.write(f"{plan['tier']} · Week {plan['week']} · Beginning {nice_date(plan['start_date'])}")
     st.write('Strength for everyday life, room to stretch, a reasoning challenge, and a moment to relax.')
     cards = []
