@@ -232,9 +232,11 @@ def status_label(activity):
 def show_schedule():
     for activity in plan['activities']:
         label = LABELS[activity['section']]
-        with st.container(border=True):
+        with st.container(key=f"act_{activity['id']}"):
             st.subheader(f"{nice_date(activity['date'])} · {label}")
-            st.write(f"{activity['minutes']} min estimated · {status_label(activity)} · {BADGES[activity['section']]} evidence")
+            badge = BADGES[activity['section']]
+            badges = ''.join(f'<span class="evidence {esc(word.lower())}">{esc(word)}</span>' for word in badge.split(' / '))
+            st.markdown(f'<div class="activity-meta"><span>{activity["minutes"]} min estimated</span><span class="status-chip">{esc(status_label(activity))}</span>{badges}</div>', unsafe_allow_html=True)
             st.caption({'strength': 'Large-muscle patterns and supported balance. Record repetitions, effort and pain after every set.', 'yoga': 'Five guided pose cards with supported alternatives and feedback.', 'brain': 'Five reasoning and pattern puzzles. Difficulty follows your answers.', 'relaxation': 'Slow breathing: five seconds in, five seconds out. Choose three or five minutes.'}[activity['section']])
             session = s['activity_sessions'].get(activity['id'])
             if st.button('Review' if session and session['finished'] else 'Resume' if session else 'Start activity', key='start_' + activity['id']):
