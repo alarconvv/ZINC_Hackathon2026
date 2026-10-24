@@ -178,3 +178,24 @@ docker build -f backend/Dockerfile -t zinc-api .
 Do not apply the Render blueprint or expose personal health data until the operator completes the known launch requirements. No backend service was deployed. The .env.example is documentation only and has empty secret placeholders; the application reads environment variables directly.
 
 H1 checks: Docker command shell syntax, required hosting variables and ignore rules PASS. Docker image build was not run: the local Docker daemon is unavailable. No daemon was started and no deployment was attempted.
+
+## H2 — Phones and Expo Go preparation
+
+Use a trusted local network. The phone and computer must be able to reach each other. Start the API from the repository root with the same environment as above, changing its bind address for this local phone check:
+
+```sh
+backend/.venv/bin/python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --no-access-log
+```
+
+Find your computer's LAN IP address. In a separate terminal, replace COMPUTER_LAN_IP below, then run:
+
+```sh
+cd mobile
+EXPO_PUBLIC_API_URL=http://COMPUTER_LAN_IP:8000 npx expo start
+```
+
+Open a compatible Expo Go release on iPhone or Android. Scan the terminal QR code (iPhone Camera or Expo Go's scanner). Allow local-network access if the OS requests it. The API address must be the computer's address; 127.0.0.1 on the phone points back to the phone. Do not expose the development server or an unaudited beta on an untrusted network.
+
+This app uses SDK 58. Check the current Expo Go SDK support before trying the QR flow. During a transition, a compatible development build may be needed; that requires human native-build setup and, for cloud builds, an Expo account and signing choices. No EAS build profile, signing credentials, remote build or store submission was created. Before a distributable build, replace com.zinc.coach with identifiers you control and configure an HTTPS API URL in the build environment. Reference: https://docs.expo.dev/router/introduction/ .
+
+On actual iPhone and Android, verify safe areas, keyboard movement, system text scaling, Back/edge gestures, Stop while scrolling and inside sheets, and local notification permission/delivery. Notification permission should appear only after Enable reminders. Web hides reminders. These device checks remain a human handoff, not a reported pass.

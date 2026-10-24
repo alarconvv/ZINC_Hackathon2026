@@ -40,3 +40,5 @@ npm run test:e2e
 The smoke matrix uses disposable fictional accounts, exports their JSON, stops and deletes them, and signs in to the fictional demo for populated progress. Screenshots are in `e2e/screenshots/`. No live Gemini requests are part of this gate.
 
 Native notifications are local-only, requested in context and hidden on web. Actual iOS/Android UI, keyboard behavior and notification delivery still require device checks. Beta — content pending professional review; legal pages remain drafts. Expo CLI dependency advisories are documented in PRODUCT_NOTES.md and need review before public builds.
+
+For Expo Go on a phone, start the API on your computer's LAN interface and use that LAN address in EXPO_PUBLIC_API_URL, then run `npx expo start` and scan its QR code. Use a trusted network and an SDK-58-compatible client. The full H2 guide in PRODUCT_NOTES.md explains the transition/build limits. No signing, remote build or store submission has been performed.
