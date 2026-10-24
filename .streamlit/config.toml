@@ -5,7 +5,10 @@ primaryColor = "#126bc5"
 backgroundColor = "#f4faff"
 secondaryBackgroundColor = "#e1eefb"
 textColor = "#12365b"
-font = "sans serif"
+font = "DM Sans:https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+headingFont = "Manrope:https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+baseRadius = "24px"
+borderColor = "#d6e7f5"
 [server]
 headless = true
 [browser]

@@ -8,11 +8,10 @@ from ui_helpers import nice_date, nice_range, friendly_rows, inert_chunks, week_
 
 st.set_page_config(page_title='ZINC — Strength for the years ahead', page_icon='✳', layout='wide', initial_sidebar_state='collapsed')
 st.markdown('''<style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 :root{--ink:#12365b;--blue:#126bc5;--muted:#526b84}
-html,body,.stApp{font-family:'DM Sans',sans-serif;line-height:1.6}
+html,body,.stApp{line-height:1.6}
 .stApp{color:white;background:radial-gradient(ellipse at 12% 0%,#1c67b5 0%,transparent 48%),linear-gradient(155deg,#1664bb 0%,#074b9c 55%,#052e70 100%);background-attachment:fixed}
-h1,h2,h3{font-family:'Manrope',sans-serif!important;letter-spacing:-.04em;color:inherit}
+h1,h2,h3{letter-spacing:-.04em;color:inherit}
 .block-container{max-width:1100px;padding-top:3rem;padding-bottom:3rem}
 [data-testid="stHeader"]{background:transparent}
 [data-testid="stSidebar"]{background:linear-gradient(170deg,#eef8ff,#dbeafa);color:var(--ink);border-right:1px solid #ffffff70}
@@ -31,13 +30,13 @@ h1,h2,h3{font-family:'Manrope',sans-serif!important;letter-spacing:-.04em;color:
 .stApp [data-testid="stAlert"] p{color:var(--ink)}
 .stApp [data-testid="stForm"] [data-testid="stWidgetLabel"] p,.stApp [data-testid="stExpander"] [data-testid="stWidgetLabel"] p,.stApp [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p{color:var(--ink)}
 [data-testid="stMetric"]{padding:20px 24px;border:1px solid #ffffff80;border-radius:24px;background:#f5faffed;color:var(--ink);box-shadow:0 10px 30px #00255516}
-[data-testid="stMetricValue"]{font-family:'Manrope',sans-serif;font-size:2rem;font-weight:700}
+[data-testid="stMetricValue"]{font-size:2rem;font-weight:700}
 .hero{padding:40px;border-radius:32px;background:linear-gradient(125deg,#13569b,#074381);border:1px solid #ffffff45;color:white;margin:18px 0 28px;position:relative;overflow:hidden;box-shadow:0 18px 50px #00295720}
 .hero:after{content:"";position:absolute;width:440px;height:180px;right:-110px;bottom:-120px;border-radius:50%;border:1px solid #ffffff45;box-shadow:0 -18px 0 0 #ffffff09,0 -36px 0 0 #ffffff08,0 -54px 0 0 #ffffff06;pointer-events:none}
 .hero h1{color:white;font-size:2.7rem;font-weight:800;max-width:650px;line-height:1.18;margin:12px 0 18px}
 .hero p{color:#e4f1ff;max-width:590px;margin-bottom:5px;line-height:1.7}
 .eyebrow{font-size:.76rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#d5ecff}
-.wordmark{font-family:'Manrope',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.07em;color:white}
+.wordmark{font-size:2rem;font-weight:800;letter-spacing:-.07em;color:white}
 [data-testid="stSidebar"] .wordmark{color:var(--blue)}
 .kicker{font-size:.8rem;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:#d6eaff}
 .exercise{padding:28px;border:1px solid #ffffffb3;border-radius:26px;background:linear-gradient(135deg,#ffffff,#e9f4ff);color:var(--ink);margin:16px 0;box-shadow:0 12px 32px #00295720}
@@ -58,7 +57,7 @@ h1,h2,h3{font-family:'Manrope',sans-serif!important;letter-spacing:-.04em;color:
 :where(button,input,textarea,select,a,[role="slider"]):focus-visible,.st-key-navigation label:focus-within{outline:3px solid #12365b!important;outline-offset:3px;box-shadow:0 0 0 6px white!important}
 .st-key-safety button{background:#fff1f0;color:#8c201d;border:2px solid #b93c35;font-weight:700}
 .hero.compact{padding:28px 32px}.hero.compact h1{font-size:2rem;margin:10px 0}
-.exercise .prescription{font-family:'Manrope',sans-serif;font-size:1.45rem;font-weight:700;color:#125ba5;margin:12px 0}
+.exercise .prescription{font-size:1.45rem;font-weight:700;color:#125ba5;margin:12px 0}
 footer{visibility:hidden}
 @media(max-width:600px){.block-container{padding:4rem 1rem 3rem}.hero,.hero.compact{padding:24px;border-radius:26px}.hero h1,.hero.compact h1{font-size:2rem}[data-testid="stForm"]{padding:18px}.exercise{padding:22px}.st-key-navigation{padding:8px;border-radius:24px}.st-key-navigation [role="radiogroup"]{justify-content:flex-start}.st-key-navigation [role="radiogroup"] label{padding:10px 8px}.week-grid{grid-template-columns:1fr;overflow:visible;gap:8px}.day{display:flex;align-items:center;justify-content:space-between;min-height:56px;padding:10px 18px;border-radius:16px}.day b{margin:0}.day .muted{min-width:40px;text-align:left}}
 </style>''', unsafe_allow_html=True)

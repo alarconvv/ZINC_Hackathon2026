@@ -17,6 +17,7 @@ async function main() {
       const capture = async name => {
         await page.locator('[data-testid="stApp"][data-test-script-state="notRunning"]').waitFor();
         await page.getByRole('heading').first().evaluate(el=>{while(el){el.scrollTop=0;el=el.parentElement;}});
+        for(const family of await page.getByRole('heading').evaluateAll(els=>els.map(el=>getComputedStyle(el).fontFamily))) assert(family.includes('Manrope'),'Every heading uses Manrope');
         const nav=page.locator('.st-key-navigation');
         const options=nav.getByTestId('stRadioOption');
         assert.equal(await options.count(),5);
@@ -39,6 +40,8 @@ async function main() {
         await waitHeading({'Your week':'Your week','Train':'Strength & balance','Coach':'Your coach','Progress':'Progress','Overview':'Your complete week, Maria.'}[name]);
       };
       await page.getByRole('heading',{name:'Strength for the years ahead',exact:true}).waitFor();
+      assert((await page.locator('.stApp').evaluate(el=>getComputedStyle(el).fontFamily)).includes('DM Sans'));
+      assert((await page.getByRole('heading').first().evaluate(el=>getComputedStyle(el).fontFamily)).includes('Manrope'));
       await page.screenshot({path:path.join(out,kind+'-welcome.png'),fullPage:true});
       await button('Try the demo with Maria').click();
       await page.getByText('I am using fictional information for this prototype.',{exact:true}).click();

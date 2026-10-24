@@ -61,3 +61,5 @@ Presentation-only follow-up. Audit corrections are checkpointed separately; engi
 - 1.1: align header controls and training safety bar. Full local suite passed.
 
 - 1.2: replace repeated activity titles with quiet metadata. Full local suite passed.
+
+- 1.3: load DM Sans and Manrope through the theme. Full local suite passed.
