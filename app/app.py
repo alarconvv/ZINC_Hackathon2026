@@ -113,29 +113,33 @@ if st.query_params.get('demo') == '1':
     with st.sidebar:
         demo_controls()
 
-left, access, right = st.columns([4, 1, 1])
-with left:
-    st.markdown('<div class="brand-row"><span class="wordmark">✳ ZINC</span><span class="demo-pill">Fictional demo</span></div>', unsafe_allow_html=True)
-with access:
-    with st.popover('Aa'):
-        st.segmented_control('Text size', ['Normal', 'Large'], default='Normal', key='text_size')
-        st.toggle('High contrast', key='high_contrast')
+training_active = (not s['stopped'] and s.get('requested_page', st.session_state.get('page')) == 'Train' and s.get('active_activity') and not engine.active_session(s)['finished'])
+
+def safety_control(full=False):
+    with st.container(key='safety', width='stretch' if full else 'content'):
+        label = 'Stop — chest pain, dizziness or faintness' if full else '■ Stop'
+        if st.button(label, type='secondary', width='stretch' if full else 'content', help='Chest pain, dizziness or faintness'):
+            engine.stop(s)
+            st.rerun()
+
+with st.container(key='product_header'):
+    with st.container(key='header_row', horizontal=True, wrap=False, vertical_alignment='center', gap='small'):
+        st.markdown('<div class="brand-row"><span class="wordmark">✳ ZINC</span><span class="demo-pill">Fictional demo</span></div>', unsafe_allow_html=True)
+        with st.container(key='header_controls', horizontal=True, wrap=False, width='content', vertical_alignment='center', gap='small'):
+            with st.popover('Aa'):
+                st.segmented_control('Text size', ['Normal', 'Large'], default='Normal', key='text_size')
+                st.toggle('High contrast', key='high_contrast')
+            if st.query_params.get('demo') != '1':
+                with st.popover('Demo'):
+                    demo_controls()
+            if s['plan'] is not None and not s['stopped'] and not training_active:
+                safety_control()
+    if s['plan'] is not None and not s['stopped'] and training_active:
+        safety_control(full=True)
 if st.session_state.get('text_size') == 'Large':
     st.markdown('<span class="large-text-marker" aria-hidden="true"></span>', unsafe_allow_html=True)
 if st.session_state.get('high_contrast'):
     st.markdown('<span class="contrast-marker" aria-hidden="true"></span>', unsafe_allow_html=True)
-with right:
-    if st.query_params.get('demo') != '1':
-        with st.popover('Demo'):
-            demo_controls()
-training_active = (not s['stopped'] and s.get('requested_page', st.session_state.get('page')) == 'Train' and s.get('active_activity') and not engine.active_session(s)['finished'])
-with st.container(key='safety'):
-    st.markdown('<span class="stop-context" data-training="' + ('true' if training_active else 'false') + '"></span>', unsafe_allow_html=True)
-    if s['plan'] is not None and not s['stopped']:
-        stop_label = 'Stop — chest pain, dizziness or faintness' if training_active else '■ Stop'
-        if st.button(stop_label, type='secondary', width='stretch' if training_active else 'content', help='Chest pain, dizziness or faintness'):
-            engine.stop(s)
-            st.rerun()
 if s['stopped']:
     st.error(engine.STOP_MESSAGE)
     st.info('This session is locked. Load Maria or Start fresh to reset the fictional demo. Resetting is not medical clearance.')

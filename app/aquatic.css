@@ -143,3 +143,25 @@ iframe{border-radius:24px}
   .stApp:has(.large-text-marker) [data-testid="stHorizontalBlock"]:has(.brand-row)>[data-testid="stColumn"]:first-child{flex:0 0 100%!important}
   .stApp:has(.large-text-marker) [data-testid="stHorizontalBlock"]:has(.brand-row)>[data-testid="stColumn"]:not(:first-child){flex:1 1 45%!important}
 }
+
+/* R2 1.1 — Header and safety share the content grid. */
+.st-key-product_header{position:sticky;top:0;z-index:1100;background:#1057a4;padding:8px 0 12px}
+.st-key-header_row,.st-key-header_controls{gap:8px!important;align-items:center}
+.st-key-header_controls{flex:0 0 auto!important}
+.st-key-header_row>.stElementContainer{flex:1 1 auto;min-width:0}
+.st-key-product_header .st-key-safety{position:static!important;inset:auto!important;transform:none!important;width:auto!important;padding:0!important;background:transparent}
+.st-key-product_header>.st-key-safety{width:100%!important}
+.st-key-product_header button{min-height:48px;border-radius:24px;white-space:nowrap}
+.st-key-header_row .brand-row{padding:0;gap:10px}
+@media(max-width:600px){
+ .st-key-product_header{padding:4px 0 8px}
+ .st-key-header_row .brand-row{gap:3px;align-items:flex-start;flex-direction:column}
+ .st-key-header_row .wordmark{font-size:1.35rem!important}
+ .st-key-header_row .demo-pill{font-size:.57rem;padding:2px 6px;white-space:nowrap}
+ .st-key-header_controls [data-testid="stPopover"] button{padding:0 8px;gap:2px}
+ .st-key-header_controls .stButton button{padding:0 8px}
+ .st-key-header_controls p{font-size:.8rem}
+}
+/* Streamlit's layout wrapper must own stickiness, otherwise it clips the header. */
+[data-testid="stLayoutWrapper"]:has(>.st-key-product_header){position:sticky;top:0;z-index:1100}
+.st-key-product_header{position:static}

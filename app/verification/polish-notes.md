@@ -53,3 +53,9 @@ Phase 2: 76 Python tests passed. Browser gate PASS at 1280×900, 390×844 and 36
 - Exception retained for task 3.3: model Markdown stays inert to preserve external-request protection. Only the filtered returned response is escaped for the typing effect.
 - Live Gemini was not retested in this polish pass; local provider configuration was absent. Existing live-integration evidence is retained separately and is not represented as a new result.
 - Scope remains the plan's fictional, session-only wellness application. Accounts, durable storage and clinical validation were explicitly out of scope; exercise illustrations remain the requested placeholders.
+
+## Round 2
+
+Presentation-only follow-up. Audit corrections are checkpointed separately; engine.py, coach.py, security/engine tests and safety assertions remain unchanged during R2. Project .venv is absent; tests use /private/tmp/zinc-planner-venv (Python 3.11). Human tasks stop at preparation; no keys, final art, push or deployment.
+
+- 1.1: align header controls and training safety bar. Full local suite passed.
