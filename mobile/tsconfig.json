@@ -13,7 +13,8 @@
     "types": [
       "node",
       "react"
-    ]
+    ],
+    "allowImportingTsExtensions": true
   },
   "include": [
     "**/*.ts",
