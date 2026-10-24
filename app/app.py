@@ -81,8 +81,6 @@ def reset(profile=None):
 
 
 with st.sidebar:
-    st.markdown('<div class="wordmark">✳ ZINC</div><p class="muted">Stronger for what’s next.</p>', unsafe_allow_html=True)
-    st.divider()
     st.caption('TRY THE DEMO')
     if st.button('Load Maria', width='stretch'):
         reset(engine.MARIA)
@@ -94,9 +92,9 @@ with st.sidebar:
 
 left, right = st.columns([4, 1])
 with left:
-    st.markdown('<div class="wordmark">✳ ZINC</div>', unsafe_allow_html=True)
+    st.markdown('<div class="brand-row"><span class="wordmark">✳ ZINC</span><span class="demo-pill">Fictional demo</span></div>', unsafe_allow_html=True)
 with right:
-    st.caption('Fictional demo')
+    st.empty()
 with st.container(key='safety'):
     if s['plan'] is not None and not s['stopped']:
         if st.button('■ Stop — chest pain, dizziness or faintness', type='secondary', width='stretch'):

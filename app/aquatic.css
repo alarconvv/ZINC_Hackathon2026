@@ -43,3 +43,5 @@ input,textarea{caret-color:#126bc5}
 .st-key-navigation [data-testid="stMarkdownContainer"] p{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.76rem!important;line-height:1.2}
 .st-key-navigation [data-testid="stIconMaterial"]{font-size:24px}
 .st-key-navigation label:has(input:checked){background:#c2e1ff!important;color:#0758aa}
+
+.brand-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.demo-pill{font-size:.7rem;letter-spacing:.03em;border:1px solid #ffffff60;border-radius:20px;padding:3px 10px;background:#ffffff16;color:#f4faff}

@@ -11,3 +11,5 @@ Task 3.3 exception: raw Markdown chat rendering is skipped because it reverses t
 - 1.3: friendly dates throughout the interface. Full local suite passed (see task commit).
 
 - 1.4: pair related actions side by side. Full local suite passed (see task commit).
+
+- 1.5: one wordmark and a discreet demo pill. Full local suite passed (see task commit).
