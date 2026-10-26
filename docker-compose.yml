@@ -1,0 +1,35 @@
+# Local test stack for teammates with Docker Desktop; not a production deployment.
+# From the repository root: docker compose up --build, then open http://127.0.0.1:8081
+# Optional, in a Git-ignored .env file next to this one: GEMINI_API_KEY, MODEL, JWT_SECRET, DEMO_PASSWORD.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: mobileApp/backend/Dockerfile
+    environment:
+      DATABASE_URL: sqlite:///backend/zinc.db
+      CORS_ORIGINS: http://127.0.0.1:8081,http://localhost:8081
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-mariademo12345}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      MODEL: ${MODEL:-}
+      JWT_SECRET: ${JWT_SECRET:-}
+    # Seed the fictional demo, generate a session secret when none is set, then start the API.
+    command:
+      - sh
+      - -c
+      - >-
+        python -m backend.seed_demo;
+        export JWT_SECRET="$${JWT_SECRET:-$$(python -c 'import secrets; print(secrets.token_urlsafe(48))')}";
+        exec uvicorn backend.main:app --host 0.0.0.0 --port 8000 --no-access-log
+    ports:
+      - "127.0.0.1:8000:8000"
+  web:
+    build:
+      context: mobileApp
+      dockerfile: mobile/web.Dockerfile
+      args:
+        EXPO_PUBLIC_API_URL: http://127.0.0.1:8000
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:8081:80"

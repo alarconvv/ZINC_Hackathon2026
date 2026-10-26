@@ -167,7 +167,7 @@ Human preparation handoffs are recorded in H1–H4 below as they are completed. 
 
 ## H1 — Backend hosting preparation
 
-Prepared backend/Dockerfile, mobileApp/render.yaml and a secret-safe .dockerignore. The image runs as a non-root user and imports the unchanged app core. It has no demo seed or live keys. Use a persistent managed PostgreSQL DATABASE_URL for hosting; an ephemeral container SQLite file is not durable hosting. Set the exact HTTPS web origin in CORS_ORIGINS. Render can generate JWT_SECRET when the human applies the blueprint. GEMINI_API_KEY and MODEL remain human-entered server secrets.
+Prepared backend/Dockerfile, mobileApp/render.yaml and a secret-safe .dockerignore. The image runs as a non-root user and imports the unchanged app core. It has no live keys. When DEMO_PASSWORD is set, it creates the fictional demo account at startup without overwriting an existing one. Use a persistent managed PostgreSQL DATABASE_URL for hosting; an ephemeral container SQLite file is not durable hosting. Set the exact HTTPS web origin in CORS_ORIGINS. Render can generate JWT_SECRET when the human applies the blueprint. GEMINI_API_KEY and MODEL remain human-entered server secrets.
 
 Local container preparation, if Docker is available:
 

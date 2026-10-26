@@ -117,7 +117,7 @@ export default function Week() {
                   level={
                     a.section === "strength"
                       ? "Strong"
-                      : a.section === "brain"
+                      : a.section === "relaxation"
                         ? "Emerging"
                         : "Moderate"
                   }

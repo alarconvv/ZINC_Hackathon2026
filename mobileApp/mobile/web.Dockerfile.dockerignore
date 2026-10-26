@@ -1,0 +1,11 @@
+# Paths are relative to the build context, mobileApp/. Keep local installs, data and secrets out.
+**/node_modules
+**/dist
+**/.expo
+**/.venv
+**/__pycache__
+**/*.db
+**/*.db-*
+**/.env*
+mobile/e2e/screenshots
+mobile/e2e/test-results

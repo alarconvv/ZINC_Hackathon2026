@@ -154,7 +154,7 @@ Cards and buttons share broad rounded corners; fields and chips use the tighter 
 Primary, secondary and danger variants share a minimum height of 48. Pressed opacity is 0.78; focused borders use ink. Disabled controls use rule and muted; busy controls show an activity indicator and expose busy/disabled accessibility state. IconButton is 48 square with a 22-unit Feather icon, a focus border and a rule-colored pressed surface. No additional hover animation is implemented.
 
 ### Chips
-Chip is a pale, text-bearing capsule. EvidenceBadge appends the word “evidence.” Week maps strength to Strong, brain to Emerging, and yoga/relaxation to Moderate. Train uses the returned item's badge for movement content. Preserve these distinctions rather than assigning one uniform evidence level.
+Chip is a pale, text-bearing capsule. EvidenceBadge appends the word “evidence.” Week maps strength to Strong, yoga/brain to Moderate, and relaxation to Emerging, following the build plan's evidence table. Train uses the returned item's badge for movement content. Preserve these distinctions rather than assigning one uniform evidence level.
 
 ### Cards / Containers
 Card uses the surface token, standard padding and gap. Compact cards reduce padding/gap and grow to fill their summary cell. Row wraps with centered alignment and a 10-unit gap.

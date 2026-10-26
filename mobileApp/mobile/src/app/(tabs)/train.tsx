@@ -219,7 +219,7 @@ function TrainSession() {
             )}
             {section === "brain" && (
               <>
-                <EvidenceBadge level="Emerging" />
+                <EvidenceBadge level="Moderate" />
                 <H>{item?.question}</H>
                 <Meta>
                   Enter the next number. Brain games are a reasoning activity.
@@ -281,7 +281,7 @@ function TrainSession() {
             )}
             {section === "relaxation" && (
               <>
-                <EvidenceBadge level="Moderate" />
+                <EvidenceBadge level="Emerging" />
                 <H>A moment to settle</H>
                 <Breathing />
                 <Row>

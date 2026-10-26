@@ -174,6 +174,21 @@ Sign in as **`maria@demo.zinc`** using the password you chose. The seeder create
 
 See [Product notes](mobileApp/PRODUCT_NOTES.md) for the agreed demo credentials used by the browser test fixture. For a first-time setup demonstration, create a fresh account through the interface. Accounts created on another computer do not automatically exist on yours.
 
+## Run with Docker (alternative)
+
+With Docker Desktop running, teammates can run the API and web app without installing Python or Node. From the repository root:
+
+```sh
+docker compose up --build
+```
+
+Open **<http://127.0.0.1:8081/>** and create a fictional account, or sign in as `maria@demo.zinc` with the demo password in the [product notes](mobileApp/PRODUCT_NOTES.md). The API runs on port 8000.
+
+- The first build downloads about 3 GB and takes several minutes. Keep at least 5 GB of disk free.
+- Gemini is optional. For the live coach, create a `.env` file next to `docker-compose.yml` containing `GEMINI_API_KEY=...` and `MODEL=gemini-3.5-flash-lite`. The repository ignores `.env`. Without a key, the coach uses its labelled fallback.
+- Both ports listen only on this computer. Stop other servers using ports 8000 or 8081 first.
+- Press `Ctrl+C` to stop. `docker compose down` deletes the containers and their saved accounts and activity. Restarting the API signs everyone out unless `JWT_SECRET` is set in `.env`.
+
 ## Data and privacy during local testing
 
 - Account and activity data persist in `mobileApp/backend/zinc.db` by default.
